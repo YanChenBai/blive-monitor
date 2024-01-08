@@ -3,6 +3,7 @@ import { BrowserWindow, app } from 'electron'
 import mainWin from './windows/main'
 import { initAutoUpdater } from './utils/autoUpdater'
 import { initPath } from './utils/paths'
+import testWin from './windows/test'
 
 let win: BrowserWindow | undefined
 function main() {
@@ -27,7 +28,8 @@ function main() {
 
     app.whenReady().then(async () => {
       win = await mainWin()
-      initAutoUpdater(win)
+      // initAutoUpdater(win)
+      testWin()
     })
   } else {
     app.quit()

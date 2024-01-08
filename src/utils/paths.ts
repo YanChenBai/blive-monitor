@@ -30,4 +30,6 @@ export async function initPath() {
   await isExists(ICONS_PATH)
 }
 
+export const PLUGIN_PATH = path.resolve(__dirname, '../../plugin/dist/assets/index-tQ3yD_db.js')
+
 export default () => logger.info({ ROAMING_PATH, RENDER_PATH, MSG_ICON_PATH, ICONS_PATH, LOG_PATH })

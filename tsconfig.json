@@ -94,6 +94,7 @@
   },
   "exclude": [
     "./node_modules/*",
-    "render"
+    "render",
+    "plugin"
   ]
 }

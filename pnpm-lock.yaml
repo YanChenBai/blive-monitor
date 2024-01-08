@@ -26,9 +26,6 @@ dependencies:
   dotenv:
     specifier: ^16.3.1
     version: 16.3.1
-  electron-drag-window:
-    specifier: ^0.1.2
-    version: 0.1.2
   electron-updater:
     specifier: ^6.1.7
     version: 6.1.7
@@ -50,10 +47,10 @@ devDependencies:
     specifier: ^20.10.4
     version: 20.10.5
   electron:
-    specifier: ^24.4.0
-    version: 24.8.8
+    specifier: ^28.1.0
+    version: 28.1.1
   electron-builder:
-    specifier: ^24.4.0
+    specifier: ^24.9.1
     version: 24.9.1
   jest:
     specifier: ^29.7.0
@@ -2546,10 +2543,6 @@ packages:
       - supports-color
     dev: true
 
-  /electron-drag-window@0.1.2:
-    resolution: {integrity: sha512-tX3j3BTUeRg7xXhjQLTDoVOYO+ZLfFLxSSsDpoUDX6YEUaQxLyvvdnZtQY3RH5Dxphj4Ar8vCxceBjXWsOpMtQ==}
-    dev: false
-
   /electron-publish@24.8.1:
     resolution: {integrity: sha512-IFNXkdxMVzUdweoLJNXSupXkqnvgbrn3J4vognuOY06LaS/m0xvfFYIf+o1CM8if6DuWYWoQFKPcWZt/FUjZPw==}
     dependencies:
@@ -2583,8 +2576,8 @@ packages:
       - supports-color
     dev: false
 
-  /electron@24.8.8:
-    resolution: {integrity: sha512-0A2tGwG/0hxnD32Lil9wgSydQ0HCP5AdkgcH+qee3QgaC2jVq55YIbrj/0ZAq4L7yiZvQTzYIrc6kie7OahJKQ==}
+  /electron@28.1.1:
+    resolution: {integrity: sha512-HJSbGHpRl46jWCp5G4OH57KSm2F5u15tB10ixD8iFiz9dhwojqlSQTRAcjSwvga+Vqs1jv7iqwQRrolXP4DgOA==}
     engines: {node: '>= 12.20.55'}
     hasBin: true
     requiresBuild: true
