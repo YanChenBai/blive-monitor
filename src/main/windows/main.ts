@@ -1,4 +1,4 @@
-import { BrowserWindow, shell, app, ipcMain } from 'electron'
+import { BrowserWindow, shell, app } from 'electron'
 import { join } from 'path'
 import icon from '../../../resources/icon.png?asset'
 import { MessageChannel } from '../utils/messageChannel'
@@ -26,14 +26,14 @@ export async function mainWindow() {
   if (app.isPackaged) {
     window.loadFile(join(__dirname, '../renderer/index.html'))
   } else {
-    window.loadURL('https://live.bilibili.com/23369901')
-    // window.loadURL('http://localhost:5173')
+    window.loadURL(`https://live.bilibili.com/732?winId=${window.id}`)
   }
 
-  ipcMain.handle('GetWinid', () => window.id)
   const msgChannel = new MessageChannel(window)
 
   msgChannel.registerHandler('openExternal', (_e, url: string) => shell.openExternal(url))
+  msgChannel.registerHandler('closeWin', () => window.close())
+  msgChannel.registerHandler('minWin', () => window.minimize())
 
   return window
 }

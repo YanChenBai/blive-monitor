@@ -10,7 +10,7 @@ export class MessageChannel {
   constructor(window: BrowserWindow) {
     this.window = window
     this.handlers = new Map()
-    this.channelName = `MessageChannel`
+    this.channelName = `MessageChannel:${window.id}`
     this.init()
   }
 

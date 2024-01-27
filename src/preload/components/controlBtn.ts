@@ -23,7 +23,7 @@ export class ControlBtn extends CreateComponent {
       opacity: 0.8;
     }
   `
-  html = () => {
+  template = () => {
     const content = this.getAttribute('content') || ''
     const title = this.getAttribute('title') || ''
     const color = this.getAttribute('color') || ''

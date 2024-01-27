@@ -10,21 +10,22 @@ export class CreateComponent extends HTMLElement {
     this.attachShadow({ mode: 'open' })
   }
 
+  /** css样式 */
   css: string = ''
-  html() {
+
+  /** html内容 */
+  template() {
     return ``
   }
 
+  /** 挂载后的回调 */
   connected() {
     //
   }
 
   connectedCallback() {
-    if (this.shadowRoot) this.shadowRoot.innerHTML = `<style> ${this.css}</style> ${this.html()}`
+    if (this.shadowRoot)
+      this.shadowRoot.innerHTML = `<style> ${this.css}</style> ${this.template()}`
     this.connected()
   }
-}
-
-export interface Ref<T> {
-  value: T
 }
