@@ -1,12 +1,73 @@
 // eslint-disable-next-line vue/prefer-import-from-vue
 import { ref, watch } from '@vue/runtime-core'
-import { html, css, CreateComponent } from '../utils/createComponent'
+import {
+  html,
+  css,
+  Component,
+  Tag,
+  createComponent,
+  Props,
+  batchAdd,
+  switchElement
+} from '../utils/component'
 import { ControlBtn } from './controlBtn'
 import { ipcInvoke } from '../utils/invoke'
+import { controlBarStatus, danmuInputStatus, danmuInputIsFocus } from '../utils/status'
+import {
+  LetsIconsCloseRound,
+  CiRemoveMinus,
+  LetsIconsChatFill,
+  Pin,
+  Pined,
+  Lock,
+  UnLock
+} from './icons'
 
-export class ControlBar extends CreateComponent {
-  status = ref(false)
-  showDanmuBtn = ref(true)
+function createBrn(props: Props<ControlBtn>) {
+  return createComponent(ControlBtn, props)
+}
+
+const btns = {
+  closeWin: createBrn({
+    color: 'rgb(243, 59, 99)',
+    content: LetsIconsCloseRound,
+    title: '关闭窗口'
+  }),
+  minWin: createBrn({
+    color: '#00aeec',
+    content: CiRemoveMinus,
+    title: '窗口最小化'
+  }),
+  switchDanmuInput: createBrn({
+    color: '#f288a6ff',
+    content: LetsIconsChatFill,
+    title: '弹幕快捷发送,回车可打开'
+  }),
+  alwaysOnTopLock: createBrn({
+    color: '#64d496',
+    content: Pin,
+    title: '窗口置顶'
+  }),
+  alwaysOnTopUnlock: createBrn({
+    color: '#64d496',
+    content: Pined,
+    title: '窗口取消置顶'
+  }),
+  aspectRatioLock: createBrn({
+    color: '#fbc94b',
+    content: UnLock,
+    title: '窗口比例锁定'
+  }),
+  aspectRatioUnlock: createBrn({
+    color: '#fbc94b',
+    content: Lock,
+    title: '窗口比例解锁'
+  })
+}
+
+@Tag('control-bar')
+export class ControlBar extends Component {
+  hideDanmuBtn = ref(false)
 
   constructor() {
     super()
@@ -38,67 +99,53 @@ export class ControlBar extends CreateComponent {
     }
   `
 
-  template = () =>
-    html`<div class="control-bar">
-      <control-btn
-        id="closeWin"
-        color="rgb(243, 59, 99)"
-        content="关闭"
-        title="关闭窗口"
-      ></control-btn>
-      <control-btn id="minWin" color="#00aeec" content="最小" title="窗口最小化"></control-btn>
-      <control-btn
-        id="switchDanmu"
-        color="#f288a6ff"
-        content="弹幕"
-        title="弹幕快捷发送,回车可打开"
-        class="danmu-btn"
-      ></control-btn>
-      <control-btn id="alwaysOnTop" color="#64d496" content="置顶" title="窗口置顶"></control-btn>
-      <control-btn
-        id="aspectRatio"
-        color="#fbc94b"
-        content="比例"
-        title="窗口比例锁定"
-      ></control-btn>
-    </div> `
+  render() {
+    return html`<div class="control-bar"></div>`
+  }
 
   connected() {
-    const danmuBtnEl = this.shadowRoot?.querySelector('.danmu-btn') as ControlBtn
     const controlBarEl = this.shadowRoot?.querySelector('.control-bar') as HTMLDivElement
 
-    watch(this.status, (val) => {
+    batchAdd(controlBarEl, Object.values(btns))
+
+    switchElement([btns.aspectRatioLock, btns.aspectRatioUnlock], false)
+    switchElement([btns.alwaysOnTopLock, btns.alwaysOnTopUnlock], false)
+
+    watch(controlBarStatus, (val) => {
       this.shadowRoot?.querySelector('.control-bar')?.classList.toggle('show', val)
     })
 
-    watch(this.showDanmuBtn, (val) => danmuBtnEl.classList.toggle('hide-btn', val))
+    watch(this.hideDanmuBtn, (val) => btns.switchDanmuInput.classList.toggle('hide-btn', val), {
+      immediate: true
+    })
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        this.status.value = false
+        controlBarStatus.value = false
       }
     })
 
-    // 单击弹幕切换按钮
-    controlBarEl.addEventListener('click', (e) => {
-      const target = e.target as ControlBtn
-      if (target.tagName === 'CONTROL-BTN') {
-        switch (target.id) {
-          case 'switchDanmu':
-            this.switchDanmu()
-            break
-          case 'closeWin':
-            ipcInvoke('closeWin')
-            break
-          case 'minWin':
-            ipcInvoke('minWin')
-            break
-        }
-      }
-    })
-  }
+    document.onmousemove = () => {
+      controlBarStatus.value = true
+    }
 
-  switchDanmu() {
-    //
+    document.onmouseleave = () => {
+      if (!danmuInputIsFocus.value) {
+        controlBarStatus.value = false
+        danmuInputStatus.value = false
+      }
+    }
+
+    btns.minWin.onclick = () => {
+      ipcInvoke('minWin')
+    }
+
+    btns.closeWin.onclick = () => {
+      ipcInvoke('closeWin')
+    }
+
+    btns.switchDanmuInput.onclick = () => {
+      danmuInputStatus.value = !danmuInputStatus.value
+    }
   }
 }

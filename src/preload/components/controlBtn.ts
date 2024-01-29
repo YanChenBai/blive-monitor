@@ -1,18 +1,18 @@
-import { html, css, CreateComponent } from '../utils/createComponent'
+import { html, css, Component, Tag } from '../utils/component'
 
-export class ControlBtn extends CreateComponent {
+@Tag('control-btn')
+export class ControlBtn extends Component {
   css = css`
     .control-btn {
       border: 0;
-      border-radius: 6px;
+      border-radius: 16px;
       cursor: pointer;
-      padding: 2px 4px;
+      padding: 6px;
       transition: all 0.3s;
       color: #ffffff;
-      font-size: 12px;
-      line-height: 26px;
-      height: 26px;
-      width: 32px;
+      line-height: 28px;
+      height: 28px;
+      width: 28px;
       outline: none;
       display: flex;
       justify-content: center;
@@ -23,15 +23,22 @@ export class ControlBtn extends CreateComponent {
       opacity: 0.8;
     }
   `
-  template = () => {
-    const content = this.getAttribute('content') || ''
-    const title = this.getAttribute('title') || ''
-    const color = this.getAttribute('color') || ''
 
-    const style = css`
-      background-color: ${color};
+  render() {
+    return html`
+      <button
+        class="control-btn"
+        title="${this.title}"
+        style="${css`
+          background-color: ${this.color};
+        `}"
+      >
+        ${this.content}
+      </button>
     `
-
-    return html` <button class="control-btn" title="${title}" style="${style}">${content}</button> `
   }
+
+  color = ''
+  content = ''
+  title = ''
 }

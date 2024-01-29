@@ -1,14 +1,14 @@
 // eslint-disable-next-line vue/prefer-import-from-vue
 import { ref, watch } from '@vue/runtime-core'
 import { mockGetEmoticons } from '../mock'
-import { CreateComponent, css, html } from '../utils/createComponent'
+import { Component, Tag, css, html } from '../utils/component'
 import { EmojiTabs } from './emoji'
+import { controlBarStatus, danmuInputStatus, danmuInputIsFocus } from '../utils/status'
 
-export class DanmuSend extends CreateComponent {
-  status = ref(false)
+@Tag('danmu-send')
+export class DanmuSend extends Component {
   maxlen = ref(20)
   inputlen = ref(0)
-  isFocus = false
 
   css = css`
     .wrap {
@@ -54,7 +54,7 @@ export class DanmuSend extends CreateComponent {
     }
   `
 
-  template = () => {
+  render() {
     return html`
       <div class="wrap">
         <div class="danmu-input">
@@ -68,10 +68,6 @@ export class DanmuSend extends CreateComponent {
   updateMaxlen() {
     const maxlenEl = this.shadowRoot?.querySelector('.maxlen') as HTMLDivElement
     maxlenEl.innerText = `${Math.min(this.inputlen.value, this.maxlen.value)}/${this.maxlen.value}`
-  }
-
-  onShow() {
-    //
   }
 
   onSend(_value: string) {
@@ -92,14 +88,12 @@ export class DanmuSend extends CreateComponent {
     const inputEl = this.shadowRoot?.querySelector('input') as HTMLInputElement
 
     inputEl.addEventListener('input', () => {
-      const { length } = inputEl.value
-      this.inputlen.value = length
-      this.updateMaxlen()
+      this.inputlen.value = inputEl.value.length
     })
 
     // 维护一个焦点状态
-    inputEl.addEventListener('focus', () => (this.isFocus = true))
-    inputEl.addEventListener('blur', () => (this.isFocus = false))
+    inputEl.addEventListener('focus', () => (danmuInputIsFocus.value = true))
+    inputEl.addEventListener('blur', () => (danmuInputIsFocus.value = false))
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
@@ -109,11 +103,13 @@ export class DanmuSend extends CreateComponent {
           inputEl.value = ''
           this.inputlen.value = 0
         }
-        this.status.value = !this.status.value
+
+        // 输入框打开时同时打开控制栏
+        danmuInputStatus.value = !danmuInputStatus.value
       }
 
       if (e.key === 'Escape') {
-        this.status.value = false
+        danmuInputStatus.value = false
         inputEl.blur()
       }
     })
@@ -150,10 +146,11 @@ export class DanmuSend extends CreateComponent {
 
     // 更新显示状态
     watch(
-      this.status,
+      danmuInputStatus,
       (val) => {
         if (val) {
-          this.onShow()
+          // 输入框打开时同时打开控制栏
+          controlBarStatus.value = true
           inputEl.focus()
         }
         wrapEl.classList.toggle('show', val)

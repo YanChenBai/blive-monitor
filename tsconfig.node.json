@@ -4,11 +4,11 @@
     "electron.vite.config.*",
     "src/main/**/*",
     "src/preload/**/*",
-    "src/preload/test.vue"
+    "src/preload/components/*.tsx"
   ],
-  // "emitDecoratorMetadata": true,
-  "experimentalDecorators": true,
   "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "composite": true,
     "types": [
       "electron-vite/node"
