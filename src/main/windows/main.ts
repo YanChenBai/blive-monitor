@@ -2,8 +2,12 @@ import { BrowserWindow, shell, app } from 'electron'
 import { join } from 'path'
 import icon from '../../../resources/icon.png?asset'
 import { MessageChannel } from '../utils/messageChannel'
+
+type LiveRoomWindow = BrowserWindow & {
+  roomId?: string
+}
 export async function mainWindow() {
-  const window = new BrowserWindow({
+  const window: LiveRoomWindow = new BrowserWindow({
     width: 900,
     height: 670,
     show: false,
@@ -15,6 +19,8 @@ export async function mainWindow() {
       nodeIntegration: true
     }
   })
+
+  window.roomId = '732'
 
   window.on('ready-to-show', () => window.show())
 

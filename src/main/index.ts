@@ -4,6 +4,7 @@ import { mainWindow } from './windows/main'
 
 async function bootstrap() {
   app.whenReady().then(() => {
+    app.commandLine.appendSwitch('ignore-certificate-errors')
     electronApp.setAppUserModelId('com.byc.blive')
 
     app.on('browser-window-created', (_, window) => {
@@ -12,7 +13,7 @@ async function bootstrap() {
 
     mainWindow()
 
-    app.on('activate', function () {
+    app.on('activate', () => {
       if (BrowserWindow.getAllWindows().length === 0) mainWindow()
     })
   })

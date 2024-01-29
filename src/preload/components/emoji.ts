@@ -274,8 +274,9 @@ export class EmojiTabs extends Component {
     }
   }
 
-  onSelect(_data: Emoticon, _pkg_type: number) {
-    //
+  // 选择表情回调
+  onSelect(data: Emoticon, pkg_type: number) {
+    console.log({ data, pkg_type })
   }
 
   connected() {
@@ -304,10 +305,10 @@ export class EmojiTabs extends Component {
     this.switchTab(0)
 
     // 阻止冒泡,避免滚动调整音量触发 和 滚动间隔调整
-    tabsBody.addEventListener('wheel', (event) => {
-      tabsBody.scrollTop += event.deltaY > 0 ? this.setp : -this.setp
-      event.preventDefault()
-      event.stopPropagation()
+    tabsBody.addEventListener('wheel', (ev) => {
+      tabsBody.scrollTop += ev.deltaY > 0 ? this.setp : -this.setp
+      ev.preventDefault()
+      ev.stopPropagation()
     })
   }
 }

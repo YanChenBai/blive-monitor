@@ -30,6 +30,7 @@ export function batchAdd(el: HTMLElement, els: HTMLElement[]) {
   return els.map((item) => el.appendChild(item))
 }
 
+/** 切换元素 */
 export function switchElement(els: [HTMLElement, HTMLElement], initValue: boolean) {
   const signal = ref(initValue)
   const displayValue = els.map((item) => {
@@ -37,6 +38,7 @@ export function switchElement(els: [HTMLElement, HTMLElement], initValue: boolea
     return item.style.display
   })
 
+  /** 监听需修改 */
   watch(
     signal,
     (val) => {
