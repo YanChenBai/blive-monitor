@@ -76,6 +76,9 @@ devDependencies:
   eslint-plugin-vue:
     specifier: ^9.19.2
     version: 9.20.1(eslint@8.56.0)
+  husky:
+    specifier: ^9.0.7
+    version: 9.0.7
   less:
     specifier: ^4.2.0
     version: 4.2.0
@@ -2707,6 +2710,12 @@ packages:
       debug: 4.3.4
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /husky@9.0.7:
+    resolution: {integrity: sha512-vWdusw+y12DUEeoZqW1kplOFqk3tedGV8qlga8/SF6a3lOiWLqGZZQvfWvY0fQYdfiRi/u1DFNpudTSV9l1aCg==}
+    engines: {node: '>=18'}
+    hasBin: true
     dev: true
 
   /iconv-corefoundation@1.1.7:
