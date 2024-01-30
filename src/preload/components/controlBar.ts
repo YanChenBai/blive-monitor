@@ -1,4 +1,3 @@
-// eslint-disable-next-line vue/prefer-import-from-vue
 import { ref, watch } from '@vue/runtime-core'
 import {
   html,
@@ -11,7 +10,7 @@ import {
   switchElement
 } from '../utils/component'
 import { ControlBtn } from './controlBtn'
-import { ipcInvoke } from '../utils/invoke'
+import { BliveService, ipcInvoke } from '../utils/invoke'
 import { controlBarStatus, danmuInputStatus, danmuInputIsFocus } from '../utils/status'
 import {
   LetsIconsCloseRound,
@@ -67,12 +66,6 @@ const btns = {
 
 @Tag('control-bar')
 export class ControlBar extends Component {
-  hideDanmuBtn = ref(false)
-
-  constructor() {
-    super()
-  }
-
   css = css`
     .control-bar {
       padding: 6px;
@@ -98,6 +91,9 @@ export class ControlBar extends Component {
       display: none;
     }
   `
+
+  hideDanmuBtn = ref(false)
+  bliveService = new BliveService()
 
   render() {
     return html`<div class="control-bar"></div>`
@@ -142,6 +138,13 @@ export class ControlBar extends Component {
 
     btns.closeWin.onclick = () => {
       ipcInvoke('closeWin')
+    }
+
+    btns.alwaysOnTopLock.onclick = () => {
+      this.bliveService.setAlwaysOnTop('', true)
+    }
+    btns.alwaysOnTopUnlock.onclick = () => {
+      this.bliveService.setAlwaysOnTop('', false)
     }
 
     btns.switchDanmuInput.onclick = () => {

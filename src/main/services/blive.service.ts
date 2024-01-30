@@ -1,23 +1,17 @@
-import { IPCService, method } from '../utils/ipcService'
-import { LiveRoomWindow } from '../utils/liveRoomWindow'
+import type { IpcMainInvokeEvent } from 'electron'
+import { IPCService, method, service } from '../utils/ipcService'
+
 import { db } from '../utils/lowdb'
 
 export interface BliveInterface {
-  name: string
   minWin(): void
   closeWin(): void
-  setAlwaysOnTop(status: boolean): void
+  setAlwaysOnTop(ev: IpcMainInvokeEvent, status: boolean): void
   getAlwaysOnTop(): boolean
-  // setKeepAspectRatio(status: boolean): void
-  // getKeepAspectRatio(): boolean
 }
 
+@service('blive')
 export class BliveService extends IPCService implements BliveInterface {
-  constructor(window: LiveRoomWindow) {
-    super('blive', window)
-  }
-  name = '1'
-
   @method
   minWin() {
     this.window.minimize()
@@ -33,7 +27,7 @@ export class BliveService extends IPCService implements BliveInterface {
   }
 
   @method
-  setAlwaysOnTop(status: boolean) {
+  setAlwaysOnTop(ev: IpcMainInvokeEvent, status: boolean) {
     this.window.setAlwaysOnTop(status)
     this.getRoomChain().update('alwaysOnTop', () => status)
   }

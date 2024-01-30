@@ -34,7 +34,7 @@ export function batchAdd(el: HTMLElement, els: HTMLElement[]) {
 export function switchElement(els: [HTMLElement, HTMLElement], initValue: boolean) {
   const signal = ref(initValue)
   const displayValue = els.map((item) => {
-    item.onclick = () => (signal.value = !signal.value)
+    item.addEventListener('click', () => (signal.value = !signal.value))
     return item.style.display
   })
 

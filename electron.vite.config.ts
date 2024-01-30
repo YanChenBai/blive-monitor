@@ -17,6 +17,9 @@ export default defineConfig({
     plugins: [externalizeDepsPlugin(), swcPlugin()],
     build: {
       rollupOptions: {
+        input: {
+          index: 'src/preload/index.ts'
+        },
         output: {
           format: 'es'
         }

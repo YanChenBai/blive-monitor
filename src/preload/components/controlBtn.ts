@@ -24,6 +24,10 @@ export class ControlBtn extends Component {
     }
   `
 
+  color = ''
+  content = ''
+  title = ''
+
   render() {
     return html`
       <button
@@ -37,8 +41,4 @@ export class ControlBtn extends Component {
       </button>
     `
   }
-
-  color = ''
-  content = ''
-  title = ''
 }
