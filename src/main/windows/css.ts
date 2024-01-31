@@ -80,7 +80,8 @@ export const insertCSS = css`
     width: 100vw;
     height: 40px;
     font-size: 16px;
-    display: flex;
+    /* display: flex; */
+    display: none;
     align-items: center;
     justify-content: center;
   }

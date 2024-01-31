@@ -1,4 +1,5 @@
 import { GetEmoticons } from '../types/emoji'
+import axios from 'axios'
 
 /**
  * 获取房间表情号
@@ -12,10 +13,10 @@ export async function getEmoticons(roomId: string) {
         withCredentials: true
       }
     )
-    .then((res) => {
-      if (res.data.code === 0) return res.data.data.data
+    .then(({ data }) => {
+      if (data.code === 0) return data.data.data
       else {
-        return Promise.reject(res.data.code)
+        return Promise.reject(data.code)
       }
     })
 }

@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import Versions from './components/Versions.vue'
-window.getWinid().then((id) => {
-  console.log(id)
-})
 </script>
 
 <template>

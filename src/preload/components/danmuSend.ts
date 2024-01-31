@@ -1,15 +1,12 @@
-// eslint-disable-next-line vue/prefer-import-from-vue
 import { ref, watch } from '@vue/runtime-core'
-import { mockGetEmoticons } from '../mock'
 import { Component, tag, css, html } from '../utils/component'
 import { EmojiTabs } from './emoji'
 import { controlBarStatus, danmuInputStatus, danmuInputIsFocus } from '../utils/status'
+import { BliveService } from '../utils/invoke'
+import { Emoticons } from '../types/emoji'
 
 @tag('danmu-send')
 export class DanmuSend extends Component {
-  maxlen = ref(20)
-  inputlen = ref(0)
-
   css = css`
     .wrap {
       width: 240px;
@@ -65,6 +62,11 @@ export class DanmuSend extends Component {
     `
   }
 
+  bliveService = new BliveService()
+  maxlen = ref(20)
+  inputlen = ref(0)
+  data: Emoticons[] = []
+
   updateMaxlen() {
     const maxlenEl = this.shadowRoot?.querySelector('.maxlen') as HTMLDivElement
     maxlenEl.innerText = `${Math.min(this.inputlen.value, this.maxlen.value)}/${this.maxlen.value}`
@@ -78,7 +80,7 @@ export class DanmuSend extends Component {
     const emojiTabsEl = document.createElement('emoji-tabs') as EmojiTabs
 
     // 绑定数据
-    emojiTabsEl.data = mockGetEmoticons.data.data
+    emojiTabsEl.data = this.data
 
     // 添加表情选项卡
     const wrapEl = this.shadowRoot?.querySelector('.wrap') as HTMLDivElement

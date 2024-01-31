@@ -18,7 +18,9 @@ const mockRoom = {
 }
 async function bootstrap() {
   app.whenReady().then(() => {
-    app.commandLine.appendSwitch('ignore-certificate-errors')
+    app.commandLine.appendSwitch('ignore-certificate-errors', 'true')
+    app.commandLine.appendArgument('--headless')
+    app.commandLine.appendSwitch('--log-level', '3')
     electronApp.setAppUserModelId('com.byc.blive')
 
     app.on('browser-window-created', (_, window) => {

@@ -10,7 +10,6 @@ import {
   switchElement
 } from '../utils/component'
 import { ControlBtn } from './controlBtn'
-import { BliveService } from '../utils/invoke'
 import { controlBarStatus, danmuInputStatus, danmuInputIsFocus } from '../utils/status'
 import {
   LetsIconsCloseRound,
@@ -21,6 +20,7 @@ import {
   Lock,
   UnLock
 } from './icons'
+import { BliveService } from '../utils/invoke'
 
 function createBrn(props: Props<ControlBtn>) {
   return createComponent(ControlBtn, props)
@@ -92,12 +92,12 @@ export class ControlBar extends Component {
     }
   `
 
-  hideDanmuBtn = ref(false)
-  bliveService = new BliveService()
-
   render() {
     return html`<div class="control-bar"></div>`
   }
+
+  hideDanmuBtn = ref(false)
+  bliveService = new BliveService()
 
   connected() {
     const controlBarEl = this.shadowRoot?.querySelector('.control-bar') as HTMLDivElement

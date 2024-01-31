@@ -33,7 +33,7 @@ export class IPCService {
     const handler = IPCService.handlers.get(name)
 
     if (handler) {
-      handler.call(this, event, ...args)
+      return handler.call(this, event, ...args)
     } else {
       throw new Error(`No handler found for ${name}`)
     }

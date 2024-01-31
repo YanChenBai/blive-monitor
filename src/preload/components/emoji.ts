@@ -10,10 +10,6 @@ function isClickEmojiItem(e: MouseEvent) {
 
 @tag('emoji-item')
 export class EmojiItem extends Component {
-  data?: Emoticon
-  index = 0
-  src = ''
-
   css = css`
     .emoji-item {
       cursor: pointer;
@@ -33,12 +29,14 @@ export class EmojiItem extends Component {
       </div>
     `
   }
+
+  data?: Emoticon
+  index = 0
+  src = ''
 }
 
 @tag('emoji-tab-header')
 export class EmojiTabHeader extends Component {
-  data: Emoticons[] = []
-
   css = css`
     .emoji-header {
       width: 100%;
@@ -62,6 +60,8 @@ export class EmojiTabHeader extends Component {
   render() {
     return html`<div class="emoji-header"></div>`
   }
+
+  data: Emoticons[] = []
 
   switchTab(index: number) {
     this.shadowRoot?.querySelector('.now')?.classList.remove('now')
@@ -100,12 +100,6 @@ export class EmojiTabHeader extends Component {
 
 @tag('emoji-tab')
 export class EmojiTab extends Component {
-  data?: Emoticons
-  index = 0
-  show = ref(false)
-  /** 是否渲染过 */
-  rendered = false
-
   css = css`
     .emoji-tab {
       width: 100%;
@@ -152,6 +146,12 @@ export class EmojiTab extends Component {
       </div>
     `
   }
+
+  data?: Emoticons
+  index = 0
+  show = ref(false)
+  /** 是否渲染过 */
+  rendered = false
 
   getSize(width: number, height: number) {
     if (width === 0) return 12.5
@@ -217,10 +217,6 @@ export class EmojiTab extends Component {
 
 @tag('emoji-tabs')
 export class EmojiTabs extends Component {
-  data: Emoticons[] = []
-  tabs: EmojiTab[] = []
-  setp = 10
-
   css = css`
     .emoji-tabs {
       overflow: hidden;
@@ -256,6 +252,10 @@ export class EmojiTabs extends Component {
       </div>
     `
   }
+
+  data: Emoticons[] = []
+  tabs: EmojiTab[] = []
+  setp = 10
 
   // 切换选项卡
   switchTab(index: number) {
@@ -302,7 +302,7 @@ export class EmojiTabs extends Component {
     )
 
     // 初始化一下
-    this.switchTab(0)
+    this.tabs.length > 0 && this.switchTab(0)
 
     // 阻止冒泡,避免滚动调整音量触发 和 滚动间隔调整
     tabsBody.addEventListener('wheel', (ev) => {
