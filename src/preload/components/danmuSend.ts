@@ -1,11 +1,11 @@
 // eslint-disable-next-line vue/prefer-import-from-vue
 import { ref, watch } from '@vue/runtime-core'
 import { mockGetEmoticons } from '../mock'
-import { Component, Tag, css, html } from '../utils/component'
+import { Component, tag, css, html } from '../utils/component'
 import { EmojiTabs } from './emoji'
 import { controlBarStatus, danmuInputStatus, danmuInputIsFocus } from '../utils/status'
 
-@Tag('danmu-send')
+@tag('danmu-send')
 export class DanmuSend extends Component {
   maxlen = ref(20)
   inputlen = ref(0)

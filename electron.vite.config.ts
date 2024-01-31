@@ -32,13 +32,6 @@ export default defineConfig({
         '@renderer': resolve('src/renderer/src')
       }
     },
-    plugins: [vue()],
-    build: {
-      lib: {
-        entry: 'src/renderer/src/webComponents/index.ts',
-        formats: ['es', 'cjs'],
-        name: 'CustomElement'
-      }
-    }
+    plugins: [vue()]
   }
 })

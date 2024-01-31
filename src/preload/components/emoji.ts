@@ -1,5 +1,5 @@
 import type { Emoticon, Emoticons } from './../types/emoji'
-import { html, css, Component, Tag, createComponent, batchAdd } from '../utils/component'
+import { html, css, Component, tag, createComponent, batchAdd } from '../utils/component'
 // eslint-disable-next-line vue/prefer-import-from-vue
 import { watch, ref } from '@vue/runtime-core'
 
@@ -8,7 +8,7 @@ function isClickEmojiItem(e: MouseEvent) {
   return target.tagName.toLocaleLowerCase() === 'emoji-item'
 }
 
-@Tag('emoji-item')
+@tag('emoji-item')
 export class EmojiItem extends Component {
   data?: Emoticon
   index = 0
@@ -35,7 +35,7 @@ export class EmojiItem extends Component {
   }
 }
 
-@Tag('emoji-tab-header')
+@tag('emoji-tab-header')
 export class EmojiTabHeader extends Component {
   data: Emoticons[] = []
 
@@ -98,7 +98,7 @@ export class EmojiTabHeader extends Component {
   }
 }
 
-@Tag('emoji-tab')
+@tag('emoji-tab')
 export class EmojiTab extends Component {
   data?: Emoticons
   index = 0
@@ -215,7 +215,7 @@ export class EmojiTab extends Component {
   }
 }
 
-@Tag('emoji-tabs')
+@tag('emoji-tabs')
 export class EmojiTabs extends Component {
   data: Emoticons[] = []
   tabs: EmojiTab[] = []

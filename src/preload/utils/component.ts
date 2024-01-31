@@ -4,9 +4,9 @@ export const html = String.raw
 export const css = String.raw
 
 /** 注册标签 */
-export function Tag(tagName: string) {
+export function tag(tagName: string) {
   return (target: typeof Component) => {
-    target.regTagName = tagName
+    target.regtagName = tagName
     customElements.define(tagName, target)
   }
 }
@@ -18,7 +18,7 @@ export function createComponent<T extends typeof Component>(
   component: T,
   props?: Props<InstanceType<T>>
 ) {
-  const dom = document.createElement(component.regTagName) as InstanceType<T>
+  const dom = document.createElement(component.regtagName) as InstanceType<T>
   for (const key in props) {
     if (props[key]) dom[key] = props[key]
   }
@@ -61,7 +61,7 @@ export class Component extends HTMLElement {
     super()
     this.attachShadow({ mode: 'open' })
   }
-  static regTagName: string = ''
+  static regtagName: string = ''
 
   /** css样式 */
   css: string = ''

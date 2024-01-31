@@ -3,14 +3,14 @@ import {
   html,
   css,
   Component,
-  Tag,
+  tag,
   createComponent,
   Props,
   batchAdd,
   switchElement
 } from '../utils/component'
 import { ControlBtn } from './controlBtn'
-import { BliveService, ipcInvoke } from '../utils/invoke'
+import { BliveService } from '../utils/invoke'
 import { controlBarStatus, danmuInputStatus, danmuInputIsFocus } from '../utils/status'
 import {
   LetsIconsCloseRound,
@@ -64,7 +64,7 @@ const btns = {
   })
 }
 
-@Tag('control-bar')
+@tag('control-bar')
 export class ControlBar extends Component {
   css = css`
     .control-bar {
@@ -108,7 +108,7 @@ export class ControlBar extends Component {
     switchElement([btns.alwaysOnTopLock, btns.alwaysOnTopUnlock], false)
 
     watch(controlBarStatus, (val) => {
-      this.shadowRoot?.querySelector('.control-bar')?.classList.toggle('show', val)
+      controlBarEl.classList.toggle('show', val)
     })
 
     watch(this.hideDanmuBtn, (val) => btns.switchDanmuInput.classList.toggle('hide-btn', val), {
@@ -132,23 +132,33 @@ export class ControlBar extends Component {
       }
     }
 
+    controlBarEl.addEventListener('contextmenu', (ev) => {
+      this.bliveService.openContextMenu()
+      ev.preventDefault()
+    })
+
     btns.minWin.onclick = () => {
-      ipcInvoke('minWin')
+      this.bliveService.minWin()
     }
 
     btns.closeWin.onclick = () => {
-      ipcInvoke('closeWin')
+      this.bliveService.closeWin()
     }
 
     btns.alwaysOnTopLock.onclick = () => {
-      this.bliveService.setAlwaysOnTop('', true)
+      this.bliveService.setAlwaysOnTop(true)
     }
     btns.alwaysOnTopUnlock.onclick = () => {
-      this.bliveService.setAlwaysOnTop('', false)
+      this.bliveService.setAlwaysOnTop(false)
     }
 
     btns.switchDanmuInput.onclick = () => {
       danmuInputStatus.value = !danmuInputStatus.value
     }
+
+    window.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement
+      target.style.background = '#000'
+    })
   }
 }

@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import { BrowserWindow, app } from 'electron'
 import { electronApp, optimizer } from '@electron-toolkit/utils'
 import { mainWindow } from './windows/main'

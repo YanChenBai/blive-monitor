@@ -1,6 +1,6 @@
-import { html, css, Component, Tag } from '../utils/component'
+import { html, css, Component, tag } from '../utils/component'
 
-@Tag('control-btn')
+@tag('control-btn')
 export class ControlBtn extends Component {
   css = css`
     .control-btn {

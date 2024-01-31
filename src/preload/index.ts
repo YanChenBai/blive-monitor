@@ -3,10 +3,9 @@ import './components/controlBtn'
 import './components/danmuSend'
 import './components/emoji'
 
-// import { electronAPI } from '@electron-toolkit/preload'
-
 import { ControlBar } from './components/controlBar'
 import { DanmuSend } from './components/danmuSend'
+
 import { batchAdd, createComponent } from './utils/component'
 
 window.onload = () => {
