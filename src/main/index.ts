@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import { BrowserWindow, app } from 'electron'
 import { electronApp, optimizer } from '@electron-toolkit/utils'
-import { mainWindow } from './windows/main'
+import { bliveWindow } from './windows/blive'
 
 const mockRoom = {
   uid: '194484313',
@@ -25,10 +25,10 @@ async function bootstrap() {
       optimizer.watchWindowShortcuts(window)
     })
 
-    mainWindow(mockRoom)
+    bliveWindow(mockRoom)
 
     app.on('activate', () => {
-      if (BrowserWindow.getAllWindows().length === 0) mainWindow(mockRoom)
+      if (BrowserWindow.getAllWindows().length === 0) bliveWindow(mockRoom)
     })
   })
 

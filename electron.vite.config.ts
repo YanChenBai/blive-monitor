@@ -18,7 +18,7 @@ export default defineConfig({
     build: {
       rollupOptions: {
         input: {
-          index: 'src/preload/index.ts'
+          blive: 'src/preload/blive.ts'
         },
         output: {
           format: 'es'

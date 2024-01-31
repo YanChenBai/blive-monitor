@@ -6,7 +6,7 @@ import { Room } from '../types/window'
 import { LiveRoomWindow } from '../utils/liveRoomWindow'
 import { insertCSS } from './css'
 
-export async function mainWindow(room: Room) {
+export async function bliveWindow(room: Room) {
   const window = new LiveRoomWindow(room, {
     width: 900,
     height: 670,
@@ -15,7 +15,7 @@ export async function mainWindow(room: Room) {
     icon,
     frame: false,
     webPreferences: {
-      preload: join(__dirname, '../preload/index.mjs'),
+      preload: join(__dirname, '../preload/blive.mjs'),
       contextIsolation: false,
       nodeIntegration: true
     }
