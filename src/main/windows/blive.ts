@@ -1,10 +1,11 @@
 import { shell, app } from 'electron'
 import { join } from 'path'
-import icon from '../../../resources/icon.png?asset'
-import { BliveService } from '../services/blive.service'
-import { Room } from '../types/window'
-import { LiveRoomWindow } from '../utils/liveRoomWindow'
+import { BliveService } from '@main/services/blive.service'
+import { Room } from '@main/types/window'
+import { LiveRoomWindow } from '@main/utils/liveRoomWindow'
 import { insertCSS } from './css'
+
+import icon from '../../../resources/icon.png?asset'
 
 export async function bliveWindow(room: Room) {
   const window = new LiveRoomWindow(room, {

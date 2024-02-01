@@ -1,13 +1,13 @@
-import { BliveService } from './utils/invoke'
-import './components/controlBar'
-import './components/controlBtn'
-import './components/danmuSend'
-import './components/emoji'
+import { BliveService } from '@preload/utils/invoke'
+import '@preload/components/controlBar'
+import '@preload/components/controlBtn'
+import '@preload/components/danmuSend'
+import '@preload/components/emoji'
 
-import { ControlBar } from './components/controlBar'
-import { DanmuSend } from './components/danmuSend'
-import { batchAdd, createComponent } from './utils/component'
-import { getEmoticons } from './utils/api'
+import { ControlBar } from '@preload/components/controlBar'
+import { DanmuSend } from '@preload/components/danmuSend'
+import { batchAdd, createComponent } from '@preload/utils/component'
+import { getEmoticons } from '@preload/utils/api'
 
 window.onload = async () => {
   const bliveService = new BliveService()

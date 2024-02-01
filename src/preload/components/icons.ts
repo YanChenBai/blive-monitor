@@ -1,4 +1,4 @@
-import { html } from '../utils/component'
+import { html } from '@preload/utils/component'
 
 export const LetsIconsCloseRound = html`<svg
   xmlns="http://www.w3.org/2000/svg"

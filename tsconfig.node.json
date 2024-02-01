@@ -12,6 +12,15 @@
     "composite": true,
     "types": [
       "electron-vite/node"
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@main/*": [
+        "src/main/*"
+      ],
+      "@preload/*": [
+        "src/preload/*"
+      ]
+    }
   }
 }

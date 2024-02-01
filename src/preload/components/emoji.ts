@@ -1,5 +1,5 @@
-import type { Emoticon, Emoticons } from './../types/emoji'
-import { html, css, Component, tag, createComponent, batchAdd } from '../utils/component'
+import type { Emoticon, Emoticons } from '@preload/types/emoji'
+import { html, css, Component, tag, createComponent, batchAdd } from '@preload/utils/component'
 // eslint-disable-next-line vue/prefer-import-from-vue
 import { watch, ref } from '@vue/runtime-core'
 

@@ -1,7 +1,7 @@
-import { IPCServiceInvoke } from './../types/invoke'
+import { IPCServiceInvoke } from '@preload/types/invoke'
 import { ipcRenderer } from 'electron'
-import { BliveInterface } from '../../main/services/blive.service'
-import { Room } from '../../main/types/window'
+import { BliveInterface } from '@main/services/blive.service'
+import { Room } from '@main/types/window'
 
 export const winId = new URLSearchParams(window.location.search).get('winId')
 export function ipcInvoke<T = void>(name: keyof BliveInterface, ...args: any[]) {

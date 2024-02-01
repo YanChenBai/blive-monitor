@@ -11,6 +11,11 @@ export default defineConfig({
           format: 'es'
         }
       }
+    },
+    resolve: {
+      alias: {
+        '@main': resolve('src/main')
+      }
     }
   },
   preload: {
@@ -23,6 +28,11 @@ export default defineConfig({
         output: {
           format: 'es'
         }
+      }
+    },
+    resolve: {
+      alias: {
+        '@preload': resolve('src/preload')
       }
     }
   },

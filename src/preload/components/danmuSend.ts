@@ -1,9 +1,9 @@
 import { ref, watch } from '@vue/runtime-core'
-import { Component, tag, css, html } from '../utils/component'
+import { Component, tag, css, html } from '@preload/utils/component'
 import { EmojiTabs } from './emoji'
-import { controlBarStatus, danmuInputStatus, danmuInputIsFocus } from '../utils/status'
-import { BliveService } from '../utils/invoke'
-import { Emoticons } from '../types/emoji'
+import { controlBarStatus, danmuInputStatus, danmuInputIsFocus } from '@preload/utils/status'
+import { BliveService } from '@preload/utils/invoke'
+import { Emoticons } from '@preload/types/emoji'
 
 @tag('danmu-send')
 export class DanmuSend extends Component {

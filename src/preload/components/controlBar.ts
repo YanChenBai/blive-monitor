@@ -8,9 +8,9 @@ import {
   Props,
   batchAdd,
   switchElement
-} from '../utils/component'
+} from '@preload/utils/component'
 import { ControlBtn } from './controlBtn'
-import { controlBarStatus, danmuInputStatus, danmuInputIsFocus } from '../utils/status'
+import { controlBarStatus, danmuInputStatus, danmuInputIsFocus } from '@preload/utils/status'
 import {
   LetsIconsCloseRound,
   CiRemoveMinus,
@@ -20,7 +20,7 @@ import {
   Lock,
   UnLock
 } from './icons'
-import { BliveService } from '../utils/invoke'
+import { BliveService } from '@preload/utils/invoke'
 
 function createBrn(props: Props<ControlBtn>) {
   return createComponent(ControlBtn, props)

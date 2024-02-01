@@ -1,7 +1,7 @@
 import { Menu, type IpcMainInvokeEvent, MenuItem, MenuItemConstructorOptions } from 'electron'
-import { IPCService, method, service } from '../utils/ipcService'
-import { db } from '../utils/lowdb'
-import { Room } from '../types/window'
+import { IPCService, method, service } from '@main/utils/ipcService'
+import { db } from '@main/utils/lowdb'
+import { Room } from '@main/types/window'
 
 export interface BliveInterface {
   /** 最小化  */

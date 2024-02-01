@@ -1,5 +1,5 @@
 import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron'
-import { Room } from '../types/window'
+import { Room } from '@main/types/window'
 
 export const windowInstances: LiveRoomWindow[] = []
 
