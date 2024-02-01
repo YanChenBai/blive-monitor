@@ -20,7 +20,7 @@ import {
   Lock,
   UnLock
 } from './icons'
-import { BliveService } from '@preload/utils/invoke'
+import { BliveInvoke } from '@preload/utils/invoke'
 
 function createBrn(props: Props<ControlBtn>) {
   return createComponent(ControlBtn, props)
@@ -97,7 +97,7 @@ export class ControlBar extends Component {
   }
 
   hideDanmuBtn = ref(false)
-  bliveService = new BliveService()
+  bliveInvoke = new BliveInvoke()
 
   connected() {
     const controlBarEl = this.shadowRoot?.querySelector('.control-bar') as HTMLDivElement
@@ -133,23 +133,23 @@ export class ControlBar extends Component {
     }
 
     controlBarEl.addEventListener('contextmenu', (ev) => {
-      this.bliveService.openContextMenu()
+      this.bliveInvoke.openContextMenu()
       ev.preventDefault()
     })
 
     btns.minWin.onclick = () => {
-      this.bliveService.minWin()
+      this.bliveInvoke.minWin()
     }
 
     btns.closeWin.onclick = () => {
-      this.bliveService.closeWin()
+      this.bliveInvoke.closeWin()
     }
 
     btns.alwaysOnTopLock.onclick = () => {
-      this.bliveService.setAlwaysOnTop(true)
+      this.bliveInvoke.setAlwaysOnTop(true)
     }
     btns.alwaysOnTopUnlock.onclick = () => {
-      this.bliveService.setAlwaysOnTop(false)
+      this.bliveInvoke.setAlwaysOnTop(false)
     }
 
     btns.switchDanmuInput.onclick = () => {

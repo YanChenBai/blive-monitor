@@ -2,7 +2,7 @@ import { ref, watch } from '@vue/runtime-core'
 import { Component, tag, css, html } from '@preload/utils/component'
 import { EmojiTabs } from './emoji'
 import { controlBarStatus, danmuInputStatus, danmuInputIsFocus } from '@preload/utils/status'
-import { BliveService } from '@preload/utils/invoke'
+import { BliveInvoke } from '@preload/utils/invoke'
 import { Emoticons } from '@preload/types/emoji'
 
 @tag('danmu-send')
@@ -62,7 +62,7 @@ export class DanmuSend extends Component {
     `
   }
 
-  bliveService = new BliveService()
+  bliveInvoke = new BliveInvoke()
   maxlen = ref(20)
   inputlen = ref(0)
   data: Emoticons[] = []

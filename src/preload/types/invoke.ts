@@ -5,6 +5,11 @@ type MethodToPromise<T> = {
   [K in keyof T]: T[K] extends (...args: infer A) => infer R ? (...args: A) => Promise<R> : T[K]
 }
 
+// 排除非函数成员
+type FunctionOnlyInterface<T> = {
+  [K in keyof T]: T[K] extends (...args: any[]) => any ? T[K] : never
+}
+
 // 排除函数下的 IpcMainInvokeEvent 参数
 type WithoutInvokeEvent<T> = {
   [K in keyof T]: T[K] extends (...args: any[]) => any
@@ -14,4 +19,4 @@ type WithoutInvokeEvent<T> = {
     : T[K]
 }
 
-export type IPCServiceInvoke<T> = MethodToPromise<WithoutInvokeEvent<T>>
+export type Transform<T> = MethodToPromise<WithoutInvokeEvent<FunctionOnlyInterface<T>>>

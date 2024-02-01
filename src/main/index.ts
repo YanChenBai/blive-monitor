@@ -2,7 +2,8 @@ import 'dotenv/config'
 import { BrowserWindow, app } from 'electron'
 import { electronApp, optimizer } from '@electron-toolkit/utils'
 import { bliveWindow } from './windows/blive'
-import { biliHome } from './windows/biliHome'
+// import { biliHome } from './windows/biliHome'
+import { dragWin } from './utils/dragWin'
 
 const mockRoom = {
   uid: '194484313',
@@ -17,6 +18,7 @@ const mockRoom = {
   keyframe:
     'https://i1.hdslb.com/bfs/face/6741c2cd6a9983a1d4dfa3ff690a8b9d5ae127b5.jpg@100w_100h.webp' // 封面
 }
+
 async function bootstrap() {
   app.whenReady().then(() => {
     app.commandLine.appendSwitch('ignore-certificate-errors', 'true')
@@ -24,12 +26,13 @@ async function bootstrap() {
     app.commandLine.appendSwitch('--log-level', '3')
     electronApp.setAppUserModelId('com.byc.blive')
 
+    dragWin()
+
     app.on('browser-window-created', (_, window) => {
       optimizer.watchWindowShortcuts(window)
     })
 
     bliveWindow(mockRoom)
-    biliHome()
 
     app.on('activate', () => {
       if (BrowserWindow.getAllWindows().length === 0) bliveWindow(mockRoom)

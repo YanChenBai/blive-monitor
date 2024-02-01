@@ -1,9 +1,9 @@
 import { Menu, type IpcMainInvokeEvent, MenuItem, MenuItemConstructorOptions } from 'electron'
-import { IPCService, method, service } from '@main/utils/ipcService'
+import { IPCHandle, method, handle } from '@main/utils/ipcHandle'
 import { db } from '@main/utils/lowdb'
 import { Room } from '@main/types/window'
 
-export interface BliveInterface {
+export interface BliveHandleInterface {
   /** 最小化  */
   minWin(): void
 
@@ -29,8 +29,8 @@ export interface BliveInterface {
   getRoomInfo(): Room
 }
 
-@service('blive')
-export class BliveService extends IPCService implements BliveInterface {
+@handle('blive')
+export class BliveHandle extends IPCHandle implements BliveHandleInterface {
   maximizeLabel = '最大化'
   unMaximizeLabel = '取消最大化'
 

@@ -5,7 +5,7 @@ import '@preload/components/emoji'
 import '@preload/components/userInfo'
 import '@preload/components/dragNav'
 
-import { BliveService } from '@preload/utils/invoke'
+import { BliveInvoke } from '@preload/utils/invoke'
 import { ControlBar } from '@preload/components/controlBar'
 import { DanmuSend } from '@preload/components/danmuSend'
 import { batchAdd, createComponent } from '@preload/utils/component'
@@ -13,7 +13,7 @@ import { getEmoticons } from '@preload/utils/api'
 import { awaitLivePlayer, awaitVideoEl } from './utils/livePlayer'
 import { DragNav } from '@preload/components/dragNav'
 
-const bliveService = new BliveService()
+const bliveInvoke = new BliveInvoke()
 const controlBarEl = createComponent(ControlBar)
 const danmuSendEl = createComponent(DanmuSend)
 const dragNav = createComponent(DragNav)
@@ -31,7 +31,7 @@ awaitVideoEl().then((videoEl) => {
   console.log(videoEl)
 })
 
-const room = await bliveService.getRoomInfo()
+const room = await bliveInvoke.getRoomInfo()
 
 // 看看是否需要添加弹幕输入框
 try {

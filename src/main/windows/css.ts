@@ -61,30 +61,6 @@ export const insertCSS = css`
     display: none !important;
   }
 
-  body:hover::after {
-    opacity: 1;
-  }
-
-  /** 拖拽栏 */
-  body::after {
-    color: rgb(241, 241, 241);
-    opacity: 0;
-    content: ' - 拖拽 - ';
-    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
-    transition: all 0.3s;
-    -webkit-app-region: drag;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 999999;
-    width: 100vw;
-    height: 40px;
-    font-size: 16px;
-    /* display: flex; */
-    display: none;
-    align-items: center;
-    justify-content: center;
-  }
   /** 幻星派对互动按钮 */
   #game-id {
     display: none !important;
@@ -120,5 +96,10 @@ export const insertCSS = css`
     background-repeat: no-repeat;
     width: 100% !important;
     height: 100% !important;
+  }
+
+  /** 隐藏全局广播飘屏 */
+  .web-player-inject-wrap {
+    display: none;
   }
 `

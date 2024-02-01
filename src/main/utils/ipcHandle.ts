@@ -3,7 +3,7 @@ import { LiveRoomWindow } from './liveRoomWindow'
 
 type Handler = (event: IpcMainInvokeEvent, ...args: any[]) => void
 
-export class IPCService {
+export class IPCHandle {
   static handlers: Map<string, Handler> = new Map()
   static prefixName: string
 
@@ -14,23 +14,24 @@ export class IPCService {
     this.init()
   }
 
-  getServiceName() {
-    return ['IPCService', this.constructor['prefixName'], this.window.id].join(':')
+  getName() {
+    if (!this.constructor['prefixName']) throw new Error('prefixName is not defined')
+    return ['IPCHandle', this.constructor['prefixName'], this.window.id].join(':')
   }
 
   private init() {
     /** 监听通道 */
-    ipcMain.handle(this.getServiceName(), (event, name: string, ...args: any[]) =>
+    ipcMain.handle(this.getName(), (event, name: string, ...args: any[]) =>
       this.handleEvent(event, name, ...args)
     )
 
     // 关闭窗口时移除监听
-    this.window.addListener('close', () => ipcMain.removeHandler(this.getServiceName()))
+    this.window.addListener('close', () => ipcMain.removeHandler(this.getName()))
   }
 
   // 处理事件
   private handleEvent(event: IpcMainInvokeEvent, name: string, ...args: any[]) {
-    const handler = IPCService.handlers.get(name)
+    const handler = IPCHandle.handlers.get(name)
 
     if (handler) {
       return handler.call(this, event, ...args)
@@ -40,13 +41,13 @@ export class IPCService {
   }
 
   /** 注册 Handler */
-  registerHandler(this: IPCService, name: string, handler: Handler) {
-    IPCService.handlers.set(name, handler)
+  registerHandler(this: IPCHandle, name: string, handler: Handler) {
+    IPCHandle.handlers.set(name, handler)
   }
 }
 
-export function service(name: string) {
-  return (target: typeof IPCService) => {
+export function handle(name: string) {
+  return (target: typeof IPCHandle) => {
     Reflect.defineProperty(target, 'prefixName', {
       value: name,
       writable: false
@@ -54,11 +55,6 @@ export function service(name: string) {
   }
 }
 
-/** 注册 Handler 装饰器 */
-export function method(target: IPCService, propertyKey: string, descriptor: PropertyDescriptor) {
+export function method(target: IPCHandle, propertyKey: string, descriptor: PropertyDescriptor) {
   target.registerHandler(propertyKey, descriptor.value)
-}
-
-export function event(target: object, propertyKey: string, parameterIndex: number) {
-  console.log(target, propertyKey, parameterIndex)
 }

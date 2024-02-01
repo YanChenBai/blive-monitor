@@ -1,8 +1,8 @@
 import { shell, app } from 'electron'
 import { join } from 'path'
-import { BliveService } from '@main/services/blive.service'
 import { Room } from '@main/types/window'
 import { LiveRoomWindow } from '@main/utils/liveRoomWindow'
+import { BliveHandle } from './../handles/bliveHandle'
 import { insertCSS } from './css'
 
 import icon from '../../../resources/icon.png?asset'
@@ -37,7 +37,7 @@ export async function bliveWindow(room: Room) {
     window.loadURL(`https://live.bilibili.com/31843613?winId=${window.id}`)
   }
 
-  new BliveService(window)
+  new BliveHandle(window)
 
   return window
 }
