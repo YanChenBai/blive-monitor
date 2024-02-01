@@ -97,4 +97,28 @@ export const insertCSS = css`
       top: 0 !important;
     }
   }
+
+  /** 封禁布局修改 */
+  .room-blocked {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    top: 0;
+    left: 0;
+    right: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .room-blocked .header-img {
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100% !important;
+    height: 100% !important;
+  }
 `

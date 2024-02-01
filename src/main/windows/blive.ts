@@ -34,7 +34,7 @@ export async function bliveWindow(room: Room) {
   if (app.isPackaged) {
     window.loadFile(join(__dirname, '../renderer/index.html'))
   } else {
-    window.loadURL(`https://live.bilibili.com/732?winId=${window.id}`)
+    window.loadURL(`https://live.bilibili.com/31843613?winId=${window.id}`)
   }
 
   new BliveService(window)

@@ -1,7 +1,9 @@
 import type { Emoticon, Emoticons } from '@preload/types/emoji'
 import { html, css, Component, tag, createComponent, batchAdd } from '@preload/utils/component'
+import { awaitLivePlayer } from '@preload/utils/livePlayer'
 // eslint-disable-next-line vue/prefer-import-from-vue
 import { watch, ref } from '@vue/runtime-core'
+import lodash from 'lodash'
 
 function isClickEmojiItem(e: MouseEvent) {
   const target = e.target as EmojiItem
@@ -275,8 +277,32 @@ export class EmojiTabs extends Component {
   }
 
   // 选择表情回调
-  onSelect(data: Emoticon, pkg_type: number) {
-    console.log({ data, pkg_type })
+  onSelect(data: Emoticon) {
+    console.log(data)
+  }
+
+  /**
+   * 发送表情
+   * @param emoji 表情
+   */
+  async send(data: Emoticon) {
+    const livePlayer = await awaitLivePlayer()
+    return await livePlayer.sendDanmaku({
+      msg: data.emoticon_unique,
+      mode: 1,
+      bubble: 0,
+      dm_type: 1,
+      emoticonOptions: {
+        bulgeDisplay: data.bulge_display,
+        emoji: data.emoji,
+        emoticonUnique: data.emoticon_unique,
+        height: data.height,
+        width: data.width,
+        url: data.url,
+        inPlayerArea: data.in_player_area,
+        isDynamic: data.is_dynamic
+      }
+    })
   }
 
   connected() {
@@ -291,13 +317,21 @@ export class EmojiTabs extends Component {
       })
     )
 
+    const send = lodash.throttle((data) => this.send(data), 5000)
+
     // 创建选项卡
     this.tabs = this.data.map((item, index) =>
       createComponent(EmojiTab, {
         index,
         data: item,
         show: ref(true),
-        onSelect: (data) => this.onSelect(data, item.pkg_type)
+        onSelect: (data) => {
+          if (item.pkg_type === 3) {
+            this.onSelect(data)
+          } else {
+            if (data.perm === 1) send(data)
+          }
+        }
       })
     )
 

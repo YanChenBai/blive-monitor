@@ -72,8 +72,30 @@ export class DanmuSend extends Component {
     maxlenEl.innerText = `${Math.min(this.inputlen.value, this.maxlen.value)}/${this.maxlen.value}`
   }
 
-  onSend(_value: string) {
-    //
+  send(msg: string) {
+    msg = msg.trim()
+    if (msg.length <= 0) {
+      return
+    }
+    const textarea = document.querySelector(
+      '#control-panel-ctnr-box > div.chat-input-ctnr.p-relative > div:nth-child(2) > textarea'
+    ) as HTMLTextAreaElement
+    const btn = document.querySelector(
+      '.control-panel-ctnr .chat-input-ctnr ~ .bottom-actions .bl-button--primary'
+    ) as HTMLButtonElement
+
+    /** 创建一个输入事件 */
+    const inputEvent = new Event('input', {
+      bubbles: true,
+      cancelable: true
+    })
+    textarea.value = msg
+
+    /** 触发输入事件 */
+    textarea.dispatchEvent(inputEvent)
+
+    /** 触发发送按钮 */
+    btn.click()
   }
 
   connected() {
@@ -100,10 +122,11 @@ export class DanmuSend extends Component {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         if (inputEl.value.trim().length > 0) {
-          this.onSend(inputEl.value)
+          this.send(inputEl.value)
           // 清空输入框
           inputEl.value = ''
           this.inputlen.value = 0
+          inputEl.blur()
         }
 
         // 输入框打开时同时打开控制栏
@@ -117,20 +140,16 @@ export class DanmuSend extends Component {
     })
 
     // 处理表情
-    emojiTabsEl.onSelect = ({ emoji, perm }, type) => {
-      if (type === 3) {
-        // 保证添加后不会超过长度
-        if (emoji.length + inputEl.value.length <= 20) {
-          // 添加进输入框
-          inputEl.value += emoji
-          const inputEvent = new Event('input', {
-            bubbles: true,
-            cancelable: true
-          })
-          inputEl.dispatchEvent(inputEvent)
-        }
-      } else {
-        console.log(perm)
+    emojiTabsEl.onSelect = ({ emoji }) => {
+      // 保证添加后不会超过长度
+      if (emoji.length + inputEl.value.length <= 20) {
+        // 添加进输入框
+        inputEl.value += emoji
+        const inputEvent = new Event('input', {
+          bubbles: true,
+          cancelable: true
+        })
+        inputEl.dispatchEvent(inputEvent)
       }
     }
 

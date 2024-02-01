@@ -1,36 +1,54 @@
 import { html } from '@preload/utils/component'
 
-export const LetsIconsCloseRound = html`<svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="32"
-  height="32"
-  viewBox="0 0 24 24"
->
-  <path
+export const LetsIconsCloseRound = html`
+  <svg
+    width="72.081810"
+    height="71.081810"
+    viewBox="0 0 72.0818 71.0818"
     fill="none"
-    stroke="currentColor"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    stroke-width="2"
-    d="M18 6L6 18M6 6l12 12"
-  />
-</svg>`
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+  >
+    <desc>Created with Pixso.</desc>
+    <defs />
+    <path
+      id="矢量 1"
+      d="M10.0409 10.0409L62.0409 61.0409"
+      stroke="#FFFFFF"
+      stroke-opacity="1.000000"
+      stroke-width="16.000000"
+      stroke-linecap="round"
+    />
+    <path
+      id="矢量 1"
+      d="M10.0409 61.0409L62.0409 10.0409"
+      stroke="#FFFFFF"
+      stroke-opacity="1.000000"
+      stroke-width="16.000000"
+      stroke-linecap="round"
+    />
+  </svg>
+`
 
 export const CiRemoveMinus = html`<svg
+  width="116.000000"
+  height="26.000000"
+  viewBox="0 0 116 26"
+  fill="none"
   xmlns="http://www.w3.org/2000/svg"
-  width="32"
-  height="32"
-  viewBox="0 0 24 24"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
 >
+  <desc>Created with Pixso.</desc>
+  <defs />
   <path
-    fill="none"
-    stroke="currentColor"
+    id="矢量 2"
+    d="M13 13L103 13"
+    stroke="#FFFFFF"
+    stroke-opacity="1.000000"
+    stroke-width="26.000000"
     stroke-linecap="round"
-    stroke-linejoin="round"
-    stroke-width="2"
-    d="M6 12h12"
   />
-</svg>`
+</svg> `
 
 export const LetsIconsChatFill = html`<svg
   xmlns="http://www.w3.org/2000/svg"

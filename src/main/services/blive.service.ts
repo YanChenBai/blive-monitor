@@ -79,8 +79,6 @@ export class BliveService extends IPCService implements BliveInterface {
 
   @method
   getRoomInfo() {
-    console.log(this.window.room.roomId)
-
     return this.window.room
   }
 

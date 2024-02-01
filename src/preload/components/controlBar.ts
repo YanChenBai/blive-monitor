@@ -71,7 +71,7 @@ export class ControlBar extends Component {
       padding: 6px;
       border-radius: 10px;
       position: fixed;
-      z-index: 98888;
+      z-index: 99999999999;
       right: 10px;
       top: 50vh;
       transform: translate(calc(100% + 10px), -50%);
@@ -155,10 +155,5 @@ export class ControlBar extends Component {
     btns.switchDanmuInput.onclick = () => {
       danmuInputStatus.value = !danmuInputStatus.value
     }
-
-    window.addEventListener('click', (e) => {
-      const target = e.target as HTMLElement
-      target.style.background = '#000'
-    })
   }
 }

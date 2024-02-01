@@ -1,5 +1,7 @@
-declare global {
-  // interface Window {}
-}
+import { LivePlayer } from './types/livePlayer'
 
-export {}
+declare global {
+  interface Window {
+    livePlayer?: LivePlayer
+  }
+}

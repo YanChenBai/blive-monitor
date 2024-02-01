@@ -1,28 +1,43 @@
-import { BliveService } from '@preload/utils/invoke'
 import '@preload/components/controlBar'
 import '@preload/components/controlBtn'
 import '@preload/components/danmuSend'
 import '@preload/components/emoji'
+import '@preload/components/userInfo'
+import '@preload/components/dragNav'
 
+import { BliveService } from '@preload/utils/invoke'
 import { ControlBar } from '@preload/components/controlBar'
 import { DanmuSend } from '@preload/components/danmuSend'
 import { batchAdd, createComponent } from '@preload/utils/component'
 import { getEmoticons } from '@preload/utils/api'
+import { awaitLivePlayer, awaitVideoEl } from './utils/livePlayer'
+import { DragNav } from '@preload/components/dragNav'
 
-window.onload = async () => {
-  const bliveService = new BliveService()
+const bliveService = new BliveService()
+const controlBarEl = createComponent(ControlBar)
+const danmuSendEl = createComponent(DanmuSend)
+const dragNav = createComponent(DragNav)
 
-  const room = await bliveService.getRoomInfo()
+batchAdd(document.body, [controlBarEl, dragNav])
 
-  const controlBarEl = createComponent(ControlBar)
-  const danmuSendEl = createComponent(DanmuSend)
+awaitLivePlayer().then((livePlayer) => {
+  // 关闭弹幕侧边栏
+  document.body.classList.add('hide-aside-area')
+  // 启用网页全屏
+  livePlayer.setFullscreenStatus(1)
+})
 
-  try {
-    const emoticons = await getEmoticons(room.roomId)
-    danmuSendEl.data = emoticons
-  } catch (error) {
-    controlBarEl.hideDanmuBtn.value = true
-  }
+awaitVideoEl().then((videoEl) => {
+  console.log(videoEl)
+})
 
-  batchAdd(document.body, [controlBarEl, danmuSendEl])
+const room = await bliveService.getRoomInfo()
+
+// 看看是否需要添加弹幕输入框
+try {
+  const emoticons = await getEmoticons(room.roomId)
+  danmuSendEl.data = emoticons
+  document.body.appendChild(danmuSendEl)
+} catch (error) {
+  controlBarEl.hideDanmuBtn.value = true
 }
