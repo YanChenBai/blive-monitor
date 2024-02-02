@@ -18,26 +18,28 @@ const controlBarEl = createComponent(ControlBar)
 const danmuSendEl = createComponent(DanmuSend)
 const dragNav = createComponent(DragNav)
 
-batchAdd(document.body, [controlBarEl, dragNav])
+window.addEventListener('DOMContentLoaded', async () => {
+  batchAdd(document.body, [controlBarEl, dragNav])
 
-awaitLivePlayer().then((livePlayer) => {
-  // 关闭弹幕侧边栏
-  document.body.classList.add('hide-aside-area')
-  // 启用网页全屏
-  livePlayer.setFullscreenStatus(1)
+  awaitLivePlayer().then((livePlayer) => {
+    // 关闭弹幕侧边栏
+    document.body.classList.add('hide-aside-area')
+    // 启用网页全屏
+    livePlayer.setFullscreenStatus(1)
+  })
+
+  awaitVideoEl().then((videoEl) => {
+    console.log(videoEl)
+  })
+
+  const room = await bliveInvoke.getRoomInfo()
+
+  // 看看是否需要添加弹幕输入框
+  try {
+    const emoticons = await getEmoticons(room.roomId)
+    danmuSendEl.data = emoticons
+    document.body.appendChild(danmuSendEl)
+  } catch (error) {
+    controlBarEl.hideDanmuBtn.value = true
+  }
 })
-
-awaitVideoEl().then((videoEl) => {
-  console.log(videoEl)
-})
-
-const room = await bliveInvoke.getRoomInfo()
-
-// 看看是否需要添加弹幕输入框
-try {
-  const emoticons = await getEmoticons(room.roomId)
-  danmuSendEl.data = emoticons
-  document.body.appendChild(danmuSendEl)
-} catch (error) {
-  controlBarEl.hideDanmuBtn.value = true
-}

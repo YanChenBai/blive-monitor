@@ -1,7 +1,7 @@
 import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron'
 import { Room } from '@main/types/window'
 
-export const windowInstances: LiveRoomWindow[] = []
+export const windowMap: Map<number, LiveRoomWindow> = new Map()
 
 export class LiveRoomWindow extends BrowserWindow {
   room: Room
@@ -12,12 +12,9 @@ export class LiveRoomWindow extends BrowserWindow {
 
     // 维护窗口实例
     this.addListener('close', () => {
-      const index = windowInstances.findIndex((item) => item.id === this.id)
-      if (index !== -1) {
-        console.log(windowInstances.splice(index, 1))
-      }
+      windowMap.delete(this.id)
     })
 
-    windowInstances.push(this)
+    windowMap.set(this.id, this)
   }
 }

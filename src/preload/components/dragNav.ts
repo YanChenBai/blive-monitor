@@ -15,9 +15,13 @@ function bindDragEvent(el: HTMLElement) {
   let isDrag = false
   let animateId = 0
 
+  function isMouseLeftButton(e: MouseEvent, func: (...args: any[]) => any) {
+    if (e.button === 0) func()
+  }
+
   function moveing() {
     if (!isDrag) {
-      cancelAnimationFrame(animateId)
+      moveEnd()
       return
     }
 
@@ -28,12 +32,11 @@ function bindDragEvent(el: HTMLElement) {
   }
 
   function moveStart(e: MouseEvent) {
+    if (e.button !== 0) return
     // 通知主进程开始移动窗口
     const { clientX, clientY } = e
 
-    ipcRenderer.send(DragEvents.START, { clientX, clientY })
-
-    el.addEventListener('mouseup', moveEnd)
+    ipcRenderer.send(DragEvents.START, { mouseX: clientX, mouseY: clientY, button: e.button })
 
     isDrag = true
 
@@ -42,13 +45,16 @@ function bindDragEvent(el: HTMLElement) {
 
   function moveEnd() {
     ipcRenderer.send(DragEvents.END)
+    cancelAnimationFrame(animateId)
+
     // 通知主进程移动结束
     isDrag = false
-    el.removeEventListener('mouseup', moveEnd)
-    cancelAnimationFrame(animateId)
   }
 
   el.addEventListener('mousedown', moveStart)
+  document.addEventListener('mouseup', (e) => isMouseLeftButton(e, moveEnd))
+  el.addEventListener('contextmenu', (e) => e.preventDefault())
+  document.addEventListener('mouseleave', moveEnd)
 }
 
 @tag('drag-nav')
@@ -70,10 +76,11 @@ export class DragNav extends Component {
       justify-content: center;
     }
     .drag {
+      user-select: none;
       width: 100%;
       flex: 1;
       height: 42px;
-      /* -webkit-app-region: drag; */
+      -webkit-app-region: drag;
     }
     .no-drag {
       /* -webkit-app-region: no-drag; */

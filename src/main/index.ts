@@ -26,17 +26,19 @@ async function bootstrap() {
     app.commandLine.appendSwitch('--log-level', '3')
     electronApp.setAppUserModelId('com.byc.blive')
 
-    dragWin()
-
     app.on('browser-window-created', (_, window) => {
       optimizer.watchWindowShortcuts(window)
     })
 
     bliveWindow(mockRoom)
 
+    bliveWindow({ ...mockRoom, roomId: '31843613' })
+
     app.on('activate', () => {
       if (BrowserWindow.getAllWindows().length === 0) bliveWindow(mockRoom)
     })
+
+    dragWin()
   })
 
   app.on('window-all-closed', () => {

@@ -6,6 +6,7 @@ import { BliveHandle } from './../handles/bliveHandle'
 import { insertCSS } from './css'
 
 import icon from '../../../resources/icon.png?asset'
+import hmc from 'hmc-win32'
 
 export async function bliveWindow(room: Room) {
   const window = new LiveRoomWindow(room, {
@@ -15,6 +16,7 @@ export async function bliveWindow(room: Room) {
     autoHideMenuBar: true,
     icon,
     frame: false,
+
     webPreferences: {
       preload: join(__dirname, '../preload/blive.mjs'),
       contextIsolation: false,
@@ -34,10 +36,15 @@ export async function bliveWindow(room: Room) {
   if (app.isPackaged) {
     window.loadFile(join(__dirname, '../renderer/index.html'))
   } else {
-    window.loadURL(`https://live.bilibili.com/31843613?winId=${window.id}`)
+    window.loadURL(`https://live.bilibili.com/${room.roomId}?winId=${window.id}`)
   }
 
   new BliveHandle(window)
+
+  console.log(
+    'getWindowProcess',
+    hmc.getWindowProcess(window.getNativeWindowHandle().readUint32LE())
+  )
 
   return window
 }

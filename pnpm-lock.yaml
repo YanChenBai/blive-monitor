@@ -32,6 +32,9 @@ dependencies:
   electron-updater:
     specifier: ^6.1.7
     version: 6.1.7
+  hmc-win32:
+    specifier: ^1.4.9
+    version: 1.4.9
   lodash:
     specifier: ^4.17.21
     version: 4.17.21
@@ -2699,6 +2702,11 @@ packages:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
     dev: true
+
+  /hmc-win32@1.4.9:
+    resolution: {integrity: sha512-0fk4qqPhtWUkf4dEAjqImi9NNvOt09thArgkOTszKOzg8biPI0SV0U/kPF/CJ25nGt7x2O2oeRBAxgMZ3NG1eg==}
+    engines: {node: '>= 6.14.2'}
+    dev: false
 
   /hosted-git-info@4.1.0:
     resolution: {integrity: sha512-kyCuEOWjJqZuDbRHzL8V93NzQhwIB71oFWSyzVo+KPZI+pnQPPxucdkrOZvkLRnrf5URsQM+IJ09Dw29cRALIA==}

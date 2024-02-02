@@ -1,5 +1,6 @@
 import { DragEvents } from '@main/types/dragWin'
-import { BrowserWindow, screen } from 'electron'
+import { screen } from 'electron'
+import { windowMap } from '@main/utils/liveRoomWindow'
 import { ipcMain } from 'electron/main'
 
 interface DragWinPrams {
@@ -7,26 +8,27 @@ interface DragWinPrams {
   height: number
   mouseX: number
   mouseY: number
+  button: number
 }
 
-const winMap = new Map<number, DragWinPrams>()
-const getWindowBywinId = (winId: number) =>
-  BrowserWindow.getAllWindows().find((w) => w.id === winId)
+const winConfigMap = new Map<number, DragWinPrams>()
+
 export function dragWin() {
   ipcMain.on(DragEvents.MOVEING, (e) => {
-    const winId = e.sender.id
+    const { id } = e.sender
 
-    const config = winMap.get(winId)
+    const config = winConfigMap.get(id)
 
     if (!config) return
 
-    const win = getWindowBywinId(e.sender.id)
+    const win = windowMap.get(id)
 
     if (!win || win.isDestroyed()) return
 
     const { x, y } = screen.getCursorScreenPoint()
 
     const [nextX, nextY] = [x - config.mouseX, y - config.mouseY]
+
     const [oldX, oldY] = win.getPosition()
 
     if ([x, oldX].includes(nextX) && [y, oldY].includes(nextY)) return
@@ -36,27 +38,18 @@ export function dragWin() {
   })
 
   ipcMain.on(DragEvents.START, function (e, params: Omit<DragWinPrams, 'width' | 'height'>) {
-    const winId = e.sender.id
-    console.log(
-      e.processId,
-      winId,
-      BrowserWindow.getAllWindows().map((w) => w.webContents.getProcessId()),
-      BrowserWindow.getAllWindows().map((w) => w.webContents.id)
-    )
+    const { id } = e.sender
 
-    const win = getWindowBywinId(winId)
+    const win = windowMap.get(id)
 
-    if (!win || win.isDestroyed())
-      return console.error('error dont find win by ELECTRON_DRAG_START')
+    if (!win) return console.error('error dont find win by ELECTRON_DRAG_START')
 
     const [width, height] = win.getSize()
 
-    const { mouseX, mouseY } = params
+    const { mouseX, mouseY, button } = params
 
-    winMap.set(winId, { width, height, mouseX, mouseY })
+    winConfigMap.set(id, { width, height, mouseX, mouseY, button })
   })
 
-  ipcMain.on(DragEvents.END, (e) => {
-    winMap.delete(e.sender.id)
-  })
+  ipcMain.on(DragEvents.END, (e) => winConfigMap.delete(e.sender.id))
 }
