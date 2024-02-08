@@ -15,8 +15,6 @@ const defaultData: RoomConfig[] = []
 
 export const db = await JSONFilePreset<RoomConfig[]>(DB_PATH, defaultData)
 
-console.log(db.data)
-
 export function getRoomConfig(roomId: string) {
   let room = db.data.find((item) => item.roomId === roomId)
   if (room) {

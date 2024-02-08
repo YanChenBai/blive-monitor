@@ -51,7 +51,7 @@ export class DragNav extends Component {
     const navEl = this.shadowRoot?.querySelector('.drag-nav') as HTMLDivElement
     const noDragEl = navEl.querySelector('.no-drag') as HTMLDivElement
 
-    this.bliveInvoke.getRoomInfo().then((room) => {
+    this.bliveInvoke.getRoom().then((room) => {
       noDragEl.appendChild(
         createComponent(UserInfo, {
           room

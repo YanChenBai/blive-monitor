@@ -39,11 +39,14 @@ export function switchElement(els: [HTMLElement, HTMLElement], initValue: boolea
   })
 
   /** 监听需修改 */
-  watch(signal, (val: boolean) =>
-    els.forEach((item, index) => {
-      const isHide = (index === 0) === val
-      item.style.display = isHide ? 'none' : displayValue[index]
-    })
+  watch(
+    signal,
+    (val: boolean) =>
+      els.forEach((item, index) => {
+        const isHide = (index === 0) === val
+        item.style.display = isHide ? 'none' : displayValue[index]
+      }),
+    true
   )
 
   return signal

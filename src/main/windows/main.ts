@@ -1,9 +1,9 @@
 import { shell, BrowserWindow } from 'electron'
 import { join } from 'path'
-import { Room } from '@main/types/window'
 import icon from '../../../resources/icon.png?asset'
 import { getRoomConfig, updateRoomConfig } from '@main/utils/lowdb'
 import { RENDER_PATH } from '@main/utils/paths'
+import { MainHandle } from '@main/handles/mainHandle'
 
 const ID = '@main'
 export async function mainWindow() {
@@ -44,6 +44,8 @@ export async function mainWindow() {
   })
 
   window.loadURL(RENDER_PATH)
+
+  new MainHandle(window)
 
   return window
 }

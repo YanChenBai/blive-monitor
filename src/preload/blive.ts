@@ -39,9 +39,9 @@ window.addEventListener('DOMContentLoaded', async () => {
     console.log(videoEl)
   })
 
-  const room = await bliveInvoke.getRoomInfo()
-
   // 看看是否需要添加弹幕输入框
+  const room = await bliveInvoke.getRoom()
+
   try {
     const emoticons = await getEmoticons(room.roomId)
     danmuSendEl.data = emoticons

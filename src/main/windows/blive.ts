@@ -1,7 +1,7 @@
-import { shell, app } from 'electron'
+import { shell, app, BrowserWindow } from 'electron'
 import { join } from 'path'
 import { Room } from '@main/types/window'
-import { LiveRoomWindow, lveRoomWindowMap } from '@main/utils/liveRoomWindow'
+import { liveRoomWindowMap } from '@main/utils/liveRoomWindow'
 import { BliveHandle } from './../handles/bliveHandle'
 import { insertCSS } from './css'
 import icon from '../../../resources/icon.png?asset'
@@ -18,16 +18,16 @@ const DEF_ASPECT_RATIO: ASPECT_RATIO_KEYS = 'RATIO_16_9'
 
 export async function bliveWindow(room: Room) {
   // 查看是否已经打开过
-  const findWin = lveRoomWindowMap.get(room.roomId)
+  const findWin = liveRoomWindowMap.get(room.roomId)
   if (findWin) {
-    findWin.show()
+    findWin.window.show()
     return
   }
 
   const config = getRoomConfig(room.roomId)
 
   const size = 180 * ASPECT_RATIO[DEF_ASPECT_RATIO]
-  const window = new LiveRoomWindow(room, {
+  const window = new BrowserWindow({
     width: config?.width || size,
     height: config?.height || size,
     x: config?.x,
@@ -44,6 +44,9 @@ export async function bliveWindow(room: Room) {
       nodeIntegration: true
     }
   })
+
+  // 添加进win map
+  liveRoomWindowMap.set(room.roomId, { window, room })
 
   window.setAspectRatio(ASPECT_RATIO[DEF_ASPECT_RATIO])
   window.webContents.insertCSS(insertCSS)
@@ -62,15 +65,12 @@ export async function bliveWindow(room: Room) {
   }
 
   window.on('close', () => {
+    // 从win map中移除
+    liveRoomWindowMap.delete(room.roomId)
+
+    // 保存关闭前的位置
     const [x, y] = window.getPosition()
     const { width, height } = window.getBounds()
-    console.log({
-      roomId: room.roomId,
-      x,
-      y,
-      width,
-      height
-    })
 
     updateRoomConfig({
       roomId: room.roomId,

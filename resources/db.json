@@ -5,8 +5,8 @@
   },
   {
     "roomId": "6154037",
-    "alwaysOnTop": true,
-    "volume": 36,
+    "alwaysOnTop": false,
+    "volume": 42,
     "x": 800,
     "y": 356,
     "width": 569,

@@ -1,4 +1,11 @@
-import { Menu, type IpcMainInvokeEvent, MenuItem, MenuItemConstructorOptions } from 'electron'
+import { liveRoomWindowMap } from '@main/utils/liveRoomWindow'
+import {
+  Menu,
+  type IpcMainInvokeEvent,
+  MenuItem,
+  MenuItemConstructorOptions,
+  BrowserWindow
+} from 'electron'
 import { IPCHandle, method, handle } from '@main/utils/ipcHandle'
 import { getRoomConfig, updateRoomConfig } from '@main/utils/lowdb'
 import { Room } from '@main/types/window'
@@ -12,7 +19,7 @@ export interface BliveHandleInterface {
   closeWin(): void
 
   /** 设置置顶/取消置顶  */
-  setAlwaysOnTop(ev: IpcMainInvokeEvent, status: boolean): Promise<void>
+  setAlwaysOnTop(ev: IpcMainInvokeEvent, status: boolean): void
 
   /** 获取置顶状态 */
   getAlwaysOnTop(): Promise<boolean>
@@ -24,23 +31,23 @@ export interface BliveHandleInterface {
   switchMaximize(): void
 
   /** 获取房间信息 */
-  getRoomInfo(): Room
+  getRoom(): Room
 
   /** 设置比例 */
-  setAspectRatio(ev: IpcMainInvokeEvent, value: ASPECT_RATIO_KEYS): void
+  setAspectRatio(value: ASPECT_RATIO_KEYS): void
 
   /** 设置持久化音量 */
   setVolume(ev: IpcMainInvokeEvent, value: number): Promise<void>
 
   /** 获取持久化音量 */
-  getVolume(): Promise<number>
+  getVolume(): number
 }
 
 @handle('blive')
 export class BliveHandle extends IPCHandle implements BliveHandleInterface {
   maximizeLabel = '最大化'
   unMaximizeLabel = '取消最大化'
-
+  room: Room
   contextMenu: Array<MenuItemConstructorOptions | MenuItem> = [
     {
       label: '最小化',
@@ -59,6 +66,18 @@ export class BliveHandle extends IPCHandle implements BliveHandleInterface {
     }
   ]
 
+  constructor(window: BrowserWindow) {
+    super(window)
+    const item = liveRoomWindowMap.find((item) => item.window.id === window.id)
+    if (item) {
+      this.room = item.room
+    } else {
+      console.log(12313123123132)
+
+      throw new Error('未找到窗口')
+    }
+  }
+
   @method
   minWin() {
     this.window.minimize()
@@ -73,38 +92,38 @@ export class BliveHandle extends IPCHandle implements BliveHandleInterface {
   async setAlwaysOnTop(_ev: IpcMainInvokeEvent, status: boolean) {
     this.window.setAlwaysOnTop(status)
 
-    return await updateRoomConfig({
-      roomId: this.window.room.roomId,
+    await updateRoomConfig({
+      roomId: this.room.roomId,
       alwaysOnTop: status
     })
   }
 
   @method
   async getAlwaysOnTop() {
-    return getRoomConfig(this.window.room.roomId)?.alwaysOnTop ?? false
+    return (await getRoomConfig(this.room.roomId))?.alwaysOnTop ?? false
   }
 
   @method
-  setAspectRatio(_ev: IpcMainInvokeEvent, value: ASPECT_RATIO_KEYS) {
+  setAspectRatio(value: ASPECT_RATIO_KEYS) {
     this.window.setAspectRatio(ASPECT_RATIO[value])
   }
 
   @method
   async setVolume(_ev: IpcMainInvokeEvent, value: number) {
-    return await updateRoomConfig({
-      roomId: this.window.room.roomId,
+    await updateRoomConfig({
+      roomId: this.room.roomId,
       volume: value
     })
   }
 
   @method
-  async getVolume(): Promise<number> {
-    return getRoomConfig(this.window.room.roomId)?.volume || 30
+  getVolume() {
+    return getRoomConfig(this.room.roomId)?.volume ?? 30
   }
 
   @method
-  getRoomInfo() {
-    return this.window.room
+  getRoom() {
+    return this.room
   }
 
   @method

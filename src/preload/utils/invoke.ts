@@ -30,6 +30,9 @@ export class BliveInvoke
   extends IPCInvoke<BliveHandleInterface>
   implements Transform<BliveHandleInterface>
 {
+  setAspectRatio(_value: 'RATIO_16_9' | 'RATIO_9_16'): Promise<void> {
+    throw new Error('Method not implemented.')
+  }
   minWin() {
     return this.invoke('minWin')
   }
@@ -42,8 +45,8 @@ export class BliveInvoke
     return this.invoke('setAlwaysOnTop', status)
   }
 
-  getRoomInfo() {
-    return this.invoke('getRoomInfo')
+  getRoom() {
+    return this.invoke('getRoom')
   }
 
   getAlwaysOnTop() {
@@ -64,9 +67,5 @@ export class BliveInvoke
 
   switchMaximize() {
     return this.invoke('switchMaximize')
-  }
-
-  setAspectRatio(_value: 'RATIO_16_9' | 'RATIO_9_16'): Promise<void> {
-    throw new Error('Method not implemented.')
   }
 }

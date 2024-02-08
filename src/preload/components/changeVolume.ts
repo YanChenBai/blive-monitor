@@ -1,6 +1,7 @@
 import { awaitLivePlayer, awaitVideoEl } from '@preload/utils/livePlayer'
 import { tag, Component, html, css } from '../utils/component'
 import { BliveInvoke } from '@preload/utils/invoke'
+import { Status, watch } from '@preload/utils/status'
 
 @tag('change-volume')
 export class ChangeVolume extends Component {
@@ -28,41 +29,15 @@ export class ChangeVolume extends Component {
   `
 
   render() {
-    return html` <div class="change-volume ${this.show ? 'show' : ''}">${this.volume}%</div> `
+    return html` <div class="change-volume ${this.show ? 'show' : ''}">${this.volume.value}%</div> `
   }
 
   volumeStep = 2
-  volume = 0
+  volume = new Status(0)
   show = false
   isShowOnce = false
   timer: NodeJS.Timeout | null = null
   bliveInvoke = new BliveInvoke()
-
-  set setVolume(value: number) {
-    this.volume = value
-
-    // 在初始化时，不显示
-    if (this.isShowOnce) {
-      this.setShow = true
-    } else {
-      this.isShowOnce = true
-    }
-
-    if (this.timer) clearTimeout(this.timer)
-    this.timer = setTimeout(() => (this.setShow = false), 500)
-
-    this.bliveInvoke.setVolume(value)
-    this.reRender()
-
-    Promise.all([awaitLivePlayer(), awaitVideoEl()]).then(([lp, el]) => {
-      // 保证改变音量时不在静音状态
-      const { volume: volumeInfo } = lp.getPlayerInfo()
-      if (el.muted) el.muted = false
-      if (volumeInfo && volumeInfo.disabled) volumeInfo.disabled = false
-
-      lp.volume(value)
-    })
-  }
 
   set setShow(value: boolean) {
     this.show = value
@@ -73,18 +48,43 @@ export class ChangeVolume extends Component {
     // 放置超出0 - 100的范围内
     const newVolume = Number(
       (status
-        ? Math.max(0, this.volume - this.volumeStep)
-        : Math.min(100, this.volume + this.volumeStep)
+        ? Math.max(0, this.volume.value - this.volumeStep)
+        : Math.min(100, this.volume.value + this.volumeStep)
       ).toFixed(0)
     )
 
-    this.setVolume = newVolume
+    this.volume.value = newVolume
   }
 
   async connected() {
-    const volume = await this.bliveInvoke.getVolume()
+    watch(this.volume, (value: number) => {
+      // 在初始化时，不显示
+      if (this.isShowOnce) {
+        this.setShow = true
+      } else {
+        this.isShowOnce = true
+      }
 
-    this.setVolume = volume
+      if (this.timer) clearTimeout(this.timer)
+      this.timer = setTimeout(() => (this.setShow = false), 500)
+
+      this.bliveInvoke.setVolume(value)
+      this.reRender()
+
+      Promise.all([awaitLivePlayer(), awaitVideoEl()]).then(([lp, el]) => {
+        // 保证改变音量时不在静音状态
+        const { volume: volumeInfo } = lp.getPlayerInfo()
+        if (el.muted) el.muted = false
+        if (volumeInfo && volumeInfo.disabled) volumeInfo.disabled = false
+
+        lp.volume(value)
+      })
+    })
+
+    const volume = await this.bliveInvoke.getVolume()
+    console.log(volume)
+
+    this.volume.value = volume
 
     // 监听滚动
     window.addEventListener('wheel', (event) => {

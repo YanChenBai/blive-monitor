@@ -1,7 +1,7 @@
 import { join } from 'path'
 import icon from '../../../resources/icon.png?asset'
 import { BrowserWindow } from 'electron'
-export async function biliHome() {
+export async function biliHomeWindew() {
   const window = new BrowserWindow({
     width: 900,
     height: 600,

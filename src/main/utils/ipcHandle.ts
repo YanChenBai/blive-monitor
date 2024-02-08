@@ -1,5 +1,4 @@
-import { IpcMainInvokeEvent, ipcMain } from 'electron'
-import { LiveRoomWindow } from './liveRoomWindow'
+import { BrowserWindow, IpcMainInvokeEvent, ipcMain } from 'electron'
 
 type Handler = (event: IpcMainInvokeEvent, ...args: any[]) => void
 
@@ -7,9 +6,9 @@ export class IPCHandle {
   static handlers: Map<string, Handler> = new Map()
   static prefixName: string
 
-  window: LiveRoomWindow
+  window: BrowserWindow
 
-  constructor(window: LiveRoomWindow) {
+  constructor(window: BrowserWindow) {
     this.window = window
     this.init()
   }
