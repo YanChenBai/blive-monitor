@@ -1,7 +1,7 @@
 import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron'
 import { Room } from '@main/types/window'
 
-export const windowMap: Map<number, LiveRoomWindow> = new Map()
+export const lveRoomWindowMap: Map<string, LiveRoomWindow> = new Map()
 
 export class LiveRoomWindow extends BrowserWindow {
   room: Room
@@ -11,10 +11,7 @@ export class LiveRoomWindow extends BrowserWindow {
     this.room = room
 
     // 维护窗口实例
-    this.addListener('close', () => {
-      windowMap.delete(this.id)
-    })
-
-    windowMap.set(this.id, this)
+    lveRoomWindowMap.set(this.room.roomId, this)
+    this.addListener('close', () => lveRoomWindowMap.delete(this.room.roomId))
   }
 }

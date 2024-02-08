@@ -1,7 +1,6 @@
 import { Room } from '@main/types/window'
 import { html, css, Component, tag } from '@preload/utils/component'
-import { controlBarStatus } from '@preload/utils/status'
-import { watch } from '@vue/runtime-core'
+import { controlBarStatus, watch } from '@preload/utils/status'
 
 @tag('user-info')
 export class UserInfo extends Component {
@@ -11,12 +10,12 @@ export class UserInfo extends Component {
       width: fit-content;
       display: flex;
       align-items: center;
-      transition: transform 0.3s;
+      transition: opacity 0.3s;
       user-select: none;
       cursor: pointer;
       margin-right: 10px;
       margin-top: 10px;
-      transform: translateX(calc(100% + 10px));
+      opacity: 0;
     }
     .face {
       overflow: hidden;
@@ -35,14 +34,14 @@ export class UserInfo extends Component {
     }
 
     .show {
-      transform: translateX(0);
+      opacity: 1;
     }
   `
   room?: Room
 
   render() {
     return html`
-      <div class="user-info">
+      <div class="user-info" title="${this.room?.name}">
         <div class="uname">${this.room?.name}</div>
         <div class="face">
           <img src="${this.room?.face}" />
@@ -53,11 +52,12 @@ export class UserInfo extends Component {
 
   connected() {
     const userInfoEl = this.shadowRoot?.querySelector('.user-info') as HTMLDivElement
-    userInfoEl.onclick = () => {
-      window.open(`https://live.bilibili.com/${this.room?.roomId}`)
-    }
-    watch(controlBarStatus, (val) => {
-      userInfoEl.classList.toggle('show', val)
-    })
+    watch(
+      controlBarStatus,
+      (val) => {
+        userInfoEl.classList.toggle('show', val)
+      },
+      true
+    )
   }
 }

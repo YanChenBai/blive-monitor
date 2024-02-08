@@ -2,7 +2,9 @@ import type { IpcMainInvokeEvent } from 'electron'
 
 // 函数返回值转Promise
 type MethodToPromise<T> = {
-  [K in keyof T]: T[K] extends (...args: infer A) => infer R ? (...args: A) => Promise<R> : T[K]
+  [K in keyof T]: T[K] extends (...args: infer A) => infer R
+    ? (...args: A) => R extends Promise<any> ? R : Promise<R> // 如果返回值就是Promise则直接返回
+    : T[K]
 }
 
 // 排除非函数成员

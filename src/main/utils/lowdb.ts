@@ -1,11 +1,9 @@
-import { Low } from 'lowdb'
-import { JSONFile } from 'lowdb/node'
-import lodash from 'lodash'
+import { JSONFilePreset } from 'lowdb/node'
+import { DB_PATH } from './paths'
 
-export interface DBConfig {
+export interface RoomConfig {
   roomId: string
   alwaysOnTop: boolean
-  keepAspectRatio: boolean
   width?: number
   height?: number
   x?: number
@@ -13,18 +11,29 @@ export interface DBConfig {
   volume?: number
 }
 
-interface DBData {
-  config: DBConfig[]
+const defaultData: RoomConfig[] = []
+
+export const db = await JSONFilePreset<RoomConfig[]>(DB_PATH, defaultData)
+
+console.log(db.data)
+
+export function getRoomConfig(roomId: string) {
+  let room = db.data.find((item) => item.roomId === roomId)
+  if (room) {
+    return room
+  } else {
+    room = { roomId, alwaysOnTop: false }
+    db.data.push(room)
+    db.write()
+    return room
+  }
 }
 
-class LowWithLodash<T> extends Low<T> {
-  chain: lodash.ExpChain<this['data']> = lodash.chain(this).get('data')
+type UpdateData = Partial<Omit<RoomConfig, 'roomId'>> & { roomId: string }
+export async function updateRoomConfig(newData: UpdateData) {
+  const index = db.data.findIndex((item) => item.roomId === newData.roomId)
+  if (index !== -1) {
+    db.data[index] = { ...db.data[index], ...newData }
+    await db.write()
+  }
 }
-
-const defaultData: DBData = {
-  config: []
-}
-
-const adapter = new JSONFile<DBData>('db.json')
-
-export const db = new LowWithLodash(adapter, defaultData)

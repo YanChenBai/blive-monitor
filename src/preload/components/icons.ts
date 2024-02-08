@@ -1,65 +1,44 @@
 import { html } from '@preload/utils/component'
 
-export const LetsIconsCloseRound = html`
-  <svg
-    width="72.081810"
-    height="71.081810"
-    viewBox="0 0 72.0818 71.0818"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-  >
-    <desc>Created with Pixso.</desc>
-    <defs />
-    <path
-      id="矢量 1"
-      d="M10.0409 10.0409L62.0409 61.0409"
-      stroke="#FFFFFF"
-      stroke-opacity="1.000000"
-      stroke-width="16.000000"
-      stroke-linecap="round"
-    />
-    <path
-      id="矢量 1"
-      d="M10.0409 61.0409L62.0409 10.0409"
-      stroke="#FFFFFF"
-      stroke-opacity="1.000000"
-      stroke-width="16.000000"
-      stroke-linecap="round"
-    />
-  </svg>
-`
-
-export const CiRemoveMinus = html`<svg
-  width="116.000000"
-  height="26.000000"
-  viewBox="0 0 116 26"
-  fill="none"
-  xmlns="http://www.w3.org/2000/svg"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
->
-  <desc>Created with Pixso.</desc>
-  <defs />
-  <path
-    id="矢量 2"
-    d="M13 13L103 13"
-    stroke="#FFFFFF"
-    stroke-opacity="1.000000"
-    stroke-width="26.000000"
-    stroke-linecap="round"
-  />
-</svg> `
-
-export const LetsIconsChatFill = html`<svg
+export const Close = html` <svg
   xmlns="http://www.w3.org/2000/svg"
   width="32"
   height="32"
   viewBox="0 0 24 24"
 >
+  <rect width="24" height="24" fill="none" />
+  <g fill="none" fill-rule="evenodd">
+    <path
+      d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"
+    />
+    <path
+      fill="white"
+      d="m12 14.122l5.303 5.303a1.5 1.5 0 0 0 2.122-2.122L14.12 12l5.304-5.303a1.5 1.5 0 1 0-2.122-2.121L12 9.879L6.697 4.576a1.5 1.5 0 1 0-2.122 2.12L9.88 12l-5.304 5.304a1.5 1.5 0 1 0 2.122 2.12z"
+    />
+  </g>
+</svg>`
+
+export const Minimize = html`<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="32"
+  height="32"
+  viewBox="0 0 24 24"
+>
+  <rect width="24" height="24" fill="none" />
+  <path fill="white" d="M18 11H6a2 2 0 0 0 0 4h12a2 2 0 0 0 0-4" />
+</svg>`
+
+export const Danmu = html`<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="32"
+  height="32"
+  viewBox="0 0 24 24"
+>
+  <rect width="24" height="24" fill="none" />
   <path
-    fill="currentColor"
+    fill="white"
     fill-rule="evenodd"
-    d="M12 3a9 9 0 0 0 0 18h4.5c1.398 0 2.097 0 2.648-.228a3 3 0 0 0 1.624-1.624C21 18.597 21 17.898 21 16.5V12a9 9 0 0 0-9-9m-4 8a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1m3 4a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1"
+    d="M1.25 12C1.25 6.063 6.063 1.25 12 1.25S22.75 6.063 22.75 12S17.937 22.75 12 22.75c-1.856 0-3.605-.471-5.13-1.3l-4.233.787a.75.75 0 0 1-.874-.874l.788-4.233A10.705 10.705 0 0 1 1.25 12m6-2A.75.75 0 0 1 8 9.25h8a.75.75 0 0 1 0 1.5H8a.75.75 0 0 1-.75-.75M8 13.25a.75.75 0 0 0 0 1.5h4a.75.75 0 0 0 0-1.5h-2z"
     clip-rule="evenodd"
   />
 </svg>`
@@ -70,9 +49,10 @@ export const Pin = html`<svg
   height="32"
   viewBox="0 0 24 24"
 >
-  <g fill="none" stroke="currentColor" stroke-width="2">
+  <rect width="24" height="24" fill="none" />
+  <g fill="none" stroke="white" stroke-width="2">
     <path
-      fill="currentColor"
+      fill="white"
       d="M14.636 3.91c.653-.436.98-.654 1.335-.618c.356.035.633.312 1.188.867l2.682 2.682c.555.555.832.832.867 1.188c.036.356-.182.682-.617 1.335l-1.65 2.473c-.561.843-.842 1.264-1.066 1.714a8.005 8.005 0 0 0-.427 1.031c-.16.477-.26.974-.458 1.967l-.19.955l-.002.006a1 1 0 0 1-1.547.625l-.005-.004l-.027-.018a35 35 0 0 1-8.85-8.858l-.004-.006a1 1 0 0 1 .625-1.547l.006-.001l.955-.191c.993-.199 1.49-.298 1.967-.458a7.997 7.997 0 0 0 1.03-.427c.45-.224.872-.505 1.715-1.067z"
     />
     <path stroke-linecap="round" d="m5 19l4.5-4.5" />
@@ -85,56 +65,13 @@ export const Pined = html`<svg
   height="32"
   viewBox="0 0 24 24"
 >
+  <rect width="24" height="24" fill="none" />
   <g fill="none">
     <path
-      fill="currentColor"
+      fill="white"
       d="M8 4.461c0-.43 0-.644.065-.815a1 1 0 0 1 .58-.581C8.818 3 9.033 3 9.462 3h5.078c.43 0 .644 0 .815.065a1 1 0 0 1 .581.58c.065.172.065.387.065.816v.218c0 .89 0 1.335.047 1.77c.108.983.397 1.938.853 2.816c.201.387.448.757.942 1.498l1.038 1.557a1.423 1.423 0 0 1-.84 2.17a24.907 24.907 0 0 1-12.08 0a1.423 1.423 0 0 1-.84-2.17l1.038-1.557c.494-.74.74-1.11.942-1.498a8 8 0 0 0 .852-2.817C8 6.014 8 5.57 8 4.68z"
     />
-    <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M12 20v-6.5" />
-    <path stroke="currentColor" stroke-width="2" d="M6 20h12" />
-  </g>
-</svg>`
-
-export const Lock = html`<svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="32"
-  height="32"
-  viewBox="0 0 24 24"
->
-  <g fill="none">
-    <path
-      stroke="currentColor"
-      stroke-linecap="round"
-      stroke-width="2"
-      d="M16 8V7a4 4 0 0 0-4-4v0a4 4 0 0 0-4 4v1"
-    />
-    <path
-      fill="currentColor"
-      fill-rule="evenodd"
-      d="M3.879 7.879C3 8.757 3 10.172 3 13v1c0 3.771 0 5.657 1.172 6.828C5.343 22 7.229 22 11 22h2c3.771 0 5.657 0 6.828-1.172C21 19.657 21 17.771 21 14v-1c0-2.828 0-4.243-.879-5.121C19.243 7 17.828 7 15 7H9c-2.828 0-4.243 0-5.121.879M12 15a1 1 0 1 0 0-2a1 1 0 0 0 0 2m3-1a3.001 3.001 0 0 1-2 2.83V19h-2v-2.17A3.001 3.001 0 1 1 15 14"
-      clip-rule="evenodd"
-    />
-  </g>
-</svg>`
-
-export const UnLock = html`<svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="32"
-  height="32"
-  viewBox="0 0 24 24"
->
-  <g fill="none">
-    <path
-      fill="currentColor"
-      fill-rule="evenodd"
-      d="M3.879 7.879C3 8.757 3 10.172 3 13v1c0 3.771 0 5.657 1.172 6.828C5.343 22 7.229 22 11 22h2c3.771 0 5.657 0 6.828-1.172C21 19.657 21 17.771 21 14v-1c0-2.828 0-4.243-.879-5.121C19.243 7 17.828 7 15 7H9c-2.828 0-4.243 0-5.121.879M12 15a1 1 0 1 0 0-2a1 1 0 0 0 0 2m3-1a3.001 3.001 0 0 1-2 2.83V19h-2v-2.17A3.001 3.001 0 1 1 15 14"
-      clip-rule="evenodd"
-    />
-    <path
-      stroke="currentColor"
-      stroke-linecap="round"
-      stroke-width="2"
-      d="M16.5 8v0a4.71 4.71 0 0 0-2.028-4.69l-.374-.25a5.407 5.407 0 0 0-6.545.407l-.883.764"
-    />
+    <path stroke="white" stroke-linecap="round" stroke-width="2" d="M12 20v-6.5" />
+    <path stroke="white" stroke-width="2" d="M6 20h12" />
   </g>
 </svg>`

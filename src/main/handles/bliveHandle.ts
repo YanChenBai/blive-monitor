@@ -1,7 +1,8 @@
 import { Menu, type IpcMainInvokeEvent, MenuItem, MenuItemConstructorOptions } from 'electron'
 import { IPCHandle, method, handle } from '@main/utils/ipcHandle'
-import { db } from '@main/utils/lowdb'
+import { getRoomConfig, updateRoomConfig } from '@main/utils/lowdb'
 import { Room } from '@main/types/window'
+import { ASPECT_RATIO, type ASPECT_RATIO_KEYS } from '@main/windows/blive'
 
 export interface BliveHandleInterface {
   /** 最小化  */
@@ -11,22 +12,28 @@ export interface BliveHandleInterface {
   closeWin(): void
 
   /** 设置置顶/取消置顶  */
-  setAlwaysOnTop(ev: IpcMainInvokeEvent, status: boolean): void
+  setAlwaysOnTop(ev: IpcMainInvokeEvent, status: boolean): Promise<void>
 
   /** 获取置顶状态 */
-  getAlwaysOnTop(): boolean
+  getAlwaysOnTop(): Promise<boolean>
 
   /** 打开右键菜单 */
   openContextMenu(): void
-
-  /** 移动窗口 */
-  moveWin(ev: IpcMainInvokeEvent, x: number, y: number): void
 
   /** 最大化或取消最大化 */
   switchMaximize(): void
 
   /** 获取房间信息 */
   getRoomInfo(): Room
+
+  /** 设置比例 */
+  setAspectRatio(ev: IpcMainInvokeEvent, value: ASPECT_RATIO_KEYS): void
+
+  /** 设置持久化音量 */
+  setVolume(ev: IpcMainInvokeEvent, value: number): Promise<void>
+
+  /** 获取持久化音量 */
+  getVolume(): Promise<number>
 }
 
 @handle('blive')
@@ -62,19 +69,37 @@ export class BliveHandle extends IPCHandle implements BliveHandleInterface {
     this.window.close()
   }
 
-  private getRoomChain() {
-    return db.chain.get('config').findLast({ roomId: this.window.room.roomId })
-  }
-
   @method
-  setAlwaysOnTop(_ev: IpcMainInvokeEvent, status: boolean) {
+  async setAlwaysOnTop(_ev: IpcMainInvokeEvent, status: boolean) {
     this.window.setAlwaysOnTop(status)
-    this.getRoomChain().update('alwaysOnTop', () => status)
+
+    return await updateRoomConfig({
+      roomId: this.window.room.roomId,
+      alwaysOnTop: status
+    })
   }
 
   @method
-  getAlwaysOnTop() {
-    return this.getRoomChain().value().alwaysOnTop
+  async getAlwaysOnTop() {
+    return getRoomConfig(this.window.room.roomId)?.alwaysOnTop ?? false
+  }
+
+  @method
+  setAspectRatio(_ev: IpcMainInvokeEvent, value: ASPECT_RATIO_KEYS) {
+    this.window.setAspectRatio(ASPECT_RATIO[value])
+  }
+
+  @method
+  async setVolume(_ev: IpcMainInvokeEvent, value: number) {
+    return await updateRoomConfig({
+      roomId: this.window.room.roomId,
+      volume: value
+    })
+  }
+
+  @method
+  async getVolume(): Promise<number> {
+    return getRoomConfig(this.window.room.roomId)?.volume || 30
   }
 
   @method
@@ -96,11 +121,5 @@ export class BliveHandle extends IPCHandle implements BliveHandleInterface {
   @method
   openContextMenu() {
     Menu.buildFromTemplate(this.contextMenu).popup()
-  }
-
-  @method
-  moveWin(_ev: Electron.IpcMainInvokeEvent, x: number, y: number): void {
-    const bounds = this.window.getBounds()
-    this.window.setPosition(x + bounds.x, y + bounds.y, false)
   }
 }

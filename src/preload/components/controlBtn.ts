@@ -7,22 +7,30 @@ export class ControlBtn extends Component {
       border: 0;
       border-radius: 16px;
       cursor: pointer;
-      padding: 6px;
       transition: all 0.3s;
       color: #ffffff;
-      line-height: 28px;
-      height: 28px;
-      width: 28px;
+      line-height: 22px;
+      font-size: 22px;
+      height: 22px;
+      width: 22px;
       outline: none;
       display: flex;
       justify-content: center;
       align-items: center;
       user-select: none;
+      padding: 4px;
     }
     .control-btn:hover {
       opacity: 0.8;
     }
   `
+  color = ''
+  content = ''
+  title = ''
+
+  onClickBtn() {
+    // 事件处理
+  }
 
   render() {
     return html`
@@ -38,7 +46,8 @@ export class ControlBtn extends Component {
     `
   }
 
-  color = ''
-  content = ''
-  title = ''
+  connected(shadowRoot: ShadowRoot) {
+    const btnEl = shadowRoot.querySelector('.control-btn') as HTMLButtonElement
+    btnEl.addEventListener('click', () => this.onClickBtn())
+  }
 }

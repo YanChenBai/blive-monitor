@@ -1,8 +1,8 @@
 import type { Emoticon, Emoticons } from '@preload/types/emoji'
 import { html, css, Component, tag, createComponent, batchAdd } from '@preload/utils/component'
 import { awaitLivePlayer } from '@preload/utils/livePlayer'
+import { Status, watch } from '@preload/utils/status'
 // eslint-disable-next-line vue/prefer-import-from-vue
-import { watch, ref } from '@vue/runtime-core'
 import lodash from 'lodash'
 
 function isClickEmojiItem(e: MouseEvent) {
@@ -22,11 +22,14 @@ export class EmojiItem extends Component {
     .emoji-item img {
       width: 100%;
     }
+    .not {
+      opacity: 0.5;
+    }
   `
 
   render() {
     return html`
-      <div class="emoji-item">
+      <div class="emoji-item ${this.data?.perm === 0 ? 'not' : ''}">
         <img src="${this.src}" />
       </div>
     `
@@ -151,7 +154,7 @@ export class EmojiTab extends Component {
 
   data?: Emoticons
   index = 0
-  show = ref(false)
+  show = new Status(false)
   /** 是否渲染过 */
   rendered = false
 
@@ -212,7 +215,7 @@ export class EmojiTab extends Component {
         const dom = this.shadowRoot?.querySelector('.emoji-tab') as HTMLDivElement
         dom.classList.toggle('now', val)
       },
-      { immediate: true }
+      true
     )
   }
 }
@@ -324,7 +327,7 @@ export class EmojiTabs extends Component {
       createComponent(EmojiTab, {
         index,
         data: item,
-        show: ref(true),
+        show: new Status(true),
         onSelect: (data) => {
           if (item.pkg_type === 3) {
             this.onSelect(data)

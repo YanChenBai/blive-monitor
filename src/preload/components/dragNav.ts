@@ -1,61 +1,7 @@
 import { BliveInvoke } from '@preload/utils/invoke'
 import { html, css, Component, tag, createComponent } from '@preload/utils/component'
 import { UserInfo } from '@preload/components/userInfo'
-import { watch } from '@vue/runtime-core'
-import { controlBarStatus } from '@preload/utils/status'
-import { ipcRenderer } from 'electron'
-
-enum DragEvents {
-  START = 'DRAG_START',
-  MOVEING = 'DRAG_MOVEING',
-  END = 'DRAG_END'
-}
-
-function bindDragEvent(el: HTMLElement) {
-  let isDrag = false
-  let animateId = 0
-
-  function isMouseLeftButton(e: MouseEvent, func: (...args: any[]) => any) {
-    if (e.button === 0) func()
-  }
-
-  function moveing() {
-    if (!isDrag) {
-      moveEnd()
-      return
-    }
-
-    // 通知进程再移动窗口
-    ipcRenderer.send(DragEvents.MOVEING)
-
-    animateId = requestAnimationFrame(moveing)
-  }
-
-  function moveStart(e: MouseEvent) {
-    if (e.button !== 0) return
-    // 通知主进程开始移动窗口
-    const { clientX, clientY } = e
-
-    ipcRenderer.send(DragEvents.START, { mouseX: clientX, mouseY: clientY, button: e.button })
-
-    isDrag = true
-
-    requestAnimationFrame(moveing)
-  }
-
-  function moveEnd() {
-    ipcRenderer.send(DragEvents.END)
-    cancelAnimationFrame(animateId)
-
-    // 通知主进程移动结束
-    isDrag = false
-  }
-
-  el.addEventListener('mousedown', moveStart)
-  document.addEventListener('mouseup', (e) => isMouseLeftButton(e, moveEnd))
-  el.addEventListener('contextmenu', (e) => e.preventDefault())
-  document.addEventListener('mouseleave', moveEnd)
-}
+import { controlBarStatus, watch } from '@preload/utils/status'
 
 @tag('drag-nav')
 export class DragNav extends Component {
@@ -74,13 +20,13 @@ export class DragNav extends Component {
       display: flex;
       align-items: center;
       justify-content: center;
+      -webkit-app-region: drag;
     }
     .drag {
       user-select: none;
       width: 100%;
       flex: 1;
       height: 42px;
-      -webkit-app-region: drag;
     }
     .no-drag {
       /* -webkit-app-region: no-drag; */
@@ -104,17 +50,21 @@ export class DragNav extends Component {
   connected() {
     const navEl = this.shadowRoot?.querySelector('.drag-nav') as HTMLDivElement
     const noDragEl = navEl.querySelector('.no-drag') as HTMLDivElement
-    const dragEl = navEl.querySelector('.drag') as HTMLDivElement
-    const userInfoEl = createComponent(UserInfo)
+
     this.bliveInvoke.getRoomInfo().then((room) => {
-      userInfoEl.room = room
-      noDragEl.appendChild(userInfoEl)
+      noDragEl.appendChild(
+        createComponent(UserInfo, {
+          room
+        })
+      )
     })
 
-    watch(controlBarStatus, (val) => {
-      navEl.classList.toggle('show', val)
-    })
-
-    bindDragEvent(dragEl)
+    watch(
+      controlBarStatus,
+      (val) => {
+        navEl.classList.toggle('show', val)
+      },
+      true
+    )
   }
 }

@@ -1,9 +1,29 @@
-import { ref, watch } from '@vue/runtime-core'
 import { Component, tag, css, html } from '@preload/utils/component'
 import { EmojiTabs } from './emoji'
-import { controlBarStatus, danmuInputStatus, danmuInputIsFocus } from '@preload/utils/status'
+import {
+  controlBarStatus,
+  danmuInputStatus,
+  danmuInputIsFocus,
+  Status,
+  watch
+} from '@preload/utils/status'
 import { BliveInvoke } from '@preload/utils/invoke'
 import { Emoticons } from '@preload/types/emoji'
+import lodash from 'lodash'
+
+/** 匹配可输入的最大弹幕 */
+function matchMaxDanmu() {
+  const regex = /0\/(\d+)/
+  return new Promise<number>((res) => {
+    const timer = setInterval(() => {
+      const dom = document.querySelector('.input-limit-hint') as HTMLDivElement
+      if (!dom) return
+      const match = dom.innerText.match(regex)
+      clearInterval(timer)
+      return res(match ? Number(match[1]) : 20)
+    }, 200)
+  })
+}
 
 @tag('danmu-send')
 export class DanmuSend extends Component {
@@ -12,9 +32,9 @@ export class DanmuSend extends Component {
       width: 240px;
       position: fixed;
       z-index: 9999999999;
-      right: 64px;
+      right: 54px;
       top: 50vh;
-      transform: translate(calc(64px + 240px), -50%);
+      transform: translate(calc(54px + 240px), -50%) scale(0);
       box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
       background: #fff;
       border-radius: 10px;
@@ -47,7 +67,7 @@ export class DanmuSend extends Component {
       margin-right: 6px;
     }
     .show {
-      transform: translate(0, -50%);
+      transform: translate(0, -50%) scale(1);
     }
   `
 
@@ -63,13 +83,16 @@ export class DanmuSend extends Component {
   }
 
   bliveInvoke = new BliveInvoke()
-  maxlen = ref(20)
-  inputlen = ref(0)
+  maxlen = new Status(20)
+  inputlen = new Status(0)
   data: Emoticons[] = []
 
   updateMaxlen() {
     const maxlenEl = this.shadowRoot?.querySelector('.maxlen') as HTMLDivElement
+    const inputEl = this.shadowRoot?.querySelector('input') as HTMLInputElement
+
     maxlenEl.innerText = `${Math.min(this.inputlen.value, this.maxlen.value)}/${this.maxlen.value}`
+    inputEl.maxLength = this.maxlen.value
   }
 
   send(msg: string) {
@@ -126,8 +149,9 @@ export class DanmuSend extends Component {
           // 清空输入框
           inputEl.value = ''
           this.inputlen.value = 0
-          inputEl.blur()
         }
+
+        danmuInputStatus.value ? inputEl.blur() : inputEl.focus()
 
         // 输入框打开时同时打开控制栏
         danmuInputStatus.value = !danmuInputStatus.value
@@ -154,31 +178,25 @@ export class DanmuSend extends Component {
     }
 
     // 最大的弹幕长度更新
-    watch(
-      () => [this.maxlen.value, this.inputlen.value],
-      ([maxlen]) => {
-        inputEl.maxLength = maxlen
-        this.updateMaxlen()
-      },
-      {
-        immediate: true
-      }
-    )
+    watch([this.maxlen, this.inputlen], () => this.updateMaxlen(), true)
 
     // 更新显示状态
     watch(
       danmuInputStatus,
-      (val) => {
+      lodash.debounce((val) => {
         if (val) {
           // 输入框打开时同时打开控制栏
           controlBarStatus.value = true
-          inputEl.focus()
         }
         wrapEl.classList.toggle('show', val)
-      },
-      {
-        immediate: true
-      }
+      }, 100)
     )
+
+    // 获取可输入弹幕的长度
+    matchMaxDanmu().then((maxlen) => {
+      console.log('get maxlen:', maxlen)
+
+      this.maxlen.value = maxlen
+    })
   }
 }

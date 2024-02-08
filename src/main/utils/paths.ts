@@ -1,6 +1,5 @@
 import { app } from 'electron'
 import path from 'path'
-import { logger } from './logger'
 import { isExists } from './isExists'
 
 const ROAMING_PATH = path.resolve(app.getPath('userData'))
@@ -35,4 +34,4 @@ export async function initPath() {
   await isExists(ICONS_PATH)
 }
 
-export default () => logger.info({ ROAMING_PATH, RENDER_PATH, MSG_ICON_PATH, ICONS_PATH, LOG_PATH })
+// export default () => logger.info({ ROAMING_PATH, RENDER_PATH, MSG_ICON_PATH, ICONS_PATH, LOG_PATH })

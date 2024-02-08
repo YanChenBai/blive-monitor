@@ -1,4 +1,3 @@
-import { ref, watch } from '@vue/runtime-core'
 import {
   html,
   css,
@@ -10,16 +9,8 @@ import {
   switchElement
 } from '@preload/utils/component'
 import { ControlBtn } from './controlBtn'
-import { controlBarStatus, danmuInputStatus, danmuInputIsFocus } from '@preload/utils/status'
-import {
-  LetsIconsCloseRound,
-  CiRemoveMinus,
-  LetsIconsChatFill,
-  Pin,
-  Pined,
-  Lock,
-  UnLock
-} from './icons'
+import { controlBarStatus, danmuInputStatus, danmuInputIsFocus, watch } from '@preload/utils/status'
+import { Close, Minimize, Danmu, Pin, Pined } from './icons'
 import { BliveInvoke } from '@preload/utils/invoke'
 
 function createBrn(props: Props<ControlBtn>) {
@@ -29,17 +20,17 @@ function createBrn(props: Props<ControlBtn>) {
 const btns = {
   closeWin: createBrn({
     color: 'rgb(243, 59, 99)',
-    content: LetsIconsCloseRound,
+    content: Close,
     title: '关闭窗口'
   }),
   minWin: createBrn({
     color: '#00aeec',
-    content: CiRemoveMinus,
+    content: Minimize,
     title: '窗口最小化'
   }),
   switchDanmuInput: createBrn({
     color: '#f288a6ff',
-    content: LetsIconsChatFill,
+    content: Danmu,
     title: '弹幕快捷发送,回车可打开'
   }),
   alwaysOnTopLock: createBrn({
@@ -51,16 +42,6 @@ const btns = {
     color: '#64d496',
     content: Pined,
     title: '窗口取消置顶'
-  }),
-  aspectRatioLock: createBrn({
-    color: '#fbc94b',
-    content: UnLock,
-    title: '窗口比例锁定'
-  }),
-  aspectRatioUnlock: createBrn({
-    color: '#fbc94b',
-    content: Lock,
-    title: '窗口比例解锁'
   })
 }
 
@@ -74,8 +55,8 @@ export class ControlBar extends Component {
       z-index: 99999999999;
       right: 10px;
       top: 50vh;
-      transform: translate(calc(100% + 10px), -50%);
-      transition: transform 0.3s;
+      transform: translate(calc(100% + 10px), -50%) scale(0);
+      transition: transform 0.3s ease-in-out;
       background-color: rgba(255, 255, 255, 1);
       box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
       display: flex;
@@ -84,7 +65,7 @@ export class ControlBar extends Component {
     }
 
     .show {
-      transform: translate(0px, -50%);
+      transform: translate(0px, -50%) scale(1);
     }
 
     .hide-btn {
@@ -96,24 +77,31 @@ export class ControlBar extends Component {
     return html`<div class="control-bar"></div>`
   }
 
-  hideDanmuBtn = ref(false)
+  hideDanmuBtn = false
   bliveInvoke = new BliveInvoke()
 
-  connected() {
+  set setHideDanmuBtn(value: boolean) {
+    this.hideDanmuBtn = value
+    btns.switchDanmuInput.classList.toggle('hide-btn', value)
+  }
+
+  async connected() {
     const controlBarEl = this.shadowRoot?.querySelector('.control-bar') as HTMLDivElement
 
     batchAdd(controlBarEl, Object.values(btns))
 
-    switchElement([btns.aspectRatioLock, btns.aspectRatioUnlock], false)
-    switchElement([btns.alwaysOnTopLock, btns.alwaysOnTopUnlock], false)
+    switchElement(
+      [btns.alwaysOnTopLock, btns.alwaysOnTopUnlock],
+      await this.bliveInvoke.getAlwaysOnTop()
+    )
 
-    watch(controlBarStatus, (val) => {
-      controlBarEl.classList.toggle('show', val)
-    })
-
-    watch(this.hideDanmuBtn, (val) => btns.switchDanmuInput.classList.toggle('hide-btn', val), {
-      immediate: true
-    })
+    watch(
+      controlBarStatus,
+      (val) => {
+        controlBarEl.classList.toggle('show', val)
+      },
+      true
+    )
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
@@ -121,8 +109,8 @@ export class ControlBar extends Component {
       }
     })
 
-    document.onmousemove = () => {
-      controlBarStatus.value = true
+    document.onmousemove = (event: MouseEvent & { ignore?: boolean }) => {
+      if (event.ignore !== true) controlBarStatus.value = true
     }
 
     document.onmouseleave = () => {
@@ -137,22 +125,23 @@ export class ControlBar extends Component {
       ev.preventDefault()
     })
 
-    btns.minWin.onclick = () => {
+    btns.minWin.onClickBtn = () => {
       this.bliveInvoke.minWin()
     }
 
-    btns.closeWin.onclick = () => {
+    btns.closeWin.onClickBtn = () => {
       this.bliveInvoke.closeWin()
     }
 
-    btns.alwaysOnTopLock.onclick = () => {
+    btns.alwaysOnTopLock.onClickBtn = () => {
       this.bliveInvoke.setAlwaysOnTop(true)
     }
-    btns.alwaysOnTopUnlock.onclick = () => {
+
+    btns.alwaysOnTopUnlock.onClickBtn = () => {
       this.bliveInvoke.setAlwaysOnTop(false)
     }
 
-    btns.switchDanmuInput.onclick = () => {
+    btns.switchDanmuInput.onClickBtn = () => {
       danmuInputStatus.value = !danmuInputStatus.value
     }
   }

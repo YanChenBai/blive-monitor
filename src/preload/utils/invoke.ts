@@ -50,6 +50,14 @@ export class BliveInvoke
     return this.invoke('getAlwaysOnTop')
   }
 
+  setVolume(value: number) {
+    return this.invoke('setVolume', value)
+  }
+
+  getVolume() {
+    return this.invoke('getVolume')
+  }
+
   openContextMenu() {
     return this.invoke('openContextMenu')
   }
@@ -58,7 +66,7 @@ export class BliveInvoke
     return this.invoke('switchMaximize')
   }
 
-  moveWin(x: number, y: number) {
-    return this.invoke('moveWin', x, y)
+  setAspectRatio(_value: 'RATIO_16_9' | 'RATIO_9_16'): Promise<void> {
+    throw new Error('Method not implemented.')
   }
 }

@@ -1,4 +1,4 @@
-import { ref, watch } from '@vue/runtime-core'
+import { Status, watch } from './status'
 
 export const html = String.raw
 export const css = String.raw
@@ -32,22 +32,18 @@ export function batchAdd(el: HTMLElement, els: HTMLElement[]) {
 
 /** 切换元素 */
 export function switchElement(els: [HTMLElement, HTMLElement], initValue: boolean) {
-  const signal = ref(initValue)
+  const signal = new Status(initValue)
   const displayValue = els.map((item) => {
     item.addEventListener('click', () => (signal.value = !signal.value))
     return item.style.display
   })
 
   /** 监听需修改 */
-  watch(
-    signal,
-    (val) => {
-      els.forEach((item, index) => {
-        const isHide = (index === 0) === val
-        item.style.display = isHide ? 'none' : displayValue[index]
-      })
-    },
-    { immediate: true }
+  watch(signal, (val: boolean) =>
+    els.forEach((item, index) => {
+      const isHide = (index === 0) === val
+      item.style.display = isHide ? 'none' : displayValue[index]
+    })
   )
 
   return signal
@@ -71,13 +67,31 @@ export class Component extends HTMLElement {
     return ``
   }
 
+  /** 获取渲染html */
+  getRender() {
+    return `<style> ${this.css}</style> ${this.render()}`
+  }
+
+  /** 重新渲染 */
+  reRender() {
+    if (this.shadowRoot) {
+      const oldHtml = this.shadowRoot.innerHTML
+      const newHtml = this.getRender()
+      if (oldHtml !== newHtml) {
+        this.shadowRoot.innerHTML = newHtml
+      }
+    }
+  }
+
   /** 挂载后的回调 */
-  connected() {
+  connected(_shadowRoot: ShadowRoot) {
     //
   }
 
   connectedCallback() {
-    if (this.shadowRoot) this.shadowRoot.innerHTML = `<style> ${this.css}</style> ${this.render()}`
-    this.connected()
+    if (this.shadowRoot) {
+      this.shadowRoot.innerHTML = this.getRender()
+      this.connected(this.shadowRoot)
+    }
   }
 }

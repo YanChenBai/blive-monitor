@@ -23,7 +23,8 @@ export default defineConfig({
     build: {
       rollupOptions: {
         input: {
-          blive: 'src/preload/blive.ts'
+          blive: 'src/preload/blive.ts',
+          main: 'src/preload/main.ts'
         },
         output: {
           format: 'es'

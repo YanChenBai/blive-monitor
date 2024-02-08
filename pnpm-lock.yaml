@@ -17,18 +17,12 @@ dependencies:
   '@types/lodash':
     specifier: ^4.14.202
     version: 4.14.202
-  '@vue/runtime-core':
-    specifier: ^3.4.15
-    version: 3.4.15
   axios:
     specifier: ^1.6.7
     version: 1.6.7
   dotenv:
     specifier: ^16.4.1
     version: 16.4.1
-  electron-drag-window:
-    specifier: ^1.0.2
-    version: 1.0.2
   electron-updater:
     specifier: ^6.1.7
     version: 6.1.7
@@ -1399,12 +1393,14 @@ packages:
     resolution: {integrity: sha512-55yJh2bsff20K5O84MxSvXKPHHt17I2EomHznvFiJCAZpJTNW8IuLj1xZWMLELRhBK3kkFV/1ErZGHJfah7i7w==}
     dependencies:
       '@vue/shared': 3.4.15
+    dev: true
 
   /@vue/runtime-core@3.4.15:
     resolution: {integrity: sha512-6E3by5m6v1AkW0McCeAyhHTw+3y17YCOKG0U0HDKDscV4Hs0kgNT5G+GCHak16jKgcCDHpI9xe5NKb8sdLCLdw==}
     dependencies:
       '@vue/reactivity': 3.4.15
       '@vue/shared': 3.4.15
+    dev: true
 
   /@vue/runtime-dom@3.4.15:
     resolution: {integrity: sha512-EVW8D6vfFVq3V/yDKNPBFkZKGMFSvZrUQmx196o/v2tHKdwWdiZjYUBS+0Ez3+ohRyF8Njwy/6FH5gYJ75liUw==}
@@ -1426,6 +1422,7 @@ packages:
 
   /@vue/shared@3.4.15:
     resolution: {integrity: sha512-KzfPTxVaWfB+eGcGdbSf4CWdaXcGDqckoeXUh7SB3fZdEtzPCK2Vq9B/lRRL3yutax/LWITz+SwvgyOxz5V75g==}
+    dev: true
 
   /@xmldom/xmldom@0.8.10:
     resolution: {integrity: sha512-2WALfTl4xo2SkGCYRt6rDTFfk9R1czmBvUQy12gK2KuRKIpWEhcbbzy8EZXtz/jkRqHX8bFEc6FC1HjX4TUWYw==}
@@ -2045,10 +2042,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /electron-drag-window@1.0.2:
-    resolution: {integrity: sha512-gQX4pelP6ETjcHzOQDwZuPkwMzitvG1MZdKpI5DQB69KU9/BCtLSjxSSMkcT4mKiLGbpKuEooVfQELfvBy2FeA==}
-    dev: false
 
   /electron-publish@24.8.1:
     resolution: {integrity: sha512-IFNXkdxMVzUdweoLJNXSupXkqnvgbrn3J4vognuOY06LaS/m0xvfFYIf+o1CM8if6DuWYWoQFKPcWZt/FUjZPw==}

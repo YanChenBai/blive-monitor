@@ -1,0 +1,15 @@
+[
+  {
+    "roomId": "@main",
+    "alwaysOnTop": false
+  },
+  {
+    "roomId": "6154037",
+    "alwaysOnTop": true,
+    "volume": 36,
+    "x": 800,
+    "y": 356,
+    "width": 569,
+    "height": 320
+  }
+]
