@@ -61,6 +61,29 @@ const keyword = ref<string>('')
 const newVersionInit = ref(false)
 const refreshLoading = ref(false)
 
+/** 以前的数据格式转换为新的 */
+rooms.value = rooms.value.map((item: any) => {
+  console.log(item)
+
+  if (item.live_status) {
+    item.liveStatus = item.live_status
+    Reflect.deleteProperty(item, 'live_status')
+  }
+  if (item.medal_name) {
+    item.medalName = item.medal_name
+    Reflect.deleteProperty(item, 'medal_name')
+  }
+  if (item.room_id) {
+    item.roomId = item.room_id
+    Reflect.deleteProperty(item, 'room_id')
+  }
+  if (item.short_id) {
+    item.shortId = item.short_id
+    Reflect.deleteProperty(item, 'short_id')
+  }
+  return item
+})
+
 async function add() {
   const status = await roomsStore.add(keyword.value)
   switch (status) {

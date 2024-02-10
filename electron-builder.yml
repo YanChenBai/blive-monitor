@@ -3,6 +3,7 @@ productName: blive-monitor
 directories:
   buildResources: build
 files:
+  - '!.husky/*'
   - '!**/.vscode/*'
   - '!src/*'
   - '!electron.vite.config.{js,ts,mjs,cjs}'

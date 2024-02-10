@@ -102,4 +102,9 @@ export const insertCSS = css`
   .web-player-inject-wrap {
     display: none;
   }
+
+  /** 播放器模糊层隐藏 */
+  .web-player-module-area-mask {
+    display: none !important;
+  }
 `

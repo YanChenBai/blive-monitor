@@ -1,12 +1,11 @@
 import { shell, BrowserWindow, app } from 'electron'
 import { join } from 'path'
 import icon from '../../../resources/icon.ico?asset'
-import { getRoomConfig, updateRoomConfig } from '@main/utils/lowdb'
+import { getMainWindowConfig, updateMainWindowConfig } from '@main/utils/lowdb'
 import { RENDER_PATH } from '@main/utils/paths'
 
-const ID = '@main'
 export async function mainWindow() {
-  const config = getRoomConfig(ID)
+  const config = getMainWindowConfig()
 
   const window = new BrowserWindow({
     width: 400,
@@ -36,8 +35,7 @@ export async function mainWindow() {
 
   window.on('close', () => {
     const { x, y, width, height } = window.getBounds()
-    updateRoomConfig({
-      roomId: ID,
+    updateMainWindowConfig({
       x,
       y,
       width,
