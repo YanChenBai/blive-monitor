@@ -53,7 +53,7 @@ export async function bliveWindow(room: Room) {
     return { action: 'deny' }
   })
 
-  window.loadURL(`https://live.bilibili.com/${room.roomId}?winId=${window.id}`)
+  window.loadURL(`https://live.bilibili.com/blanc/${room.roomId}?winId=${window.id}`)
 
   window.on('close', () => {
     // 从win map中移除
