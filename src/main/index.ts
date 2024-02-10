@@ -6,6 +6,7 @@ import { MainHandle } from '@main/handles/mainHandle'
 import { BliveHandle } from './handles/bliveHandle'
 import { initPath } from './utils/paths'
 
+initPath()
 let win: BrowserWindow | null
 async function startMainWindow() {
   if (win) {
@@ -21,7 +22,6 @@ async function bootstrap() {
     process.exit(1)
   })
 
-  initPath()
   app.whenReady().then(() => {
     app.commandLine.appendSwitch('ignore-certificate-errors', 'true')
     app.commandLine.appendArgument('--headless')

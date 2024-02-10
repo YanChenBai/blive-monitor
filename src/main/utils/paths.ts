@@ -1,7 +1,6 @@
 import { app } from 'electron'
 import path from 'path'
 import { isExists } from './isExists'
-import { logger } from './logger'
 
 const ROAMING_PATH = path.resolve(app.getPath('userData'))
 
@@ -25,9 +24,5 @@ export const ICONS_PATH = app.isPackaged
   ? path.resolve(ROAMING_PATH, 'icons')
   : path.resolve(app.getAppPath(), 'resources', 'icons')
 
-/** 初始化图标 */
-export async function initPath() {
-  await isExists(ICONS_PATH)
-}
-
-export default () => logger.info({ ROAMING_PATH, RENDER_PATH, ICONS_PATH, LOG_PATH })
+/** 初始化路径 */
+export const initPath = () => isExists(ICONS_PATH)

@@ -5,7 +5,5 @@ import fs from 'fs'
  * @returns
  */
 export async function isExists(dir: string) {
-  if (!fs.existsSync(dir)) {
-    return await fs.promises.mkdir(dir)
-  }
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir)
 }
