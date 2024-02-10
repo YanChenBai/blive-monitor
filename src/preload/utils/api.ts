@@ -1,4 +1,4 @@
-import { GetEmoticons } from '@preload/types/emoji'
+import { GetEmoticons } from '@type/emoji'
 import axios from 'axios'
 
 /**

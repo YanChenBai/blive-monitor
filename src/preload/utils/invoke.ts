@@ -1,9 +1,10 @@
-import { Transform } from '@preload/types/invoke'
+import { InvokeTransform } from '@type/invoke'
 import { ipcRenderer } from 'electron'
-import { BliveHandleInterface } from '@main/handles/bliveHandle'
 import { IPCHandle } from '@main/utils/ipcHandle'
+import type { Room } from '@type/room'
+import { BliveHandleInterface } from '@type/handle'
+import { MainHandleInterface } from '@type/handle'
 
-export const winId = new URLSearchParams(window.location.search).get('winId')
 export function invoke(prefixName: string) {
   return (target: typeof IPCInvoke) => {
     Reflect.defineProperty(target, 'prefixName', {
@@ -15,20 +16,24 @@ export function invoke(prefixName: string) {
 
 class IPCInvoke<T> {
   static prefixName: IPCHandle
-  invoke<M extends keyof Transform<T>>(name: M, ...args: Parameters<Transform<T>[M]>) {
+  winId = new URLSearchParams(window.location.search).get('winId')
+  group = true
+
+  invoke<M extends keyof InvokeTransform<T>>(name: M, ...args: Parameters<InvokeTransform<T>[M]>) {
     if (!this.constructor['prefixName']) throw new Error('prefixName is not defined')
+
     return ipcRenderer.invoke(
-      `IPCHandle:${this.constructor['prefixName']}:${winId}`,
+      ['IPCHandle', this.constructor['prefixName']].join(':'),
       name,
       ...args
-    ) as ReturnType<Transform<T>[M]>
+    ) as ReturnType<InvokeTransform<T>[M]>
   }
 }
 
 @invoke('blive')
 export class BliveInvoke
   extends IPCInvoke<BliveHandleInterface>
-  implements Transform<BliveHandleInterface>
+  implements InvokeTransform<BliveHandleInterface>
 {
   setAspectRatio(_value: 'RATIO_16_9' | 'RATIO_9_16'): Promise<void> {
     throw new Error('Method not implemented.')
@@ -60,12 +65,38 @@ export class BliveInvoke
   getVolume() {
     return this.invoke('getVolume')
   }
+}
 
-  openContextMenu() {
-    return this.invoke('openContextMenu')
+@invoke('main')
+export class MainInvoke
+  extends IPCInvoke<MainHandleInterface>
+  implements InvokeTransform<MainHandleInterface>
+{
+  winCount() {
+    return this.invoke('winCount')
   }
 
-  switchMaximize() {
-    return this.invoke('switchMaximize')
+  minWin() {
+    return this.invoke('minWin')
+  }
+
+  closeWin() {
+    return this.invoke('closeWin')
+  }
+
+  openBiliHome() {
+    return this.invoke('openBiliHome')
+  }
+
+  getRoomInfo(roomId: string) {
+    return this.invoke('getRoomInfo', roomId)
+  }
+
+  getManyRoomInfo(uids: string[]) {
+    return this.invoke('getManyRoomInfo', uids)
+  }
+
+  openLiveRoom(room: Room) {
+    return this.invoke('openLiveRoom', room)
   }
 }

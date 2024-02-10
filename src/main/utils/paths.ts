@@ -1,18 +1,14 @@
 import { app } from 'electron'
 import path from 'path'
 import { isExists } from './isExists'
+import { logger } from './logger'
 
 const ROAMING_PATH = path.resolve(app.getPath('userData'))
 
-/** 渲染进程路劲 */
+/** 渲染进程路径 */
 export const RENDER_PATH = app.isPackaged
-  ? path.resolve(app.getAppPath(), 'render', 'dist', 'index.html')
+  ? path.resolve(app.getAppPath(), 'out', 'renderer', 'index.html')
   : 'http://localhost:5173'
-
-/** 消息图标路径 */
-export const MSG_ICON_PATH = app.isPackaged
-  ? path.resolve(app.getAppPath(), '../../blivemonitor.ico')
-  : path.join(__dirname, '../../blivemonitor.ico')
 
 /** 日志路径 */
 export const LOG_PATH = app.isPackaged
@@ -34,4 +30,4 @@ export async function initPath() {
   await isExists(ICONS_PATH)
 }
 
-// export default () => logger.info({ ROAMING_PATH, RENDER_PATH, MSG_ICON_PATH, ICONS_PATH, LOG_PATH })
+export default () => logger.info({ ROAMING_PATH, RENDER_PATH, ICONS_PATH, LOG_PATH })

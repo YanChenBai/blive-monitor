@@ -1,4 +1,4 @@
-import { Room } from '@main/types/window'
+import type { Room } from '@type/room'
 import { html, css, Component, tag } from '@preload/utils/component'
 import { controlBarStatus, watch } from '@preload/utils/status'
 

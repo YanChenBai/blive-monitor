@@ -1,0 +1,28 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+body {
+  overflow: hidden;
+}
+ol {
+  padding-left: 20px;
+}
+
+.release-notes h3 {
+  background-color: rgb(82, 82, 82);
+  margin-bottom: 6px;
+  border-radius: 4px;
+}
+.release-notes h3:not(:first-child) {
+  margin-top: 10px;
+}
+.release-notes code:not(:first-child) {
+  margin-top: 6px;
+}
+.release-notes code {
+  background-color: #3a3a3a;
+  padding: 2px 6px;
+  border-radius: 6px;
+  display: inline-block;
+}

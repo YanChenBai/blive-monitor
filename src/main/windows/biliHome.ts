@@ -1,5 +1,5 @@
 import { join } from 'path'
-import icon from '../../../resources/icon.png?asset'
+import icon from '../../../resources/icon.ico?asset'
 import { BrowserWindow } from 'electron'
 export async function biliHomeWindew() {
   const window = new BrowserWindow({
@@ -8,9 +8,9 @@ export async function biliHomeWindew() {
     show: false,
     autoHideMenuBar: true,
     icon,
-    frame: false,
+    frame: true,
     webPreferences: {
-      preload: join(__dirname, '../preload/blive.mjs'),
+      preload: join(__dirname, '../preload/biliHome.mjs'),
       contextIsolation: true,
       nodeIntegration: false
     }

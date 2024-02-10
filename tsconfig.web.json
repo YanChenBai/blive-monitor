@@ -4,7 +4,11 @@
     "src/renderer/src/env.d.ts",
     "src/renderer/src/**/*",
     "src/renderer/src/**/*.vue",
-    "src/preload/*.d.ts"
+    "src/preload/index.d.ts",
+    "src/types/**/*.ts"
+  ],
+  "exclude": [
+    // "src/preload/*.d.ts"
   ],
   "compilerOptions": {
     "declaration": true,
@@ -13,6 +17,9 @@
     "paths": {
       "@renderer/*": [
         "src/renderer/src/*"
+      ],
+      "@type/*": [
+        "src/types/*"
       ]
     }
   }

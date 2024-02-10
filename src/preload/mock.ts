@@ -1,4 +1,4 @@
-import { GetEmoticons } from './types/emoji'
+import { GetEmoticons } from '@type/emoji'
 
 export const mockGetEmoticons: GetEmoticons = {
   code: 0,

@@ -120,11 +120,6 @@ export class ControlBar extends Component {
       }
     }
 
-    controlBarEl.addEventListener('contextmenu', (ev) => {
-      this.bliveInvoke.openContextMenu()
-      ev.preventDefault()
-    })
-
     btns.minWin.onClickBtn = () => {
       this.bliveInvoke.minWin()
     }

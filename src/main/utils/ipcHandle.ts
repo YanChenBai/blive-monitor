@@ -1,21 +1,18 @@
 import { BrowserWindow, IpcMainInvokeEvent, ipcMain } from 'electron'
 
-type Handler = (event: IpcMainInvokeEvent, ...args: any[]) => void
+type Handler = (windwo: BrowserWindow, ...args: any[]) => void
 
 export class IPCHandle {
   static handlers: Map<string, Handler> = new Map()
   static prefixName: string
 
-  window: BrowserWindow
-
-  constructor(window: BrowserWindow) {
-    this.window = window
+  constructor() {
     this.init()
   }
 
   getName() {
     if (!this.constructor['prefixName']) throw new Error('prefixName is not defined')
-    return ['IPCHandle', this.constructor['prefixName'], this.window.id].join(':')
+    return ['IPCHandle', this.constructor['prefixName']].join(':')
   }
 
   private init() {
@@ -23,9 +20,6 @@ export class IPCHandle {
     ipcMain.handle(this.getName(), (event, name: string, ...args: any[]) =>
       this.handleEvent(event, name, ...args)
     )
-
-    // 关闭窗口时移除监听
-    this.window.addListener('close', () => ipcMain.removeHandler(this.getName()))
   }
 
   // 处理事件
@@ -33,7 +27,12 @@ export class IPCHandle {
     const handler = IPCHandle.handlers.get(name)
 
     if (handler) {
-      return handler.call(this, event, ...args)
+      const window = BrowserWindow.getAllWindows().find((item) => item.id === event.sender.id)
+      if (window) {
+        return handler.call(this, window, ...args)
+      } else {
+        throw new Error('No found window')
+      }
     } else {
       throw new Error(`No handler found for ${name}`)
     }

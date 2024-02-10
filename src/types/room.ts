@@ -10,3 +10,5 @@ export interface Room {
   medalName: string // 粉丝牌名字
   keyframe: string // 封面
 }
+
+export type ManyRoomItem = Omit<Room, 'roomId' | 'medalName'>

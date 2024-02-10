@@ -4,3 +4,6 @@ out
 .DS_Store
 *.log*
 electron.vite.config.*.mjs
+db.json
+logs
+icons

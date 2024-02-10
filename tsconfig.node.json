@@ -4,7 +4,8 @@
     "electron.vite.config.*",
     "src/main/**/*",
     "src/preload/**/*",
-    "src/preload/components/*.tsx"
+    "src/preload/components/*.tsx",
+    "src/types/**/*.ts"
   ],
   "compilerOptions": {
     "experimentalDecorators": true,
@@ -20,6 +21,9 @@
       ],
       "@preload/*": [
         "src/preload/*"
+      ],
+      "@type/*": [
+        "src/types/*"
       ]
     }
   }

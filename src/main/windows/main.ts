@@ -1,9 +1,8 @@
-import { shell, BrowserWindow } from 'electron'
+import { shell, BrowserWindow, app } from 'electron'
 import { join } from 'path'
-import icon from '../../../resources/icon.png?asset'
+import icon from '../../../resources/icon.ico?asset'
 import { getRoomConfig, updateRoomConfig } from '@main/utils/lowdb'
 import { RENDER_PATH } from '@main/utils/paths'
-import { MainHandle } from '@main/handles/mainHandle'
 
 const ID = '@main'
 export async function mainWindow() {
@@ -18,6 +17,7 @@ export async function mainWindow() {
     show: false,
     icon,
     frame: false,
+    backgroundColor: '#000',
     webPreferences: {
       preload: join(__dirname, '../preload/main.mjs'),
       contextIsolation: false,
@@ -25,7 +25,9 @@ export async function mainWindow() {
     }
   })
 
-  window.on('ready-to-show', () => window.show())
+  window.on('ready-to-show', () => {
+    window.show()
+  })
 
   window.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
@@ -41,11 +43,10 @@ export async function mainWindow() {
       width,
       height
     })
+    app.quit()
   })
 
   window.loadURL(RENDER_PATH)
-
-  new MainHandle(window)
 
   return window
 }

@@ -2,14 +2,5 @@
   {
     "roomId": "@main",
     "alwaysOnTop": false
-  },
-  {
-    "roomId": "6154037",
-    "alwaysOnTop": false,
-    "volume": 42,
-    "x": 800,
-    "y": 356,
-    "width": 569,
-    "height": 320
   }
 ]

@@ -1,24 +1,12 @@
 import 'dotenv/config'
-import { BrowserWindow, app } from 'electron'
+import { BrowserWindow, app, ipcMain } from 'electron'
 import { electronApp, optimizer } from '@electron-toolkit/utils'
 import { mainWindow } from './windows/main'
-import { bliveWindow } from './windows/blive'
+import { MainHandle } from '@main/handles/mainHandle'
+import { BliveHandle } from './handles/bliveHandle'
+import { initPath } from './utils/paths'
 
 let win: BrowserWindow | null
-
-const mockRoom = {
-  uid: '194484313',
-  roomId: '6154037', // 房间id
-  shortId: '732', // 房间短号, 没有时为0
-  name: '鹿瑶Clover_桃桃冠', // 主播名字
-  face: 'https://i1.hdslb.com/bfs/face/599178b1ec42a679096517f7130c6873db9aedfb.jpg@100w_100h.webp', // 头像
-  liveStatus: 2, // 直播状态, 0 下播, 1 直播, 2 轮播
-  tags: 'zhuzhu', // 主播的标签
-  title: '直播标题', // 直播标题
-  medalName: 'aski', // 粉丝牌名字
-  keyframe:
-    'https://i1.hdslb.com/bfs/face/6741c2cd6a9983a1d4dfa3ff690a8b9d5ae127b5.jpg@100w_100h.webp' // 封面
-}
 async function startMainWindow() {
   if (win) {
     win.show()
@@ -27,6 +15,13 @@ async function startMainWindow() {
   }
 }
 async function bootstrap() {
+  // 防止运行错误无法正常退出
+  process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception:', err)
+    process.exit(1)
+  })
+
+  initPath()
   app.whenReady().then(() => {
     app.commandLine.appendSwitch('ignore-certificate-errors', 'true')
     app.commandLine.appendArgument('--headless')
@@ -37,7 +32,6 @@ async function bootstrap() {
       optimizer.watchWindowShortcuts(window)
     })
 
-    bliveWindow(mockRoom)
     startMainWindow()
 
     app.on('activate', () => {
@@ -50,6 +44,11 @@ async function bootstrap() {
       app.quit()
     }
   })
+
+  // 获取id
+  ipcMain.handle('getWinId', (event) => event.sender.id)
+  new MainHandle()
+  new BliveHandle()
 }
 
 bootstrap()

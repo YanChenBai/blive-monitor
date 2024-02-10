@@ -8,7 +8,7 @@ import {
   watch
 } from '@preload/utils/status'
 import { BliveInvoke } from '@preload/utils/invoke'
-import { Emoticons } from '@preload/types/emoji'
+import { Emoticons } from '@type/emoji'
 import lodash from 'lodash'
 
 /** 匹配可输入的最大弹幕 */

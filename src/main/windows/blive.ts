@@ -1,30 +1,26 @@
-import { shell, app, BrowserWindow } from 'electron'
+import { shell, BrowserWindow } from 'electron'
 import { join } from 'path'
-import { Room } from '@main/types/window'
-import { liveRoomWindowMap } from '@main/utils/liveRoomWindow'
-import { BliveHandle } from './../handles/bliveHandle'
+import type { Room } from '@type/room'
+import { roomMap } from '@main/utils/liveRoomWindow'
 import { insertCSS } from './css'
-import icon from '../../../resources/icon.png?asset'
 import { getRoomConfig, updateRoomConfig } from '@main/utils/lowdb'
+import { getFace } from '@main/utils/getFaceImage'
+import { ASPECT_RATIO_KEYS } from '@type/handle'
+import { ASPECT_RATIO } from '@main/handles/bliveHandle'
 
-export const ASPECT_RATIO = {
-  RATIO_16_9: 16 / 9,
-  RATIO_9_16: 9 / 16
-}
-
-export type ASPECT_RATIO_KEYS = keyof typeof ASPECT_RATIO
-
-const DEF_ASPECT_RATIO: ASPECT_RATIO_KEYS = 'RATIO_16_9'
+const DEF_ASPECT_RATIO = ASPECT_RATIO_KEYS.RATIO_16_9
 
 export async function bliveWindow(room: Room) {
   // 查看是否已经打开过
-  const findWin = liveRoomWindowMap.get(room.roomId)
-  if (findWin) {
-    findWin.window.show()
+  const winId = roomMap.findKey((item) => item.roomId === room.roomId)
+  if (winId) {
+    const findWin = BrowserWindow.getAllWindows().find((item) => item.id === winId)
+    if (findWin) findWin.show()
     return
   }
 
   const config = getRoomConfig(room.roomId)
+  const icon = await getFace(room.face)
 
   const size = 180 * ASPECT_RATIO[DEF_ASPECT_RATIO]
   const window = new BrowserWindow({
@@ -34,10 +30,11 @@ export async function bliveWindow(room: Room) {
     y: config?.y,
     minWidth: 180,
     minHeight: 180,
-    show: false,
     icon,
     frame: false,
     title: room.name,
+    titleBarStyle: 'hidden',
+    backgroundColor: '#000',
     webPreferences: {
       preload: join(__dirname, '../preload/blive.mjs'),
       contextIsolation: false,
@@ -46,27 +43,21 @@ export async function bliveWindow(room: Room) {
   })
 
   // 添加进win map
-  liveRoomWindowMap.set(room.roomId, { window, room })
+  roomMap.set(window.id, room)
 
   window.setAspectRatio(ASPECT_RATIO[DEF_ASPECT_RATIO])
   window.webContents.insertCSS(insertCSS)
-
-  window.on('ready-to-show', () => window.show())
 
   window.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
     return { action: 'deny' }
   })
 
-  if (app.isPackaged) {
-    window.loadFile(join(__dirname, '../renderer/index.html'))
-  } else {
-    window.loadURL(`https://live.bilibili.com/${room.roomId}?winId=${window.id}`)
-  }
+  window.loadURL(`https://live.bilibili.com/${room.roomId}?winId=${window.id}`)
 
   window.on('close', () => {
     // 从win map中移除
-    liveRoomWindowMap.delete(room.roomId)
+    roomMap.delete(window.id)
 
     // 保存关闭前的位置
     const [x, y] = window.getPosition()
@@ -82,8 +73,6 @@ export async function bliveWindow(room: Room) {
   })
 
   if (config?.alwaysOnTop) window.setAlwaysOnTop(true)
-
-  new BliveHandle(window)
 
   return window
 }

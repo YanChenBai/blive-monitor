@@ -1,7 +1,7 @@
 import axios from 'axios'
-import { RoomInfo, UserInfo, ManyUserInfo } from '../types/bili'
+import { RoomInfo, UserInfo, ManyUserInfo } from '@type/bili'
 import lodash from 'lodash'
-import { Room } from '@main/types/window'
+import type { ManyRoomItem, Room } from '@type/room'
 
 /**
  * 获取直播间信息
@@ -49,7 +49,6 @@ export async function getRoomInfo(room_id: string): Promise<Room> {
     })
 }
 
-export type ManyRoomItem = Omit<Room, 'roomId' | 'medalName'>
 export async function getManyRoomInfo(uids: string[]): Promise<Record<string, ManyRoomItem>> {
   const chunks = lodash.chunk(uids, 20)
   return Promise.all(

@@ -1,4 +1,4 @@
-import type { Emoticon, Emoticons } from '@preload/types/emoji'
+import type { Emoticon, Emoticons } from '@type/emoji'
 import { html, css, Component, tag, createComponent, batchAdd } from '@preload/utils/component'
 import { awaitLivePlayer } from '@preload/utils/livePlayer'
 import { Status, watch } from '@preload/utils/status'
