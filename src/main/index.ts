@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import { BrowserWindow, app } from 'electron'
-import { electronApp, optimizer } from '@electron-toolkit/utils'
+import { optimizer } from '@electron-toolkit/utils'
 import { mainWindow } from './windows/main'
 import { MainHandle } from '@main/handles/mainHandle'
 import { BliveHandle } from './handles/bliveHandle'
@@ -16,10 +16,19 @@ async function startMainWindow() {
   }
 }
 async function bootstrap() {
-  // 防止运行错误无法正常退出
-  process.on('uncaughtException', (err) => {
-    console.error('Uncaught Exception:', err)
-    process.exit(1)
+  // 当运行第二个实例时，将焦点聚焦到主窗口
+  app.on('second-instance', () => {
+    if (win) {
+      if (win.isMinimized()) win.restore()
+      win.focus()
+    }
+  })
+
+  // 窗口全部关闭时退出主进程
+  app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+      app.quit()
+    }
   })
 
   new MainHandle()
@@ -29,24 +38,17 @@ async function bootstrap() {
     app.commandLine.appendSwitch('ignore-certificate-errors', 'true')
     app.commandLine.appendArgument('--headless')
     app.commandLine.appendSwitch('--log-level', '3')
-    electronApp.setAppUserModelId('com.byc.blive')
 
     app.on('browser-window-created', (_, window) => {
       optimizer.watchWindowShortcuts(window)
     })
 
     startMainWindow()
-
-    app.on('activate', () => {
-      if (BrowserWindow.getAllWindows().length === 0) startMainWindow()
-    })
-  })
-
-  app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-      app.quit()
-    }
   })
 }
 
-bootstrap()
+if (app.requestSingleInstanceLock()) {
+  bootstrap()
+} else {
+  app.quit()
+}
