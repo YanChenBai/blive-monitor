@@ -14,6 +14,7 @@ import { awaitLivePlayer, awaitVideoEl } from './utils/livePlayer'
 import { DragNav } from '@preload/components/dragNav'
 import { randomMouseMove } from './utils/randomMouseMove'
 import { ChangeVolume } from '@preload/components/changeVolume'
+import { autoLottery } from './utils/autoLottery'
 
 const bliveInvoke = new BliveInvoke()
 const controlBarEl = createComponent(ControlBar)
@@ -46,7 +47,11 @@ window.addEventListener('DOMContentLoaded', async () => {
     const emoticons = await getEmoticons(room.roomId)
     danmuSendEl.data = emoticons
     document.body.appendChild(danmuSendEl)
+
+    // 自动抽奖
+    autoLottery()
   } catch (error) {
+    // 没有登入的话隐藏弹幕输入框按钮
     controlBarEl.setHideDanmuBtn = true
   }
 })

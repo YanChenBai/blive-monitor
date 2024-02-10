@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { BrowserWindow, app, ipcMain } from 'electron'
+import { BrowserWindow, app } from 'electron'
 import { electronApp, optimizer } from '@electron-toolkit/utils'
 import { mainWindow } from './windows/main'
 import { MainHandle } from '@main/handles/mainHandle'
@@ -21,6 +21,9 @@ async function bootstrap() {
     console.error('Uncaught Exception:', err)
     process.exit(1)
   })
+
+  new MainHandle()
+  new BliveHandle()
 
   app.whenReady().then(() => {
     app.commandLine.appendSwitch('ignore-certificate-errors', 'true')
@@ -44,11 +47,6 @@ async function bootstrap() {
       app.quit()
     }
   })
-
-  // 获取id
-  ipcMain.handle('getWinId', (event) => event.sender.id)
-  new MainHandle()
-  new BliveHandle()
 }
 
 bootstrap()
