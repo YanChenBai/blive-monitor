@@ -1,8 +1,8 @@
+import { BliveInvoke } from '../utils/invoke'
 import type { Emoticon, Emoticons } from '@type/emoji'
 import { html, css, Component, tag, createComponent, batchAdd } from '@preload/utils/component'
 import { awaitLivePlayer } from '@preload/utils/livePlayer'
 import { Status, watch } from '@preload/utils/status'
-// eslint-disable-next-line vue/prefer-import-from-vue
 import lodash from 'lodash'
 
 function isClickEmojiItem(e: MouseEvent) {
@@ -173,7 +173,8 @@ export class EmojiTab extends Component {
       const dom = createComponent(EmojiItem, {
         data: item,
         index,
-        src: item.url
+        src: item.url,
+        title: item.emoji
       })
       dom.style.width = size
       return dom
@@ -308,6 +309,8 @@ export class EmojiTabs extends Component {
     })
   }
 
+  bliveInvoke = new BliveInvoke()
+
   connected() {
     const tabsBody = this.shadowRoot?.querySelector('.emoji-tabs-body') as HTMLDivElement
     const tabsHeader = this.shadowRoot?.querySelector('.emoji-tabs-header') as HTMLDivElement
@@ -333,6 +336,7 @@ export class EmojiTabs extends Component {
             this.onSelect(data)
           } else {
             if (data.perm === 1) send(data)
+            // this.bliveInvoke.log('发送表情', data)
           }
         }
       })

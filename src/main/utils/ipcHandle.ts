@@ -1,4 +1,5 @@
 import { BrowserWindow, IpcMainInvokeEvent, ipcMain } from 'electron'
+import { logger } from './logger'
 
 type Handler = (windwo: BrowserWindow, ...args: any[]) => void
 
@@ -29,12 +30,21 @@ export class IPCHandle {
     if (handler) {
       const window = BrowserWindow.getAllWindows().find((item) => item.id === event.sender.id)
       if (window) {
-        return handler.call(this, window, ...args)
+        try {
+          return handler.call(this, window, ...args)
+        } catch (error) {
+          logger.error(error, event, name)
+          throw error
+        }
       } else {
-        throw new Error('No found window')
+        const msg = `No found window`
+        logger.error(msg, event, name)
+        throw new Error(msg)
       }
     } else {
-      throw new Error(`No handler found for ${name}`)
+      const msg = `No handler found for ${name}`
+      logger.error(msg, event)
+      throw new Error(msg)
     }
   }
 

@@ -30,6 +30,9 @@ export interface BliveHandleInterface {
 
   /** 获取持久化音量 */
   getVolume(win: BW): number
+
+  /** 输出持久化日志 */
+  log(win: BW, message: string, ...args: any[]): void
 }
 
 export interface MainHandleInterface {

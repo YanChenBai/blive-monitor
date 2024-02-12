@@ -46,6 +46,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   // 看看是否需要添加弹幕输入框
   try {
     const emoticons = await getEmoticons(room.roomId)
+
     danmuSendEl.data = emoticons
     document.body.appendChild(danmuSendEl)
 

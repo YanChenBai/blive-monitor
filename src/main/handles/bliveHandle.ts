@@ -3,6 +3,7 @@ import { IPCHandle, method, handle } from '@main/utils/ipcHandle'
 import { getRoomConfig, updateRoomConfig } from '@main/utils/lowdb'
 import { BrowserWindow as BW } from 'electron'
 import { ASPECT_RATIO_KEYS, BliveHandleInterface } from '@type/handle'
+import { logger } from '@main/utils/logger'
 
 export const ASPECT_RATIO = {
   [ASPECT_RATIO_KEYS.RATIO_16_9]: 16 / 9,
@@ -61,5 +62,10 @@ export class BliveHandle extends IPCHandle implements BliveHandleInterface {
     } else {
       throw new Error('未找到房间信息')
     }
+  }
+
+  @method
+  log(_win: BW, message: string, ...args: any[]) {
+    logger.error(message, ...args)
   }
 }

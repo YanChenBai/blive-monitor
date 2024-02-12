@@ -35,9 +35,6 @@ export class BliveInvoke
   extends IPCInvoke<BliveHandleInterface>
   implements InvokeTransform<BliveHandleInterface>
 {
-  setAspectRatio(_value: 'RATIO_16_9' | 'RATIO_9_16'): Promise<void> {
-    throw new Error('Method not implemented.')
-  }
   minWin() {
     return this.invoke('minWin')
   }
@@ -64,6 +61,14 @@ export class BliveInvoke
 
   getVolume() {
     return this.invoke('getVolume')
+  }
+
+  log(message: string, ...args: any[]) {
+    return this.invoke('log', message, args)
+  }
+
+  setAspectRatio(_value: 'RATIO_16_9' | 'RATIO_9_16'): Promise<void> {
+    throw new Error('Method not implemented.')
   }
 }
 
