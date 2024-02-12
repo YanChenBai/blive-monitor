@@ -1,5 +1,5 @@
 appId: com.blive.monitor
-productName: blive-monitor
+productName: BliveMonitor
 directories:
   buildResources: build
 files:
