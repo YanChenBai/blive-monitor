@@ -45,3 +45,56 @@ export const danmuInputStatus = new Status(false)
 
 /** 弹幕快捷发送输入框是否获得焦点*/
 export const danmuInputIsFocus = new Status(false)
+
+let autoCloseTimer: NodeJS.Timeout | undefined
+
+function clearAutoClose() {
+  clearTimeout(autoCloseTimer)
+}
+
+function autoClose() {
+  clearAutoClose()
+  autoCloseTimer = setTimeout(() => {
+    closeControlBar()
+    closeDanmuInput()
+  }, 5000)
+}
+export function openControlBar() {
+  controlBarStatus.value = true
+  autoClose()
+}
+
+/**
+ * 关闭控制栏
+ * @param forced 是否强制关闭
+ */
+export function closeControlBar(forced = false) {
+  if (!danmuInputIsFocus.value || forced) {
+    controlBarStatus.value = false
+    clearTimeout(autoCloseTimer)
+  }
+}
+
+export function switchControlBar() {
+  controlBarStatus.value ? closeControlBar(true) : openControlBar()
+}
+
+export function openDanmuInput() {
+  danmuInputStatus.value = true
+  autoClose()
+}
+
+/**
+ * 关闭输入框
+ * @param forced 是否强制关闭
+ */
+export function closeDanmuInput(forced = false) {
+  if (!danmuInputIsFocus.value || forced) {
+    danmuInputStatus.value = false
+    clearTimeout(autoCloseTimer)
+  }
+}
+
+export function switchDanmuInput() {
+  danmuInputStatus.value ? closeDanmuInput(true) : openDanmuInput()
+}

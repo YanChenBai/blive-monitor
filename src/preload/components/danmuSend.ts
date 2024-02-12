@@ -1,11 +1,14 @@
 import { Component, tag, css, html } from '@preload/utils/component'
 import { EmojiTabs } from './emoji'
 import {
-  controlBarStatus,
   danmuInputStatus,
   danmuInputIsFocus,
   Status,
-  watch
+  watch,
+  openControlBar,
+  closeControlBar,
+  closeDanmuInput,
+  switchDanmuInput
 } from '@preload/utils/status'
 import { BliveInvoke } from '@preload/utils/invoke'
 import { Emoticons } from '@type/emoji'
@@ -154,11 +157,12 @@ export class DanmuSend extends Component {
         danmuInputStatus.value ? inputEl.blur() : inputEl.focus()
 
         // 输入框打开时同时打开控制栏
-        danmuInputStatus.value = !danmuInputStatus.value
+        switchDanmuInput()
       }
 
       if (e.key === 'Escape') {
-        danmuInputStatus.value = false
+        closeControlBar(true)
+        closeDanmuInput(true)
         inputEl.blur()
       }
     })
@@ -184,10 +188,9 @@ export class DanmuSend extends Component {
     watch(
       danmuInputStatus,
       lodash.debounce((val) => {
-        if (val) {
-          // 输入框打开时同时打开控制栏
-          controlBarStatus.value = true
-        }
+        // 输入框打开时同时打开控制栏
+        if (val) openControlBar()
+
         wrapEl.classList.toggle('show', val)
       }, 100)
     )

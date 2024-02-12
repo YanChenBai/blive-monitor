@@ -6,16 +6,19 @@ import { controlBarStatus, watch } from '@preload/utils/status'
 export class UserInfo extends Component {
   css = css`
     .user-info {
-      z-index: 99999;
       width: fit-content;
       display: flex;
       align-items: center;
-      transition: opacity 0.3s;
+      transition: all 0.3s;
       user-select: none;
       cursor: pointer;
-      margin-right: 10px;
-      margin-top: 10px;
       opacity: 0;
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 99999;
+      transform: scale(0);
+      transform-origin: right;
     }
     .face {
       overflow: hidden;
@@ -31,9 +34,11 @@ export class UserInfo extends Component {
       padding: 0 6px;
       line-height: 32px;
       font-size: 14px;
+      color: #fff;
     }
 
     .show {
+      transform: scale(1);
       opacity: 1;
     }
   `

@@ -10,16 +10,16 @@ import { ControlBar } from '@preload/components/controlBar'
 import { DanmuSend } from '@preload/components/danmuSend'
 import { batchAdd, createComponent } from '@preload/utils/component'
 import { getEmoticons } from '@preload/utils/api'
-import { awaitLivePlayer, awaitVideoEl } from './utils/livePlayer'
-import { DragNav } from '@preload/components/dragNav'
+import { awaitLivePlayer } from './utils/livePlayer'
 import { randomMouseMove } from './utils/randomMouseMove'
 import { ChangeVolume } from '@preload/components/changeVolume'
 import { autoLottery } from './utils/autoLottery'
+import { UserInfo } from '@preload/components/userInfo'
 
 const bliveInvoke = new BliveInvoke()
 const controlBarEl = createComponent(ControlBar)
 const danmuSendEl = createComponent(DanmuSend)
-const dragNav = createComponent(DragNav)
+const userInfoEl = createComponent(UserInfo)
 const changeVolume = createComponent(ChangeVolume)
 
 /** 移除播放器日志的悬浮框显示状态 */
@@ -27,7 +27,7 @@ window.localStorage.removeItem('web-player-show-log')
 window.localStorage.removeItem('web-player-show-videoinfo')
 
 window.addEventListener('DOMContentLoaded', async () => {
-  batchAdd(document.body, [controlBarEl, dragNav, changeVolume])
+  batchAdd(document.body, [controlBarEl, changeVolume])
 
   awaitLivePlayer().then((livePlayer) => {
     // 关闭弹幕侧边栏
@@ -36,13 +36,14 @@ window.addEventListener('DOMContentLoaded', async () => {
     livePlayer.setFullscreenStatus(1)
   })
 
-  awaitVideoEl().then((videoEl) => {
-    console.log(videoEl)
-  })
-
-  // 看看是否需要添加弹幕输入框
+  // 获取直播间信息
   const room = await bliveInvoke.getRoom()
 
+  // 添加主播信息展示
+  userInfoEl.room = room
+  document.body.append(userInfoEl)
+
+  // 看看是否需要添加弹幕输入框
   try {
     const emoticons = await getEmoticons(room.roomId)
     danmuSendEl.data = emoticons

@@ -9,7 +9,14 @@ import {
   switchElement
 } from '@preload/utils/component'
 import { ControlBtn } from './controlBtn'
-import { controlBarStatus, danmuInputStatus, danmuInputIsFocus, watch } from '@preload/utils/status'
+import {
+  controlBarStatus,
+  watch,
+  openControlBar,
+  closeControlBar,
+  closeDanmuInput,
+  switchDanmuInput
+} from '@preload/utils/status'
 import { Close, Minimize, Danmu, Pin, Pined } from './icons'
 import { BliveInvoke } from '@preload/utils/invoke'
 
@@ -95,6 +102,7 @@ export class ControlBar extends Component {
       await this.bliveInvoke.getAlwaysOnTop()
     )
 
+    // 监听控制栏显示状态
     watch(
       controlBarStatus,
       (val) => {
@@ -103,21 +111,15 @@ export class ControlBar extends Component {
       true
     )
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        controlBarStatus.value = false
-      }
-    })
-
     document.onmousemove = (event: MouseEvent & { ignore?: boolean }) => {
-      if (event.ignore !== true) controlBarStatus.value = true
+      if (event.ignore !== true) {
+        openControlBar()
+      }
     }
 
     document.onmouseleave = () => {
-      if (!danmuInputIsFocus.value) {
-        controlBarStatus.value = false
-        danmuInputStatus.value = false
-      }
+      closeControlBar()
+      closeDanmuInput()
     }
 
     btns.minWin.onClickBtn = () => {
@@ -136,8 +138,6 @@ export class ControlBar extends Component {
       this.bliveInvoke.setAlwaysOnTop(false)
     }
 
-    btns.switchDanmuInput.onClickBtn = () => {
-      danmuInputStatus.value = !danmuInputStatus.value
-    }
+    btns.switchDanmuInput.onClickBtn = () => switchDanmuInput()
   }
 }
