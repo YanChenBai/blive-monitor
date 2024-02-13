@@ -147,7 +147,7 @@ export class DanmuSend extends Component {
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
-        if (inputEl.value.trim().length > 0) {
+        if (inputEl.value.trim().length > 0 && danmuInputStatus.value) {
           this.send(inputEl.value)
           // 清空输入框
           inputEl.value = ''
