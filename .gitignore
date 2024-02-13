@@ -7,3 +7,4 @@ electron.vite.config.*.mjs
 db.json
 logs
 icons
+.env
