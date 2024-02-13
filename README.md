@@ -15,10 +15,11 @@
 
 <img src="./readme/preview_2.png" alt="icon" style="border-radius: 4px;">
 
-## 第三方开源组件
+## 感谢以下开源项目
 
 - [Vue.js](https://cn.vuejs.org)
 - [Naive UI](https://www.naiveui.com/zh-CN/light)
 - [UnoCSS](https://unocss.dev/)
 - [bilibili-API-collect](https://github.com/SocialSisterYi/bilibili-API-collect)
 - [electron-vite](https://github.com/alex8088/electron-vite)
+- [pinyin-pro](https://github.com/zh-lx/pinyin-pro)
