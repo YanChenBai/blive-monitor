@@ -1,4 +1,3 @@
-
 <div class="title" align=center>
     <h1>Blive Monitor</h1>
     <div>更好的的B站直播观看器</div>
