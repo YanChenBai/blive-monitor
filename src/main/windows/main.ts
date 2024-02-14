@@ -10,8 +10,6 @@ export async function mainWindow() {
   const window = new BrowserWindow({
     width: 400,
     height: 600,
-    x: config?.x,
-    y: config?.y,
     resizable: false,
     show: false,
     icon,
@@ -24,9 +22,12 @@ export async function mainWindow() {
     }
   })
 
-  window.on('ready-to-show', () => {
-    window.show()
-  })
+  // 初始化位置
+  if (config.x && config.y) {
+    window.setPosition(config.x, config.y)
+  }
+
+  window.on('ready-to-show', () => window.show())
 
   window.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)

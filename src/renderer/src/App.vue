@@ -17,11 +17,9 @@
   >
     <n-dialog-provider>
       <n-message-provider placement="bottom">
-        <div h-screen w-screen flex flex-col>
-          <n-layout flex-1>
-            <RouterView />
-          </n-layout>
-        </div>
+        <n-layout>
+          <RouterView />
+        </n-layout>
       </n-message-provider>
     </n-dialog-provider>
   </n-config-provider>
@@ -32,4 +30,4 @@ import { darkTheme } from 'naive-ui'
 import { RouterView } from 'vue-router'
 </script>
 
-<style scoped></style>
+<style></style>

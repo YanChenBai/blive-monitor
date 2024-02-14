@@ -27,8 +27,6 @@ export async function bliveWindow(room: Room) {
   const window = new BrowserWindow({
     width: config?.width || size,
     height: config?.height || size,
-    x: config?.x,
-    y: config?.y,
     minWidth: 180,
     minHeight: 180,
     icon,
@@ -42,6 +40,11 @@ export async function bliveWindow(room: Room) {
       nodeIntegration: true
     }
   })
+
+  // 初始化位置
+  if (config.x && config.y) {
+    window.setPosition(config.x, config.y)
+  }
 
   // 添加进win map
   roomMap.set(window.id, room)
@@ -70,8 +73,7 @@ export async function bliveWindow(room: Room) {
     roomMap.delete(window.id)
 
     // 保存关闭前的位置
-    const [x, y] = window.getPosition()
-    const { width, height } = window.getBounds()
+    const { width, height, x, y } = window.getBounds()
 
     updateRoomConfig({
       roomId: room.roomId,

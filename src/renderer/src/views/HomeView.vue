@@ -23,7 +23,7 @@
       <!-- <Updater /> -->
     </div>
 
-    <n-spin description="加载中" :show="newVersionInit">
+    <n-spin description="加载中" :show="newVersionInit" of-hidden>
       <div m-t-10px of-hidden>
         <n-scrollbar class="h-[calc(100vh-96px)]">
           <n-card

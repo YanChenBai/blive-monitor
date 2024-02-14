@@ -47,7 +47,7 @@ type UpdateData = Partial<Omit<RoomConfig, 'roomId'>> & { roomId: string }
 export async function updateRoomConfig(newData: UpdateData) {
   const index = db.data.config.findIndex((item) => item.roomId === newData.roomId)
   if (index !== -1) {
-    db.data[index] = { ...db.data[index], ...newData }
+    db.data.config[index] = { ...db.data.config[index], ...newData }
     db.write()
   }
 }
