@@ -10,6 +10,24 @@ import { ASPECT_RATIO } from '@main/handles/bliveHandle'
 import { getRoomPlayInfo } from '@main/utils/api'
 
 const DEF_ASPECT_RATIO = ASPECT_RATIO_KEYS.RATIO_16_9
+const getSize = (aspectRatio: ASPECT_RATIO_KEYS) => {
+  switch (aspectRatio) {
+    case ASPECT_RATIO_KEYS.RATIO_16_9:
+      return {
+        width: 640,
+        height: 320,
+        minWidth: 320,
+        minHeight: 180
+      }
+    case ASPECT_RATIO_KEYS.RATIO_9_16:
+      return {
+        width: 320,
+        height: 640,
+        minWidth: 180,
+        minHeight: 320
+      }
+  }
+}
 
 export async function bliveWindow(room: Room) {
   // 查看是否已经打开过
@@ -21,18 +39,19 @@ export async function bliveWindow(room: Room) {
   }
 
   const config = getRoomConfig(room.roomId)
+
   const icon = await getFace(room.face)
 
-  const size = 180 * ASPECT_RATIO[DEF_ASPECT_RATIO]
+  const size = getSize(DEF_ASPECT_RATIO)
+
   const window = new BrowserWindow({
-    width: config?.width || size,
-    height: config?.height || size,
-    minWidth: 180,
-    minHeight: 180,
+    width: config?.width || size.width,
+    height: config?.height || size.height,
+    minWidth: size.minWidth,
+    minHeight: size.minHeight,
     icon,
     frame: false,
     title: room.name,
-    titleBarStyle: 'hidden',
     backgroundColor: '#000',
     webPreferences: {
       preload: join(__dirname, '../preload/blive.mjs'),
@@ -41,10 +60,7 @@ export async function bliveWindow(room: Room) {
     }
   })
 
-  // 初始化位置
-  if (config.x && config.y) {
-    window.setPosition(config.x, config.y)
-  }
+  if (config.x && config.y) window.setPosition(config.x, config.y)
 
   // 添加进win map
   roomMap.set(window.id, room)
@@ -55,7 +71,14 @@ export async function bliveWindow(room: Room) {
   // 获取直播间信息看看是否是竖屏
   getRoomPlayInfo(room.roomId).then(({ data }) => {
     if (data.is_portrait) {
-      window.setAspectRatio(ASPECT_RATIO.RATIO_9_16)
+      const verticalSize = getSize(ASPECT_RATIO_KEYS.RATIO_9_16)
+
+      window.setMinimumSize(verticalSize.minWidth, verticalSize.minHeight)
+
+      window.setAspectRatio(ASPECT_RATIO.RATIO_9_16, {
+        width: config?.width || verticalSize.width,
+        height: config?.height || verticalSize.height
+      })
     }
   })
 

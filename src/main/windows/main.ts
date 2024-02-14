@@ -22,12 +22,15 @@ export async function mainWindow() {
     }
   })
 
-  // 初始化位置
-  if (config.x && config.y) {
-    window.setPosition(config.x, config.y)
-  }
+  window.once('ready-to-show', () => {
+    window.show()
+    // 初始化位置
+    if (config.x && config.y) {
+      window.setPosition(config.x, config.y)
+    }
+  })
 
-  window.on('ready-to-show', () => window.show())
+  window.loadURL(RENDER_PATH)
 
   window.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
@@ -44,8 +47,6 @@ export async function mainWindow() {
     })
     app.quit()
   })
-
-  window.loadURL(RENDER_PATH)
 
   return window
 }
