@@ -8,7 +8,7 @@ export async function mainWindow() {
   const config = getMainWindowConfig()
 
   const window = new BrowserWindow({
-    width: 400,
+    width: 360,
     height: 600,
     resizable: false,
     show: false,
@@ -18,7 +18,8 @@ export async function mainWindow() {
     webPreferences: {
       preload: join(__dirname, '../preload/main.mjs'),
       contextIsolation: false,
-      nodeIntegration: true
+      nodeIntegration: true,
+      spellcheck: false
     }
   })
 

@@ -18,6 +18,7 @@ declare module 'vue' {
     NCard: typeof import('naive-ui')['NCard']
     NConfigProvider: typeof import('naive-ui')['NConfigProvider']
     NDialogProvider: typeof import('naive-ui')['NDialogProvider']
+    NEllipsis: typeof import('naive-ui')['NEllipsis']
     NGradientText: typeof import('naive-ui')['NGradientText']
     NIcon: typeof import('naive-ui')['NIcon']
     NInput: typeof import('naive-ui')['NInput']

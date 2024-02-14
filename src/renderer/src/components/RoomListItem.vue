@@ -8,22 +8,20 @@
           </n-badge>
         </template>
         <div>
-          <div
-            :class="{
-              'm-b-6px': room.keyframe
-            }"
-            font="600"
-          >
+          <div font="600">
             {{ room.title }}
-          </div>
-          <div v-if="room.keyframe">
-            <img max="w-260px h-260px" rd-4px :src="room.keyframe" />
           </div>
         </div>
       </n-popover>
     </template>
     <template #header>
-      <n-text type="primary">{{ room.name }}</n-text>
+      <n-ellipsis w-140px of-hidden color="#fb7299FF">
+        <n-text type="primary" select-none>{{ room.name }}</n-text>
+        <template #tooltip>
+          {{ room.name }}
+        </template>
+      </n-ellipsis>
+      <div :title="room.name"></div>
     </template>
     <template #description>
       <n-text text-14px>
