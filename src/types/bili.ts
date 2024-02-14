@@ -85,3 +85,104 @@ export interface ManyUserInfoItem {
 export interface ManyUserInfo extends Response {
   data: Record<string, ManyUserInfoItem>
 }
+
+export interface RoomPlayInfo extends Response {
+  data: {
+    room_id: number
+    short_id: number
+    uid: number
+    is_hidden: boolean
+    is_locked: boolean
+    is_portrait: boolean // 是否时竖屏
+    live_status: number // 直播状态
+    hidden_till: number
+    lock_till: number
+    encrypted: boolean
+    pwd_verified: boolean
+    live_time: number
+    room_shield: number
+    all_special_types: any[]
+    playurl_info: {
+      conf_json: string
+      playurl: {
+        cid: number
+        g_qn_desc: {
+          qn: number
+          desc: string
+          hdr_desc: string
+          attr_desc: object
+        }
+        stream: [
+          {
+            protocol_name: string
+            format: {
+              format_name: string
+              codec: {
+                codec_name: string
+                current_qn: number
+                accept_qn: number[]
+                base_url: string
+                url_info: { host: string; extra: string; stream_ttl: number }[]
+                hdr_qn: object
+                dolby_type: number
+                attr_name: string
+              }[]
+              master_url: string
+            }[]
+          },
+          {
+            protocol_name: string
+            format: [
+              {
+                format_name: string
+                codec: {
+                  codec_name: string
+                  current_qn: number
+                  accept_qn: number[]
+                  base_url: string
+                  url_info: {
+                    host: string
+                    extra: string
+                    stream_ttl: number
+                  }[]
+                  hdr_qn: object
+                  dolby_type: number
+                  attr_name: string
+                }[]
+                master_url: string
+              },
+              {
+                format_name: string
+                codec: {
+                  codec_name: string
+                  current_qn: number
+                  accept_qn: number[]
+                  base_url: string
+                  url_info: {
+                    host: string
+                    extra: string
+                    stream_ttl: number
+                  }[]
+                  hdr_qn: object
+                  dolby_type: number
+                  attr_name: string
+                }[]
+                master_url: string
+              }
+            ]
+          }
+        ]
+        p2p_data: {
+          p2p: boolean
+          p2p_type: number
+          m_p2p: boolean
+          m_servers: object
+        }
+        dolby_qn: object
+      }
+    }
+    official_type: number
+    official_room_id: number
+    risk_with_delay: number
+  }
+}

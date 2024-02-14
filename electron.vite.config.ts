@@ -59,6 +59,7 @@ export default defineConfig({
         configFile: './uno.config.{js,ts,mjs,mts}'
       }),
       AutoImport({
+        dts: true,
         imports: [
           'vue',
           {

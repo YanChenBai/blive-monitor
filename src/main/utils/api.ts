@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { RoomInfo, UserInfo, ManyUserInfo } from '@type/bili'
+import { RoomInfo, UserInfo, ManyUserInfo, RoomPlayInfo } from '@type/bili'
 import lodash from 'lodash'
 import type { ManyRoomItem, Room } from '@type/room'
 
@@ -87,4 +87,11 @@ export async function getManyRoomInfo(uids: string[]): Promise<Record<string, Ma
       return { ...acc, ...cur }
     }, {})
   )
+}
+
+/** 获取直播信息 */
+export async function getRoomPlayInfo(roomId: string) {
+  return await fetch(
+    `https://api.live.bilibili.com/xlive/web-room/v2/index/getRoomPlayInfo?room_id=${roomId}&protocol=0,1&format=0,1,2&codec=0,1,2&qn=150&platform=web&ptype=8&dolby=5&panorama=1`
+  ).then((res) => res.json() as Promise<RoomPlayInfo>)
 }

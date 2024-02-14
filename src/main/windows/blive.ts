@@ -7,6 +7,7 @@ import { getRoomConfig, updateRoomConfig } from '@main/utils/lowdb'
 import { getFace } from '@main/utils/getFaceImage'
 import { ASPECT_RATIO_KEYS } from '@type/handle'
 import { ASPECT_RATIO } from '@main/handles/bliveHandle'
+import { getRoomPlayInfo } from '@main/utils/api'
 
 const DEF_ASPECT_RATIO = ASPECT_RATIO_KEYS.RATIO_16_9
 
@@ -45,7 +46,16 @@ export async function bliveWindow(room: Room) {
   // 添加进win map
   roomMap.set(window.id, room)
 
+  // 默认16:9
   window.setAspectRatio(ASPECT_RATIO[DEF_ASPECT_RATIO])
+
+  // 获取直播间信息看看是否是竖屏
+  getRoomPlayInfo(room.roomId).then(({ data }) => {
+    if (data.is_portrait) {
+      window.setAspectRatio(ASPECT_RATIO.RATIO_9_16)
+    }
+  })
+
   window.webContents.insertCSS(insertCSS)
 
   window.webContents.setWindowOpenHandler((details) => {
