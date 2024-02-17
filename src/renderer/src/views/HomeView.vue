@@ -9,8 +9,9 @@
           type="primary"
           placeholder="输入房间号👌"
           clearable
+          @keydown.enter="add"
         />
-        <n-button type="primary" @click="add()">添加</n-button>
+        <n-button type="primary" @click="add">添加</n-button>
       </n-input-group>
       <n-button type="primary" m-l-6px @click="openBiliHome()">登录</n-button>
       <n-button type="primary" m-l-6px :loading="refreshLoading" @click="refresh()">
@@ -51,6 +52,7 @@ import { useMessage } from 'naive-ui'
 import { loadingWrapRef } from '@renderer/utils/loadingWrap'
 import RoomListItem from '@renderer/components/RoomListItem.vue'
 import WinMenu from '@renderer/components/WinMenu.vue'
+import { debounce } from 'lodash'
 
 defineOptions({ name: 'HomeView' })
 
@@ -63,8 +65,6 @@ const refreshLoading = ref(false)
 
 /** 以前的数据格式转换为新的 */
 rooms.value = rooms.value.map((item: any) => {
-  console.log(item)
-
   if (item.live_status) {
     item.liveStatus = item.live_status
     Reflect.deleteProperty(item, 'live_status')
@@ -84,7 +84,7 @@ rooms.value = rooms.value.map((item: any) => {
   return item
 })
 
-async function add() {
+const add = debounce(async () => {
   const status = await roomsStore.add(keyword.value)
   switch (status) {
     case ResultMesg.OK:
@@ -100,7 +100,7 @@ async function add() {
       message.error('直播间已添加噜')
       break
   }
-}
+}, 300)
 
 function remove(room_id: string) {
   const status = roomsStore.remove(room_id)
@@ -114,17 +114,20 @@ function remove(room_id: string) {
   }
 }
 
-const refresh = () =>
-  loadingWrapRef(refreshLoading, async () => {
-    return await roomsStore.refresh().then((res) => {
-      if (res === ResultMesg.OK) {
-        message.success('刷新成功')
-      } else {
-        message.error('刷新失败')
-      }
-      return res
-    })
-  })
+const refresh = debounce(
+  () =>
+    loadingWrapRef(refreshLoading, async () => {
+      return await roomsStore.refresh().then((res) => {
+        if (res === ResultMesg.OK) {
+          message.success('刷新成功')
+        } else {
+          message.error('刷新失败')
+        }
+        return res
+      })
+    }),
+  300
+)
 
 const openLiveRoom = (room: Room) => window.mainInvoke.openLiveRoom({ ...room })
 
