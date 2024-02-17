@@ -26,7 +26,8 @@ export async function mainWindow() {
   window.once('ready-to-show', () => {
     window.show()
     // 初始化位置
-    if (config.x && config.y) {
+
+    if (config.x !== undefined && config.y !== undefined) {
       window.setPosition(config.x, config.y)
     }
   })

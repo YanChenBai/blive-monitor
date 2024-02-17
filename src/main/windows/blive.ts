@@ -60,7 +60,7 @@ export async function bliveWindow(room: Room) {
     }
   })
 
-  if (config.x && config.y) window.setPosition(config.x, config.y)
+  if (config.x !== undefined && config.y !== undefined) window.setPosition(config.x, config.y)
 
   // 添加进win map
   roomMap.set(window.id, room)
