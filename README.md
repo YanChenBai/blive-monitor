@@ -1,6 +1,6 @@
 <div class="title" align=center>
     <h1>Blive Monitor</h1>
-    <div>更好的的B站直播观看器</div>
+    <div>一个我觉的更好用的b站直播观看工具</div>
     <br/>
     <img src="./build/icon.png" alt="icon" width="80">
 </div>
