@@ -12,6 +12,9 @@
         borderHover: '2px solid #F288A6FF',
         borderDisabled: '2px solid #00000',
         borderFocus: '2px solid #F288A6FF'
+      },
+      Card: {
+        paddingSmall: '10px 10px 10px 10px'
       }
     }"
   >
