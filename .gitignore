@@ -6,5 +6,5 @@ out
 electron.vite.config.*.mjs
 db.json
 logs
-icons
+resources/icons
 .env
