@@ -71,14 +71,15 @@ export const useRoomsStore = defineStore(
         for (const key in res) {
           const findIndex = rooms.value.findIndex((item) => item.uid === key)
           if (findIndex !== -1) {
-            const { title, face, name, liveStatus, keyframe } = res[key]
+            const { title, face, name, liveStatus, keyframe, tags } = res[key]
             rooms.value[findIndex] = {
               ...rooms.value[findIndex],
               title,
               face,
               name,
               liveStatus,
-              keyframe
+              keyframe,
+              tags
             }
           }
         }
