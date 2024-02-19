@@ -21,28 +21,34 @@
           </n-icon>
         </template>
       </n-button>
-      <!-- <Updater /> -->
     </div>
 
     <n-spin description="加载中" :show="newVersionInit" of-hidden>
       <div m-t-10px of-hidden>
         <n-scrollbar class="h-[calc(100vh-96px)]">
-          <n-card
-            v-for="(item, index) in searchList"
-            :key="index"
-            :bordered="false"
-            size="small"
-            class="[&:not(:last-child)]:m-b-10px"
+          <VueDraggable
+            v-model="rooms"
+            :animation="150"
+            :scroll-sensitivity="20"
+            :disabled="keyword.length > 0"
           >
-            <RoomListItem :room="item" @open="openLiveRoom" @remove="remove"></RoomListItem>
-          </n-card>
+            <RoomListItem
+              v-for="item in searchList"
+              :key="item.uid"
+              class="[&:not(:last-child)]:m-b-10px"
+              :room="item"
+              @open="openLiveRoom"
+              @remove="remove"
+            >
+            </RoomListItem>
+          </VueDraggable>
         </n-scrollbar>
       </div>
     </n-spin>
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="tsx">
 import { useRoomsStore, ResultMesg } from '@renderer/stores/rooms'
 import { Room } from '@type/room'
 import { computed, onMounted, ref } from 'vue'
@@ -50,9 +56,10 @@ import { storeToRefs } from 'pinia'
 import { match } from 'pinyin-pro'
 import { useMessage } from 'naive-ui'
 import { loadingWrapRef } from '@renderer/utils/loadingWrap'
-import RoomListItem from '@renderer/components/RoomListItem.vue'
 import WinMenu from '@renderer/components/WinMenu.vue'
 import { debounce } from 'lodash'
+import { VueDraggable } from 'vue-draggable-plus'
+import RoomListItem from '@renderer/components/RoomListItem.vue'
 
 defineOptions({ name: 'HomeView' })
 
@@ -65,7 +72,7 @@ const refreshLoading = ref(false)
 
 /** 以前的数据格式转换为新的 */
 rooms.value = rooms.value.map((item: any) => {
-  if (item.live_status) {
+  if (item.live_status !== undefined) {
     item.liveStatus = item.live_status
     Reflect.deleteProperty(item, 'live_status')
   }
@@ -85,34 +92,24 @@ rooms.value = rooms.value.map((item: any) => {
 })
 
 const add = debounce(async () => {
-  const status = await roomsStore.add(keyword.value)
-  switch (status) {
-    case ResultMesg.OK:
-      message.success('添加成功')
-      break
-    case ResultMesg.Empty:
-      message.error('房间号不能为空')
-      break
-    case ResultMesg.Format:
-      message.error('房间号格式不正确')
-      break
-    case ResultMesg.Repeat:
-      message.error('直播间已添加噜')
-      break
+  if (!keyword.value.startsWith('live')) {
+    const status = await roomsStore.add(keyword.value)
+    switch (status) {
+      case ResultMesg.OK:
+        message.success('添加成功')
+        break
+      case ResultMesg.Empty:
+        message.error('房间号不能为空')
+        break
+      case ResultMesg.Format:
+        message.error('房间号格式不正确')
+        break
+      case ResultMesg.Repeat:
+        message.error('直播间已添加噜')
+        break
+    }
   }
 }, 300)
-
-function remove(room_id: string) {
-  const status = roomsStore.remove(room_id)
-  switch (status) {
-    case ResultMesg.OK:
-      message.success('删除成功')
-      break
-    case ResultMesg.NotFound:
-      message.error('列表里没这个房间捏')
-      break
-  }
-}
 
 const refresh = debounce(
   () =>
@@ -128,8 +125,19 @@ const refresh = debounce(
     }),
   300
 )
-
 const openLiveRoom = (room: Room) => window.mainInvoke.openLiveRoom({ ...room })
+
+function remove(room_id: string) {
+  const status = roomsStore.remove(room_id)
+  switch (status) {
+    case ResultMesg.OK:
+      message.success('删除成功')
+      break
+    case ResultMesg.NotFound:
+      message.error('列表里没这个房间捏')
+      break
+  }
+}
 
 const openBiliHome = () => window.mainInvoke.openBiliHome()
 
@@ -139,7 +147,7 @@ const searchList = computed(() => {
   if (keyword.value.length <= 0) return rooms.value
   else {
     let val = keyword.value.toLowerCase()
-    let searchRooms: Room[] = rooms.value
+    let searchRooms: Room[] = [...rooms.value]
     // 如果是live开头的
     if (val.startsWith('live')) {
       // 先过滤掉为开播的

@@ -35,6 +35,7 @@
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.0.0",
     "pinyin-pro": "^3.18.5",
+    "vue-draggable-plus": "^0.3.5",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
