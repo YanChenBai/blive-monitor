@@ -8,10 +8,25 @@
               <n-avatar :size="48" :src="room.face" cursor-pointer />
             </n-badge>
           </template>
-          <div>
-            <div font="600">
-              {{ room.title }}
-            </div>
+          <div w-200px>
+            <n-descriptions
+              label-placement="top"
+              title=""
+              :column="1"
+              label-style="color: #fb7299FF; font-weight: 600;"
+            >
+              <n-descriptions-item label="标题">
+                {{ room.title }}
+              </n-descriptions-item>
+
+              <n-descriptions-item v-if="room.tags" label="标签">
+                {{ room.tags }}
+              </n-descriptions-item>
+
+              <n-descriptions-item v-if="room.medalName" label="粉丝牌">
+                <n-tag size="small">{{ room.medalName }}</n-tag>
+              </n-descriptions-item>
+            </n-descriptions>
           </div>
         </n-popover>
       </template>
