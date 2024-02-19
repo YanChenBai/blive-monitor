@@ -11,8 +11,11 @@
 - 支持发送弹幕
 - 支持发送表情
 - 支持多开
+- 多种搜索条件，可使用直播间ID、直播间短号、标签、粉丝牌名字、主播昵称
+- 拼音或拼音简写搜搜，例如 ``` zzgz ``` 、 ``` hm ```
+- 指令搜索，使用 ``` live ``` 关键字可筛选出开播的直播间，还可以添加条件使用空格隔开，例如 ``` live 5520 ``` 、 ``` live 猪猪公主 ``` 、 ``` zzgz ``` 、 ``` hm ```
 
-<img src="./readme/preview_2.png" alt="icon" style="border-radius: 4px;">
+<img src="./readme/preview_2.png" alt="icon">
 
 ## 感谢以下开源项目
 
