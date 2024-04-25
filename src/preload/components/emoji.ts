@@ -10,6 +10,21 @@ function isClickEmojiItem(e: MouseEvent) {
   return target.tagName.toLocaleLowerCase() === 'emoji-item'
 }
 
+/**
+ * 阻止冒泡,避免滚动调整音量触发 和 滚动间隔调整
+ */
+function wheel(el: HTMLElement, setp: number, direction = true) {
+  el.addEventListener('wheel', (ev) => {
+    if (direction) {
+      el.scrollTop += ev.deltaY > 0 ? setp : -setp
+    } else {
+      el.scrollLeft += ev.deltaY > 0 ? setp : -setp
+    }
+    ev.preventDefault()
+    ev.stopPropagation()
+  })
+}
+
 @tag('emoji-item')
 export class EmojiItem extends Component {
   css = css`
@@ -48,6 +63,24 @@ export class EmojiTabHeader extends Component {
       display: flex;
       box-sizing: border-box;
       background: #f1f2f3;
+      overflow-x: auto;
+    }
+
+    .emoji-header:hover::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .emoji-header::-webkit-scrollbar {
+      height: 0px;
+    }
+
+    .emoji-header::-webkit-scrollbar-thumb {
+      background-color: #aaaaaa;
+      border-radius: 10px;
+    }
+
+    .emoji-header::-webkit-scrollbar-thumb:hover {
+      background-color: #aaaaaa;
     }
 
     .emoji-header emoji-item {
@@ -55,6 +88,7 @@ export class EmojiTabHeader extends Component {
       height: 24px;
       padding: 6px;
       transition: all 0.3s;
+      flex-shrink: 0;
     }
     .emoji-header emoji-item:hover,
     .now {
@@ -96,6 +130,8 @@ export class EmojiTabHeader extends Component {
         this.onChange(target.index)
       }
     })
+
+    wheel(emojiHeader, 10, false)
   }
 
   onChange(_index: number) {
@@ -345,11 +381,6 @@ export class EmojiTabs extends Component {
     // 初始化一下
     this.tabs.length > 0 && this.switchTab(0)
 
-    // 阻止冒泡,避免滚动调整音量触发 和 滚动间隔调整
-    tabsBody.addEventListener('wheel', (ev) => {
-      tabsBody.scrollTop += ev.deltaY > 0 ? this.setp : -this.setp
-      ev.preventDefault()
-      ev.stopPropagation()
-    })
+    wheel(tabsBody, this.setp)
   }
 }
