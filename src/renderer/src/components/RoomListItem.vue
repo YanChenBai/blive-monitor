@@ -1,52 +1,23 @@
 <template>
-  <n-card :bordered="false" size="small">
-    <div flex items-center>
-      <div flex>
-        <div size-48px>
-          <n-popover trigger="hover" placement="right" :show-arrow="false">
-            <template #trigger>
-              <n-badge :value="room.liveStatus === 1 ? '播' : ''">
-                <n-avatar :size="48" :src="room.face" cursor-pointer />
-              </n-badge>
-            </template>
-            <div w-200px>
-              <n-descriptions
-                label-placement="top"
-                title=""
-                :column="1"
-                label-style="color: #fb7299FF; font-weight: 600;"
-              >
-                <n-descriptions-item label="标题">
-                  {{ room.title }}
-                </n-descriptions-item>
-
-                <n-descriptions-item v-if="room.tags" label="标签">
-                  {{ room.tags }}
-                </n-descriptions-item>
-
-                <n-descriptions-item v-if="room.medalName" label="粉丝牌">
-                  <n-tag size="small">{{ room.medalName }}</n-tag>
-                </n-descriptions-item>
-              </n-descriptions>
-            </div>
-          </n-popover>
+  <div bg="[#1e1e1e]" rounded-2 py-12px px-12px cursor-pointer>
+    <div flex items-center justify-between>
+      <div flex class="gap-[6px]">
+        <div size-48px relative :class="[room.liveStatus === 1 ? 'live' : 'unlive']">
+          <n-avatar rd-2 :size="48" :src="room.face" cursor-pointer />
         </div>
-        <div text-16px flex flex-col w-178px p-l-10px p-r-10px box-border line-height-24px>
-          <n-ellipsis w-158px of-hidden color="#fb7299FF">
-            <n-text type="primary" select-none>{{ room.name }}</n-text>
-            <template #tooltip> {{ room.name }} </template>
-          </n-ellipsis>
 
-          <n-ellipsis w-158px of-hidden color="#fb7299FF">
-            <n-text text-14px>
-              {{ showRoomId }}
-            </n-text>
-            <template #tooltip> {{ showRoomId }} </template>
-          </n-ellipsis>
+        <div text-16px flex flex-col p-l-10px p-r-10px box-border line-height-24px>
+          <div text-16px font-500 color="[rgba(255,255,255,0.87)]">{{ room.name }}</div>
+
+          <div text-14px font-300 color="[rgba(255,255,255,0.6)]">{{ showRoomId }}</div>
         </div>
       </div>
-      <div w-94px flex items-center justify-between>
-        <n-button round size="small" type="primary" @click="$emit('open', room)">打开</n-button>
+
+      <div flex items-center gap-8px justify-between>
+        <button class="btn" @click="$emit('open', room)">
+          <ExternalLink :size="5" />
+        </button>
+
         <n-popconfirm
           positive-text="尊嘟"
           negative-text="假嘟"
@@ -54,19 +25,20 @@
           @positive-click="$emit('remove', room.roomId)"
         >
           <template #trigger>
-            <n-button circle size="small" type="error">
-              <n-icon size="16"> <MaterialSymbolsDeleteRounded /> </n-icon>
-            </n-button>
+            <button class="btn">
+              <Trash2 :size="5" />
+            </button>
           </template>
           要删噜!
         </n-popconfirm>
       </div>
     </div>
-  </n-card>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { Room } from '@type/room'
+import { ExternalLink, Trash2 } from 'lucide-vue-next'
 
 defineOptions({ name: 'RoomListroom' })
 const props = defineProps<{
@@ -81,4 +53,38 @@ const showRoomId =
   props.room.shortId && props.room.shortId === '0' ? props.room.roomId : props.room.shortId
 </script>
 
-<style scoped></style>
+<style scoped>
+.btn {
+  @apply: bg-[#FB7299] size-28px p-6px border-0 flex-inline justify-center items-center rounded-2
+    cursor-pointer hover-bg-[#FB7299]/90 transition-all outline-none;
+}
+
+.unlive {
+  filter: brightness(0.6);
+}
+
+.live::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 0 0 2px #fb7299;
+  border-radius: 0.5rem;
+  z-index: 9;
+  animation: 0.8s live infinite;
+}
+
+@keyframes live {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+</style>

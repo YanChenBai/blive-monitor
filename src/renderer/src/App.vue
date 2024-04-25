@@ -20,9 +20,11 @@
   >
     <n-dialog-provider>
       <n-message-provider placement="bottom">
-        <n-layout>
-          <RouterView />
-        </n-layout>
+        <n-modal-provider>
+          <div class="bg-[#121212] w-screen">
+            <RouterView />
+          </div>
+        </n-modal-provider>
       </n-message-provider>
     </n-dialog-provider>
   </n-config-provider>

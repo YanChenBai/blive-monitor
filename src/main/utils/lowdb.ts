@@ -1,5 +1,6 @@
 import { JSONFileSyncPreset } from 'lowdb/node'
 import { DB_PATH } from './paths'
+import { randomUUID } from 'crypto'
 
 interface WindowConfig {
   alwaysOnTop: boolean
@@ -14,6 +15,7 @@ export interface RoomConfig extends WindowConfig {
   volume?: number
 }
 type DBType = {
+  connectToken?: string
   main: WindowConfig
   config: RoomConfig[]
 }
@@ -61,4 +63,16 @@ export function getMainWindowConfig() {
 export function updateMainWindowConfig(newData: Partial<WindowConfig>) {
   db.data.main = { ...db.data.main, ...newData }
   db.write()
+}
+
+/** 获取连接token */
+export function getConnectToken() {
+  if (db.data.connectToken) {
+    return db.data.connectToken
+  } else {
+    const connectToken = randomUUID().replaceAll('-', '').substring(0, 10)
+    db.data.connectToken = connectToken
+    db.write()
+    return connectToken
+  }
 }

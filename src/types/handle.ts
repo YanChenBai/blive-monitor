@@ -60,4 +60,10 @@ export interface MainHandleInterface {
 
   /** 获取窗口数量 */
   winCount(win: BW): number
+
+  /** 获取连接信息 */
+  getConnectInfo(): {
+    ip?: string
+    token: string
+  }
 }

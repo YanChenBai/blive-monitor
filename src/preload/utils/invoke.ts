@@ -109,4 +109,8 @@ export class MainInvoke
   openLiveRoom(room: Room) {
     return this.invoke('openLiveRoom', room)
   }
+
+  getConnectInfo() {
+    return this.invoke('getConnectInfo')
+  }
 }

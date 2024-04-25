@@ -1,7 +1,14 @@
+@font-face {
+  font-family: 'HarmonyOSSansMedium';
+  src: url('../fonts/HarmonyOS_Sans_Medium.ttf');
+}
+
 * {
+  font-family: 'HarmonyOSSansMedium';
   padding: 0;
   margin: 0;
 }
+
 body {
   overflow: hidden;
 }

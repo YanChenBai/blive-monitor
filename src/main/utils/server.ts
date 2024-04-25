@@ -2,6 +2,7 @@ import { BrowserWindow } from 'electron'
 import { roomMap, emoticonsMap } from './liveRoomWindow'
 import express, { type Request } from 'express'
 import { EventNames, SendEmoticonParams } from '@type/monitor'
+import { getConnectToken } from './lowdb'
 
 function findWIn(winId: number) {
   return BrowserWindow.getAllWindows().find((item) => item.id === winId)
@@ -34,6 +35,7 @@ function postRequestGetWinId(res: Request) {
 
 export function serverBootstrap() {
   const app = express()
+  const connectToken = getConnectToken()
 
   app.use(express.urlencoded())
 
@@ -46,6 +48,14 @@ export function serverBootstrap() {
     res.header('Access-Control-Allow-Methods', 'POST,GET')
 
     next()
+  })
+
+  app.use(function (req, res, next) {
+    if (req.headers.authorization === connectToken) {
+      next()
+    } else {
+      res.sendStatus(403)
+    }
   })
 
   app.get('/get', (_req, res) => {
@@ -71,6 +81,6 @@ export function serverBootstrap() {
   })
 
   app.listen(5520, () => {
-    console.log('listen to 5520')
+    // console.log('listen to 5520')
   })
 }

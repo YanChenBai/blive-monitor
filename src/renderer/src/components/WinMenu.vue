@@ -52,5 +52,3 @@ async function close() {
   count === 0 ? emit('close') : createDialog()
 }
 </script>
-
-<style scoped></style>

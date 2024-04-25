@@ -5,6 +5,8 @@ import { bliveWindow } from '@main/windows/blive'
 import { biliHomeWindew } from '@main/windows/biliHome'
 import { BrowserWindow as BW } from 'electron'
 import { MainHandleInterface } from '@type/handle'
+import { getLocalIP } from '@main/utils/getLocalIP'
+import { getConnectToken } from '@main/utils/lowdb'
 
 @handle('main')
 export class MainHandle extends IPCHandle implements MainHandleInterface {
@@ -41,5 +43,13 @@ export class MainHandle extends IPCHandle implements MainHandleInterface {
   @method
   winCount(win: BW) {
     return BW.getAllWindows().filter((w) => w !== win).length
+  }
+
+  @method
+  getConnectInfo() {
+    return {
+      ip: getLocalIP(),
+      token: getConnectToken()
+    }
   }
 }

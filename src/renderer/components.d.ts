@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    ConnectCode: typeof import('./src/components/ConnectCode.vue')['default']
     MaterialSymbolsDeleteRounded: typeof import('./src/components/Icons/MaterialSymbolsDeleteRounded.vue')['default']
     MaterialSymbolsSyncRounded: typeof import('./src/components/Icons/MaterialSymbolsSyncRounded.vue')['default']
     MingcuteCloseFill: typeof import('./src/components/Icons/MingcuteCloseFill.vue')['default']
@@ -27,8 +28,11 @@ declare module 'vue' {
     NInputGroup: typeof import('naive-ui')['NInputGroup']
     NLayout: typeof import('naive-ui')['NLayout']
     NMessageProvider: typeof import('naive-ui')['NMessageProvider']
+    NModal: typeof import('naive-ui')['NModal']
+    NModalProvider: typeof import('naive-ui')['NModalProvider']
     NPopconfirm: typeof import('naive-ui')['NPopconfirm']
     NPopover: typeof import('naive-ui')['NPopover']
+    NQrCode: typeof import('naive-ui')['NQrCode']
     NScrollbar: typeof import('naive-ui')['NScrollbar']
     NSpin: typeof import('naive-ui')['NSpin']
     NTag: typeof import('naive-ui')['NTag']

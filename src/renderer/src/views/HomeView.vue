@@ -1,31 +1,41 @@
 <template>
   <WinMenu @close="close" @min="min" />
-  <div p-10px flex flex-col>
-    <div flex w-full align="center">
-      <n-input-group>
-        <n-input
-          v-model:value="keyword"
-          w-full
-          type="primary"
-          placeholder="输入房间号👌"
-          clearable
-          @keydown.enter="add"
-        />
-        <n-button type="primary" @click="add">添加</n-button>
-      </n-input-group>
-      <n-button type="primary" m-l-6px @click="openBiliHome()">登录</n-button>
-      <n-button type="primary" m-l-6px :loading="refreshLoading" @click="refresh()">
-        <template #icon>
-          <n-icon>
-            <MaterialSymbolsSyncRounded />
-          </n-icon>
+  <div flex flex-col>
+    <div flex w-full gap-1 h-8 px-14px my-14px box-border>
+      <input
+        v-model="keyword"
+        class="input line-height-32px"
+        w-full
+        placeholder="输入房间号👌"
+        clearable
+        @keydown.enter="add"
+      />
+      <button class="btn w-20 line-height-32px" @click="add">添加</button>
+
+      <button class="btn w-12" :loading="refreshLoading" @click="refresh()">
+        <RotateCcw :stroke-width="2" :size="4" />
+      </button>
+
+      <n-popover trigger="click" :show-arrow="false">
+        <template #trigger>
+          <button class="btn w-12">
+            <Ellipsis :stroke-width="2" :size="5" />
+          </button>
         </template>
-      </n-button>
+        <div flex flex-col gap-2>
+          <div class="more-btn" @click="openBiliHome">
+            <LogIn :stroke-width="2.5" :size="4" />登入
+          </div>
+          <div class="more-btn" @click="connectCodeRef?.open()">
+            <Unplug :stroke-width="2.5" :size="4" />连接
+          </div>
+        </div>
+      </n-popover>
     </div>
 
     <n-spin description="加载中" :show="newVersionInit" of-hidden>
-      <div m-t-10px of-hidden>
-        <n-scrollbar class="h-[calc(100vh-96px)]">
+      <div of-hidden>
+        <n-scrollbar class="h-[calc(100vh-92px)] px-14px box-border">
           <VueDraggable
             v-model="rooms"
             :animation="150"
@@ -35,7 +45,7 @@
             <RoomListItem
               v-for="item in searchList"
               :key="item.uid"
-              class="[&:not(:last-child)]:m-b-10px"
+              class="[&]:m-b-10px"
               :room="item"
               @open="openLiveRoom"
               @remove="remove"
@@ -46,9 +56,11 @@
       </div>
     </n-spin>
   </div>
+  <ConnectCode ref="connectCodeRef"></ConnectCode>
 </template>
 
-<script setup lang="tsx">
+<script setup lang="ts">
+import { RotateCcw, Ellipsis } from 'lucide-vue-next'
 import { useRoomsStore, ResultMesg } from '@renderer/stores/rooms'
 import { Room } from '@type/room'
 import { computed, onMounted, ref } from 'vue'
@@ -60,6 +72,8 @@ import WinMenu from '@renderer/components/WinMenu.vue'
 import { debounce } from 'lodash'
 import { VueDraggable } from 'vue-draggable-plus'
 import RoomListItem from '@renderer/components/RoomListItem.vue'
+import ConnectCode from '@renderer/components/ConnectCode.vue'
+import { LogIn, Unplug } from 'lucide-vue-next'
 
 defineOptions({ name: 'HomeView' })
 
@@ -69,6 +83,7 @@ const { rooms } = storeToRefs(roomsStore)
 const keyword = ref<string>('')
 const newVersionInit = ref(false)
 const refreshLoading = ref(false)
+const connectCodeRef = ref<InstanceType<typeof ConnectCode>>()
 
 /** 以前的数据格式转换为新的 */
 rooms.value = rooms.value.map((item: any) => {
@@ -194,4 +209,21 @@ const min = () => window.mainInvoke.minWin()
 onMounted(() => refresh())
 </script>
 
-<style scoped></style>
+<style scoped>
+.btn {
+  @apply: bg-[#FB7299] border-0 flex-inline justify-center items-center px-2 rounded-1.5
+    cursor-pointer hover-bg-[#FB7299]/90 transition-all outline-none;
+}
+
+.more-btn {
+  @apply: px-2 py-1 cursor-pointer rounded-1.5 flex items-center gap-1 hover:bg-#1e1e1e transition-all select-none;
+}
+
+.input {
+  @apply: bg-[#28282C] outline-none color-white border-solid border-transparent border-0 border-2 rounded-1.5 px-2 hover-border-[#FB7299] transition-all;
+}
+
+:deep(.n-modal-body-wrapper) {
+  padding: 20px !important;
+}
+</style>
