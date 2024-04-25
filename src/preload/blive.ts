@@ -50,6 +50,21 @@ window.addEventListener('DOMContentLoaded', async () => {
     danmuSendEl.data = emoticons
     document.body.appendChild(danmuSendEl)
 
+    bliveInvoke.addEmoticons(
+      emoticons.map(({ emoticons, pkg_id, pkg_name, current_cover, pkg_type }) => ({
+        pkg_id,
+        pkg_name,
+        current_cover,
+        pkg_type,
+        emoticons: emoticons.map(({ perm, emoticon_unique, emoji, url }) => ({
+          perm,
+          emoticon_unique,
+          emoji,
+          url
+        }))
+      }))
+    )
+
     // 自动抽奖
     autoLottery()
   } catch (error) {

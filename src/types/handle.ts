@@ -1,5 +1,6 @@
 import { BrowserWindow as BW } from 'electron'
 import { ManyRoomItem, Room } from './room'
+import { EmoticonsMap } from './emoji'
 
 export enum ASPECT_RATIO_KEYS {
   RATIO_16_9 = 'RATIO_16_9',
@@ -33,6 +34,9 @@ export interface BliveHandleInterface {
 
   /** 输出持久化日志 */
   log(win: BW, message: string, ...args: any[]): void
+
+  /** 把表情包存进map */
+  addEmoticons(win: BW, emoticons: EmoticonsMap[]): void
 }
 
 export interface MainHandleInterface {

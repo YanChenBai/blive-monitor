@@ -1,7 +1,7 @@
 import { shell, BrowserWindow } from 'electron'
 import { join } from 'path'
 import type { Room } from '@type/room'
-import { roomMap } from '@main/utils/liveRoomWindow'
+import { emoticonsMap, roomMap } from '@main/utils/liveRoomWindow'
 import { insertCSS } from './css'
 import { getRoomConfig, updateRoomConfig } from '@main/utils/lowdb'
 import { getFace } from '@main/utils/getFaceImage'
@@ -94,6 +94,7 @@ export async function bliveWindow(room: Room) {
   window.on('close', () => {
     // 从win map中移除
     roomMap.delete(window.id)
+    emoticonsMap.delete(window.id)
 
     // 保存关闭前的位置
     const { width, height, x, y } = window.getBounds()

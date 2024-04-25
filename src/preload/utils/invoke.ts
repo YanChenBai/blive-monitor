@@ -4,6 +4,7 @@ import { IPCHandle } from '@main/utils/ipcHandle'
 import type { Room } from '@type/room'
 import { BliveHandleInterface } from '@type/handle'
 import { MainHandleInterface } from '@type/handle'
+import { EmoticonsMap } from '@type/emoji'
 
 export function invoke(prefixName: string) {
   return (target: typeof IPCInvoke) => {
@@ -69,6 +70,10 @@ export class BliveInvoke
 
   setAspectRatio(_value: 'RATIO_16_9' | 'RATIO_9_16'): Promise<void> {
     throw new Error('Method not implemented.')
+  }
+
+  addEmoticons(emoticons: EmoticonsMap[]): Promise<void> {
+    return this.invoke('addEmoticons', emoticons)
   }
 }
 

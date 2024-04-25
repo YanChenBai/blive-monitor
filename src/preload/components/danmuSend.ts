@@ -13,6 +13,7 @@ import {
 import { BliveInvoke } from '@preload/utils/invoke'
 import { Emoticons } from '@type/emoji'
 import lodash from 'lodash'
+import { onSendText } from '@preload/utils/monitor'
 
 /** 匹配可输入的最大弹幕 */
 function matchMaxDanmu() {
@@ -200,6 +201,10 @@ export class DanmuSend extends Component {
       console.log('get maxlen:', maxlen)
 
       this.maxlen.value = maxlen
+    })
+
+    onSendText((content) => {
+      if (typeof content === 'string') this.send(content)
     })
   }
 }

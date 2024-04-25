@@ -3,6 +3,7 @@ import { join } from 'path'
 import icon from '../../../resources/icon.ico?asset'
 import { getMainWindowConfig, updateMainWindowConfig } from '@main/utils/lowdb'
 import { RENDER_PATH } from '@main/utils/paths'
+import { serverBootstrap } from '@main/utils/server'
 
 export async function mainWindow() {
   const config = getMainWindowConfig()
@@ -49,6 +50,8 @@ export async function mainWindow() {
     })
     app.quit()
   })
+
+  serverBootstrap()
 
   return window
 }

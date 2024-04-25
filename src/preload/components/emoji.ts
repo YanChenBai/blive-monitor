@@ -4,6 +4,7 @@ import { html, css, Component, tag, createComponent, batchAdd } from '@preload/u
 import { awaitLivePlayer } from '@preload/utils/livePlayer'
 import { Status, watch } from '@preload/utils/status'
 import lodash from 'lodash'
+import { onSendEmoticon } from '@preload/utils/monitor'
 
 function isClickEmojiItem(e: MouseEvent) {
   const target = e.target as EmojiItem
@@ -382,5 +383,14 @@ export class EmojiTabs extends Component {
     this.tabs.length > 0 && this.switchTab(0)
 
     wheel(tabsBody, this.setp)
+
+    onSendEmoticon(({ pkgId, emoticonUnique }) => {
+      const pkg = this.data.find(({ pkg_id }) => pkg_id === pkgId)
+      const emoticon = pkg?.emoticons.find(
+        ({ emoticon_unique }) => emoticon_unique === emoticonUnique
+      )
+
+      if (emoticon && emoticon.perm === 1) send(emoticon)
+    })
   }
 }
