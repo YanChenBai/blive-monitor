@@ -5,7 +5,8 @@ import { mainWindow } from './windows/main'
 import { MainHandle } from '@main/handles/mainHandle'
 import { BliveHandle } from './handles/bliveHandle'
 import { initPath } from './utils/paths'
-
+import { getLocalIP } from './utils/getLocalIP'
+getLocalIP()
 initPath()
 let win: BrowserWindow | null
 async function startMainWindow() {
