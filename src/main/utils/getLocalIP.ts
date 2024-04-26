@@ -11,4 +11,6 @@ export function getLocalIP() {
       return address
     }
   }
+
+  return undefined
 }
