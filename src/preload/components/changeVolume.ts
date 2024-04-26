@@ -2,6 +2,7 @@ import { awaitLivePlayer, awaitVideoEl } from '@preload/utils/livePlayer'
 import { tag, Component, html, css } from '../utils/component'
 import { BliveInvoke } from '@preload/utils/invoke'
 import { Status, watch } from '@preload/utils/status'
+import { onChangeVolume } from '@preload/utils/monitor'
 
 @tag('change-volume')
 export class ChangeVolume extends Component {
@@ -100,6 +101,10 @@ export class ChangeVolume extends Component {
           this.modifyVolume(false)
           break
       }
+    })
+
+    onChangeVolume((direction) => {
+      this.modifyVolume(direction)
     })
   }
 }

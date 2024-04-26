@@ -1,4 +1,4 @@
-import { emoticonsMap, roomMap } from '@main/utils/liveRoomWindow'
+import { emoticonsMap, roomMap, userConfig } from '@main/utils/liveRoomWindow'
 import { IPCHandle, method, handle } from '@main/utils/ipcHandle'
 import { getRoomConfig, updateRoomConfig } from '@main/utils/lowdb'
 import { BrowserWindow as BW } from 'electron'
@@ -73,5 +73,10 @@ export class BliveHandle extends IPCHandle implements BliveHandleInterface {
   @method
   addEmoticons(win: BW, emoticons: EmoticonsMap[]) {
     if (!emoticonsMap.has(win.id)) emoticonsMap.set(win.id, emoticons)
+  }
+
+  @method
+  setMaxlen(_win: BW, maxlen: number) {
+    if (userConfig.maxlen !== maxlen) userConfig.maxlen = maxlen
   }
 }

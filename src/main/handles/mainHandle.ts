@@ -5,7 +5,7 @@ import { bliveWindow } from '@main/windows/blive'
 import { biliHomeWindew } from '@main/windows/biliHome'
 import { BrowserWindow as BW } from 'electron'
 import { MainHandleInterface } from '@type/handle'
-import { getLocalIP } from '@main/utils/getLocalIP'
+import { ip } from 'address'
 import { getConnectToken } from '@main/utils/lowdb'
 
 @handle('main')
@@ -48,7 +48,7 @@ export class MainHandle extends IPCHandle implements MainHandleInterface {
   @method
   getConnectInfo() {
     return {
-      ip: getLocalIP(),
+      ip: ip(),
       token: getConnectToken()
     }
   }

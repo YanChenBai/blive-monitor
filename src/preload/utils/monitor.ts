@@ -12,3 +12,9 @@ export function onSendEmoticon(callback: (emoticon: SendEmoticonParams) => void)
     callback(params)
   })
 }
+
+export function onChangeVolume(callback: (direction: boolean) => void) {
+  ipcRenderer.on(EventNames.CHANGE_VOLUME, (_event, direction: boolean) => {
+    callback(direction)
+  })
+}

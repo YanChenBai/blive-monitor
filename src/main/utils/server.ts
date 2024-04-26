@@ -1,5 +1,5 @@
 import { BrowserWindow } from 'electron'
-import { roomMap, emoticonsMap } from './liveRoomWindow'
+import { roomMap, emoticonsMap, userConfig } from './liveRoomWindow'
 import express, { type Request } from 'express'
 import { EventNames, SendEmoticonParams } from '@type/monitor'
 import { getConnectToken } from './lowdb'
@@ -28,6 +28,11 @@ function sendEmoji(winId: number, params: SendEmoticonParams) {
   win?.webContents.send(EventNames.SEND_EMOTICON, params)
 }
 
+function changeVolume(winId: number, direction: boolean) {
+  const win = findWIn(winId)
+  win?.webContents.send(EventNames.CHANGE_VOLUME, direction)
+}
+
 function postRequestGetWinId(res: Request) {
   if (res.body.winId) return Number(res.body.winId)
   else throw new Error('not find winId')
@@ -38,15 +43,12 @@ export function serverBootstrap() {
   const connectToken = getConnectToken()
 
   app.use(express.urlencoded())
+  app.use(express.json())
 
-  app.all('*', function (_req, res, next) {
-    //设置允许跨域的域名，*代表允许任意域名跨域
+  app.use((_req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*')
-    //允许的header类型
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
-    //跨域允许的请求方式
+    res.header('Access-Control-Allow-Headers', 'Authorization')
     res.header('Access-Control-Allow-Methods', 'POST,GET')
-
     next()
   })
 
@@ -58,11 +60,16 @@ export function serverBootstrap() {
     }
   })
 
-  app.get('/get', (_req, res) => {
-    res.json(get())
-  })
+  app.get('/check', (_req, res) => res.sendStatus(200))
+  app.get('/get', (_req, res) =>
+    res.json({
+      maxlen: userConfig.maxlen,
+      rooms: get()
+    })
+  )
 
   app.post('/send/emoji', (req, res) => {
+    console.log(req.body)
     const winId = postRequestGetWinId(req)
     const { emoticonUnique, pkgId } = req.body
 
@@ -80,7 +87,14 @@ export function serverBootstrap() {
     res.sendStatus(200)
   })
 
-  app.listen(5520, () => {
-    // console.log('listen to 5520')
+  app.post('/change/volume', (req, res) => {
+    const winId = postRequestGetWinId(req)
+    const { direction } = req.body
+
+    changeVolume(winId, Number(direction) === 1)
+
+    res.sendStatus(200)
   })
+
+  app.listen(5520, '0.0.0.0')
 }

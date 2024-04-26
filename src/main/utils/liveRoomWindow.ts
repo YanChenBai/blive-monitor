@@ -23,3 +23,6 @@ class MapPlus<K, T> extends Map<K, T> {
 
 export const roomMap = new MapPlus<number, Room>()
 export const emoticonsMap = new MapPlus<number, EmoticonsMap[]>()
+export const userConfig = {
+  maxlen: 20
+}

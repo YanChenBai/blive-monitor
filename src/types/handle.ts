@@ -37,6 +37,8 @@ export interface BliveHandleInterface {
 
   /** 把表情包存进map */
   addEmoticons(win: BW, emoticons: EmoticonsMap[]): void
+
+  setMaxlen(win: BW, maxlen: number): void
 }
 
 export interface MainHandleInterface {

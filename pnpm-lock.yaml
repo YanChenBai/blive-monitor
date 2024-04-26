@@ -23,6 +23,9 @@ dependencies:
   '@unocss/reset':
     specifier: ^0.58.3
     version: 0.58.5
+  address:
+    specifier: ^2.0.2
+    version: 2.0.2
   axios:
     specifier: ^1.6.7
     version: 1.6.7
@@ -1958,6 +1961,11 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
     dev: true
+
+  /address@2.0.2:
+    resolution: {integrity: sha512-u6nFssvaX9RHQmjMSqgT7b7QJbf/5/U8+ntbTL8vgABfIiEmm02ZSM5MwljKjCrIrm7iIbgYEya2YW6AaRccVA==}
+    engines: {node: '>= 16.0.0'}
+    dev: false
 
   /agent-base@6.0.2:
     resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}

@@ -75,6 +75,10 @@ export class BliveInvoke
   addEmoticons(emoticons: EmoticonsMap[]): Promise<void> {
     return this.invoke('addEmoticons', emoticons)
   }
+
+  setMaxlen(maxlen: number) {
+    return this.invoke('setMaxlen', maxlen)
+  }
 }
 
 @invoke('main')

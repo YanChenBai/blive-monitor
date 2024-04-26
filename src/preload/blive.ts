@@ -15,6 +15,7 @@ import { randomMouseMove } from './utils/randomMouseMove'
 import { ChangeVolume } from '@preload/components/changeVolume'
 import { autoLottery } from './utils/autoLottery'
 import { UserInfo } from '@preload/components/userInfo'
+import { Emoticon } from '@type/emoji'
 
 const bliveInvoke = new BliveInvoke()
 const controlBarEl = createComponent(ControlBar)
@@ -25,6 +26,15 @@ const changeVolume = createComponent(ChangeVolume)
 /** 移除播放器日志的悬浮框显示状态 */
 window.localStorage.removeItem('web-player-show-log')
 window.localStorage.removeItem('web-player-show-videoinfo')
+
+function getKeyField(emoticons: Emoticon[]) {
+  return emoticons.map(({ perm, emoticon_unique, emoji, url }) => ({
+    perm,
+    emoticon_unique,
+    emoji,
+    url
+  }))
+}
 
 window.addEventListener('DOMContentLoaded', async () => {
   batchAdd(document.body, [controlBarEl, changeVolume])
@@ -48,21 +58,21 @@ window.addEventListener('DOMContentLoaded', async () => {
     const emoticons = await getEmoticons(room.roomId)
 
     danmuSendEl.data = emoticons
+
     document.body.appendChild(danmuSendEl)
 
+    bliveInvoke.setMaxlen(danmuSendEl.maxlen.value)
     bliveInvoke.addEmoticons(
-      emoticons.map(({ emoticons, pkg_id, pkg_name, current_cover, pkg_type }) => ({
-        pkg_id,
-        pkg_name,
-        current_cover,
-        pkg_type,
-        emoticons: emoticons.map(({ perm, emoticon_unique, emoji, url }) => ({
-          perm,
-          emoticon_unique,
-          emoji,
-          url
-        }))
-      }))
+      emoticons.map(
+        ({ emoticons, pkg_id, pkg_name, current_cover, pkg_type, recently_used_emoticons }) => ({
+          pkg_id,
+          pkg_name,
+          current_cover,
+          pkg_type,
+          used: getKeyField(recently_used_emoticons),
+          emoticons: getKeyField(emoticons)
+        })
+      )
     )
 
     // 自动抽奖
