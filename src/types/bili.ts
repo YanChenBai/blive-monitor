@@ -186,3 +186,87 @@ export interface RoomPlayInfo extends Response {
     risk_with_delay: number
   }
 }
+
+export interface FansMedal {
+  medal: {
+    uid: number
+    target_id: number
+    target_name: string
+    medal_id: number
+    level: number
+    medal_name: string
+    medal_color: number
+    intimacy: number
+    next_intimacy: number
+    day_limit: number
+    today_feed: number
+    medal_color_start: number
+    medal_color_end: number
+    medal_color_border: number
+    is_lighted: number
+    guard_level: number
+    wearing_status: number
+    medal_icon_id: number
+    medal_icon_url: string
+    guard_icon: string
+    honor_icon: string
+    can_delete: boolean
+  }
+  anchor_info: { nick_name: string; avatar: string; verify: number }
+  superscript: { type: number; content: string }
+  room_info: { room_id: number; living_status: number; url: string }
+}
+
+export interface FansMedals extends Response {
+  data: {
+    list: FansMedal[]
+    special_list: FansMedal[]
+    bottom_bar: object
+    page_info: {
+      number: number
+      current_page: number
+      has_more: boolean
+      next_page: number
+      next_light_status: number
+      total_page: number
+    }
+    total_number: number
+    has_medal: number
+    group_medal: object
+  }
+}
+
+export interface InfoByUser extends Response {
+  data: {
+    medal: {
+      cnt: number
+      is_weared: boolean
+      curr_weared: {
+        target_id: number
+        target_name: string
+        medal_name: string
+        target_roomid: number
+        level: number
+        intimacy: number
+        next_intimacy: number
+        day_limit: number
+        today_feed: number
+        is_union: number
+        medal_color_start: number
+        medal_color_end: number
+        medal_color_border: number
+        is_lighted: number
+        guard_level: number
+        icon_id: number
+        score: number
+      }
+      up_medal: {
+        uid: number
+        medal_name: string
+        medal_color: number
+        level: number
+      }
+      lookup: { level: number; is_lighted: boolean }
+    }
+  }
+}

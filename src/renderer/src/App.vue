@@ -15,6 +15,10 @@
       },
       Card: {
         paddingSmall: '10px 10px 10px 10px'
+      },
+      Popover: {
+        padding: '8px',
+        borderRadius: '8px'
       }
     }"
   >

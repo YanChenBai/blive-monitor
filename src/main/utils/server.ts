@@ -1,5 +1,5 @@
 import { BrowserWindow } from 'electron'
-import { roomMap, emoticonsMap, userConfig } from './liveRoomWindow'
+import { roomMap, emoticonsMap, userConfig } from './shared'
 import express, { type Request } from 'express'
 import { EventNames, SendEmoticonParams } from '@type/monitor'
 import { getConnectToken } from './lowdb'
@@ -42,7 +42,7 @@ export function serverBootstrap() {
   const app = express()
   const connectToken = getConnectToken()
 
-  app.use(express.urlencoded())
+  app.use(express.urlencoded({ extended: true }))
   app.use(express.json())
 
   app.use((_req, res, next) => {

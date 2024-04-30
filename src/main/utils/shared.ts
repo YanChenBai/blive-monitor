@@ -1,4 +1,4 @@
-import { EmoticonsMap } from '@type/emoji'
+import { SimpleEmoticons } from '@type/emoji'
 import type { Room } from '@type/room'
 
 class MapPlus<K, T> extends Map<K, T> {
@@ -22,7 +22,7 @@ class MapPlus<K, T> extends Map<K, T> {
 }
 
 export const roomMap = new MapPlus<number, Room>()
-export const emoticonsMap = new MapPlus<number, EmoticonsMap[]>()
+export const emoticonsMap = new MapPlus<number, SimpleEmoticons[]>()
 export const userConfig = {
   maxlen: 20
 }

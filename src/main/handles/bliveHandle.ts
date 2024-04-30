@@ -1,10 +1,10 @@
-import { emoticonsMap, roomMap, userConfig } from '@main/utils/liveRoomWindow'
+import { emoticonsMap, roomMap, userConfig } from '@main/utils/shared'
 import { IPCHandle, method, handle } from '@main/utils/ipcHandle'
 import { getRoomConfig, updateRoomConfig } from '@main/utils/lowdb'
 import { BrowserWindow as BW } from 'electron'
 import { ASPECT_RATIO_KEYS, BliveHandleInterface } from '@type/handle'
 import { logger } from '@main/utils/logger'
-import { EmoticonsMap } from '@type/emoji'
+import { SimpleEmoticons } from '@type/emoji'
 
 export const ASPECT_RATIO = {
   [ASPECT_RATIO_KEYS.RATIO_16_9]: 16 / 9,
@@ -71,7 +71,7 @@ export class BliveHandle extends IPCHandle implements BliveHandleInterface {
   }
 
   @method
-  addEmoticons(win: BW, emoticons: EmoticonsMap[]) {
+  addEmoticons(win: BW, emoticons: SimpleEmoticons[]) {
     if (!emoticonsMap.has(win.id)) emoticonsMap.set(win.id, emoticons)
   }
 

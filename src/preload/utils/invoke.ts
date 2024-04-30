@@ -4,7 +4,7 @@ import { IPCHandle } from '@main/utils/ipcHandle'
 import type { Room } from '@type/room'
 import { BliveHandleInterface } from '@type/handle'
 import { MainHandleInterface } from '@type/handle'
-import { EmoticonsMap } from '@type/emoji'
+import { SimpleEmoticons } from '@type/emoji'
 
 export function invoke(prefixName: string) {
   return (target: typeof IPCInvoke) => {
@@ -72,7 +72,7 @@ export class BliveInvoke
     throw new Error('Method not implemented.')
   }
 
-  addEmoticons(emoticons: EmoticonsMap[]): Promise<void> {
+  addEmoticons(emoticons: SimpleEmoticons[]): Promise<void> {
     return this.invoke('addEmoticons', emoticons)
   }
 

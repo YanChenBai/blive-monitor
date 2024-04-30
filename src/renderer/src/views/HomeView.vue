@@ -16,19 +16,22 @@
         <RotateCcw :stroke-width="2" :size="4" />
       </button>
 
-      <n-popover trigger="click" :show-arrow="false">
+      <n-popover trigger="click" :show-arrow="false" p-0>
         <template #trigger>
           <button class="btn w-12">
             <Ellipsis :stroke-width="2" :size="5" />
           </button>
         </template>
-        <div flex flex-col gap-2>
+        <div flex flex-col gap-1>
           <div class="more-btn" @click="openBiliHome">
             <LogIn :stroke-width="2.5" :size="4" />登入
           </div>
           <div class="more-btn" @click="connectCodeRef?.open()">
             <Unplug :stroke-width="2.5" :size="4" />连接
           </div>
+          <!-- <div class="more-btn" @click="connectCodeRef?.open()">
+            <FileUp :stroke-width="2.5" :size="4" />导入
+          </div> -->
         </div>
       </n-popover>
     </div>

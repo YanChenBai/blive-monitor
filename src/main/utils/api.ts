@@ -8,19 +8,18 @@ import type { ManyRoomItem, Room } from '@type/room'
  * @param room_id 房间号, 支持短号
  */
 export async function getRoomInfo(room_id: string): Promise<Room> {
-  const { uid, short_id, tags, live_status, title, keyframe } = await fetch(
-    `https://api.live.bilibili.com/room/v1/Room/get_info?id=${room_id}`
-  )
-    .then((res) => res.json() as Promise<RoomInfo>)
-    .then((res) => {
-      if (res.code === 0) {
+  const { uid, short_id, tags, live_status, title, keyframe } = await axios
+    .get<RoomInfo>(`https://api.live.bilibili.com/room/v1/Room/get_info?id=${room_id}`)
+    .then(({ data: res }) => {
+      const { data, code } = res
+      if (code === 0) {
         return {
-          uid: res.data.uid,
-          short_id: res.data.short_id,
-          tags: res.data.tags,
-          live_status: res.data.live_status,
-          title: res.data.title,
-          keyframe: res.data.keyframe
+          uid: data.uid,
+          short_id: data.short_id,
+          tags: data.tags,
+          live_status: data.live_status,
+          title: data.title,
+          keyframe: data.keyframe
         }
       } else {
         return Promise.reject(res)
@@ -91,7 +90,9 @@ export async function getManyRoomInfo(uids: string[]): Promise<Record<string, Ma
 
 /** 获取直播信息 */
 export async function getRoomPlayInfo(roomId: string) {
-  return await fetch(
-    `https://api.live.bilibili.com/xlive/web-room/v2/index/getRoomPlayInfo?room_id=${roomId}&protocol=0,1&format=0,1,2&codec=0,1,2&qn=150&platform=web&ptype=8&dolby=5&panorama=1`
-  ).then((res) => res.json() as Promise<RoomPlayInfo>)
+  return await axios
+    .get<RoomPlayInfo>(
+      `https://api.live.bilibili.com/xlive/web-room/v2/index/getRoomPlayInfo?room_id=${roomId}&protocol=0,1&format=0,1,2&codec=0,1,2&qn=150&platform=web&ptype=8&dolby=5&panorama=1`
+    )
+    .then(({ data }) => data)
 }

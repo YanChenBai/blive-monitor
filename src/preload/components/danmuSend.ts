@@ -14,6 +14,8 @@ import { BliveInvoke } from '@preload/utils/invoke'
 import { Emoticons } from '@type/emoji'
 import lodash from 'lodash'
 import { onSendText } from '@preload/utils/monitor'
+import { Room } from '@type/room'
+import { autoModifyFansMedal } from '@preload/utils/autoModifyFansMedal'
 
 /** 匹配可输入的最大弹幕 */
 function matchMaxDanmu() {
@@ -87,6 +89,7 @@ export class DanmuSend extends Component {
   }
 
   bliveInvoke = new BliveInvoke()
+  room?: Room
   maxlen = new Status(20)
   inputlen = new Status(0)
   data: Emoticons[] = []
@@ -99,7 +102,8 @@ export class DanmuSend extends Component {
     inputEl.maxLength = this.maxlen.value
   }
 
-  send(msg: string) {
+  async send(msg: string) {
+    await autoModifyFansMedal(this.room!.roomId)
     msg = msg.trim()
     if (msg.length <= 0) {
       return
@@ -130,6 +134,7 @@ export class DanmuSend extends Component {
 
     // 绑定数据
     emojiTabsEl.data = this.data
+    emojiTabsEl.room = this.room
 
     // 添加表情选项卡
     const wrapEl = this.shadowRoot?.querySelector('.wrap') as HTMLDivElement

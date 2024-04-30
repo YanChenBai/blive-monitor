@@ -1,7 +1,7 @@
 import { shell, BrowserWindow } from 'electron'
 import { join } from 'path'
 import type { Room } from '@type/room'
-import { emoticonsMap, roomMap } from '@main/utils/liveRoomWindow'
+import { emoticonsMap, roomMap } from '@main/utils/shared'
 import { insertCSS } from './css'
 import { getRoomConfig, updateRoomConfig } from '@main/utils/lowdb'
 import { getFace } from '@main/utils/getFaceImage'

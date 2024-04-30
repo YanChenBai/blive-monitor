@@ -58,6 +58,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     const emoticons = await getEmoticons(room.roomId)
 
     danmuSendEl.data = emoticons
+    danmuSendEl.room = room
 
     document.body.appendChild(danmuSendEl)
 

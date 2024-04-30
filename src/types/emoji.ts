@@ -61,7 +61,7 @@ interface SimpleEmoticon {
   url: string
 }
 
-export interface EmoticonsMap {
+export interface SimpleEmoticons {
   pkg_id: number
   pkg_name: string
   current_cover: string
