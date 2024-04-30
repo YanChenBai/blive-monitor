@@ -1,32 +1,36 @@
 import { getFansMedals, getInfoByUser, modifyFansMedal } from './api'
 
+let roomMedalId = 0
+
 function sleep(ms: number) {
   return new Promise<void>((res) => setTimeout(() => res(), ms))
 }
 
-async function findFansMedal(roomId: string, page = 1) {
-  const {
-    data: {
-      data: { page_info, special_list, list },
-      code
-    }
-  } = await getFansMedals(page, 30)
+async function findFansMedal(roomId: string) {
+  let total = 2
+  for (let page = 1; page <= total; page++) {
+    const {
+      data: {
+        data: { special_list, list, page_info },
+        code
+      }
+    } = await getFansMedals(page, 30)
 
-  if (code !== 0) throw new Error('request error')
-  console.log(page_info, special_list, list)
+    if (code !== 0) throw new Error('request error')
 
-  const fansMedal = [...special_list, ...list].find(
-    (item) => item.room_info.room_id.toString() === roomId
-  )
+    total = page_info.total_page
 
-  if (fansMedal) return fansMedal
+    await sleep(300)
+    const all = [...special_list, ...list]
+    const fansMedal = all.find((item) => item.room_info.room_id.toString() === roomId)
 
-  if (page_info.total_page <= page) {
-    return undefined
-  } else {
-    await sleep(200)
-    return await findFansMedal(roomId, page++)
+    if (fansMedal && fansMedal.medal.is_lighted === 1) return fansMedal
+
+    // 如果已经有灭掉的牌子后面就没必要找了
+    if (all.find((item) => item.medal.is_lighted === 0) !== undefined) return undefined
   }
+
+  return undefined
 }
 
 export async function autoModifyFansMedal(roomId: string) {
@@ -38,13 +42,18 @@ export async function autoModifyFansMedal(roomId: string) {
   } = await getInfoByUser(roomId)
 
   if (code !== 0) throw new Error('request error')
-  console.log(medal)
 
   if (medal.curr_weared.target_roomid.toString() === roomId) return
+  let medalId: number
 
-  const fansMedal = await findFansMedal(roomId)
-
-  if (fansMedal) {
-    modifyFansMedal(fansMedal.medal.medal_id)
+  if (roomMedalId === 0) {
+    const res = await findFansMedal(roomId)
+    roomMedalId = res ? res.medal.medal_id : -1
+    medalId = roomMedalId
+  } else {
+    medalId = roomMedalId
+    console.log('medalId:', medalId)
   }
+
+  if (medalId > 0) modifyFansMedal(medalId)
 }
