@@ -38,6 +38,7 @@ export interface BliveHandleInterface {
   /** 把表情包存进map */
   addEmoticons(win: BW, emoticons: SimpleEmoticons[]): void
 
+  /** 设置最大可输入的弹幕长度 */
   setMaxlen(win: BW, maxlen: number): void
 }
 

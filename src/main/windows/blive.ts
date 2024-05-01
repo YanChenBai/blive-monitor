@@ -54,6 +54,7 @@ export async function bliveWindow(room: Room) {
     title: room.name,
     backgroundColor: '#000',
     webPreferences: {
+      devTools: true,
       preload: join(__dirname, '../preload/blive.mjs'),
       contextIsolation: false,
       nodeIntegration: true
