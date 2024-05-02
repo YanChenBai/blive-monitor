@@ -109,7 +109,7 @@ export const insertCSS = css`
   }
 
   /** 拖拽栏 */
-  body::after {
+  /* body::after {
     content: '';
     -webkit-app-region: drag;
     position: fixed;
@@ -119,5 +119,5 @@ export const insertCSS = css`
     width: 100vw;
     height: 40px;
     opacity: 0;
-  }
+  } */
 `

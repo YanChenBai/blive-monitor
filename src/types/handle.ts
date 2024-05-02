@@ -11,6 +11,9 @@ export interface BliveHandleInterface {
   /** 最小化  */
   minWin(win: BW): void
 
+  /** 显示  */
+  showWin(win: BW): void
+
   /** 关闭 */
   closeWin(win: BW): void
 

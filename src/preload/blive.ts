@@ -10,12 +10,13 @@ import { ControlBar } from '@preload/components/controlBar'
 import { DanmuSend } from '@preload/components/danmuSend'
 import { batchAdd, createComponent } from '@preload/utils/component'
 import { getEmoticons } from '@preload/utils/api'
-import { awaitLivePlayer } from './utils/livePlayer'
+import { awaitLivePlayer, awaitVideoEl } from './utils/livePlayer'
 import { randomMouseMove } from './utils/randomMouseMove'
 import { ChangeVolume } from '@preload/components/changeVolume'
 import { autoLottery } from './utils/autoLottery'
 import { UserInfo } from '@preload/components/userInfo'
 import { Emoticon } from '@type/emoji'
+import { insertCSS } from '@main/windows/css'
 
 const bliveInvoke = new BliveInvoke()
 const controlBarEl = createComponent(ControlBar)
@@ -36,14 +37,30 @@ function getKeyField(emoticons: Emoticon[]) {
   }))
 }
 
+function insertCSSOnStyle() {
+  const style = document.createElement('style')
+  style.innerHTML = insertCSS
+  document.head.appendChild(style)
+}
+
+document.body.style.opacity = '0'
+document.body.style.overflow = 'hidden'
 window.addEventListener('DOMContentLoaded', async () => {
   batchAdd(document.body, [controlBarEl, changeVolume])
 
-  awaitLivePlayer().then((livePlayer) => {
+  awaitLivePlayer().then(async (livePlayer) => {
+    const { liveStatus } = livePlayer.getPlayerInfo()
+    if (liveStatus === 0) {
+      insertCSSOnStyle()
+    } else {
+      awaitVideoEl().then(() => insertCSSOnStyle())
+    }
     // 关闭弹幕侧边栏
     document.body.classList.add('hide-aside-area')
     // 启用网页全屏
     livePlayer.setFullscreenStatus(1)
+
+    document.body.style.opacity = ''
   })
 
   // 获取直播间信息

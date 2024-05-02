@@ -19,6 +19,11 @@ export class BliveHandle extends IPCHandle implements BliveHandleInterface {
   }
 
   @method
+  showWin(win: BW) {
+    win.show()
+  }
+
+  @method
   closeWin(win: BW) {
     win.close()
   }

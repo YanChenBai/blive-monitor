@@ -40,6 +40,10 @@ export class BliveInvoke
     return this.invoke('minWin')
   }
 
+  showWin() {
+    return this.invoke('showWin')
+  }
+
   closeWin() {
     return this.invoke('closeWin')
   }
