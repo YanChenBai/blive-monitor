@@ -37,24 +37,23 @@ function getKeyField(emoticons: Emoticon[]) {
   }))
 }
 
-function insertCSSOnStyle() {
-  const style = document.createElement('style')
-  style.innerHTML = insertCSS
-  document.head.appendChild(style)
-}
+// function insertCSSOnStyle() {
+//   const style = document.createElement('style')
+//   style.innerHTML = insertCSS
+//   document.head.appendChild(style)
+// }
 
-document.body.style.opacity = '0'
-document.body.style.overflow = 'hidden'
 window.addEventListener('DOMContentLoaded', async () => {
   batchAdd(document.body, [controlBarEl, changeVolume])
 
   awaitLivePlayer().then(async (livePlayer) => {
-    const { liveStatus } = livePlayer.getPlayerInfo()
-    if (liveStatus === 0) {
-      insertCSSOnStyle()
-    } else {
-      awaitVideoEl().then(() => insertCSSOnStyle())
-    }
+    // const { liveStatus } = livePlayer.getPlayerInfo()
+    // if (liveStatus === 0) {
+    //   insertCSSOnStyle()
+    // } else {
+    //   awaitVideoEl().then(() => insertCSSOnStyle())
+    // }
+
     // 关闭弹幕侧边栏
     document.body.classList.add('hide-aside-area')
     // 启用网页全屏

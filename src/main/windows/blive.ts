@@ -7,7 +7,7 @@ import { getFace } from '@main/utils/getFaceImage'
 import { ASPECT_RATIO_KEYS } from '@type/handle'
 import { ASPECT_RATIO } from '@main/handles/bliveHandle'
 import { getRoomPlayInfo } from '@main/utils/api'
-import { css } from '@preload/utils/component'
+import { insertCSS } from '@main/windows/css'
 
 const DEF_ASPECT_RATIO = ASPECT_RATIO_KEYS.RATIO_16_9
 const getSize = (aspectRatio: ASPECT_RATIO_KEYS) => {
@@ -84,24 +84,7 @@ export async function bliveWindow(room: Room) {
     }
   })
 
-  window.webContents.insertCSS(css`
-    /** 拖拽栏 */
-    body::after {
-      content: '';
-      -webkit-app-region: drag;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 999999999999;
-      width: 100vw;
-      height: 40px;
-      opacity: 0;
-    }
-
-    html {
-      background: #000;
-    }
-  `)
+  window.webContents.insertCSS(insertCSS)
 
   window.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)

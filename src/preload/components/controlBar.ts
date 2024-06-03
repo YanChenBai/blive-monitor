@@ -17,8 +17,9 @@ import {
   closeDanmuInput,
   switchDanmuInput
 } from '@preload/utils/status'
-import { Close, Minimize, Danmu, Pin, Pined } from './icons'
+import { Close, Minimize, Danmu, Pin, Pined, Refresh } from './icons'
 import { BliveInvoke } from '@preload/utils/invoke'
+import { awaitLivePlayer } from '@preload/utils/livePlayer'
 
 function createBrn(props: Props<ControlBtn>) {
   return createComponent(ControlBtn, props)
@@ -39,6 +40,11 @@ const btns = {
     color: '#f288a6ff',
     content: Danmu,
     title: '弹幕快捷发送,回车可打开'
+  }),
+  refresh: createBrn({
+    color: '#feb44d',
+    content: Refresh,
+    title: '刷新'
   }),
   alwaysOnTopLock: createBrn({
     color: '#64d496',
@@ -139,5 +145,11 @@ export class ControlBar extends Component {
     }
 
     btns.switchDanmuInput.onClickBtn = () => switchDanmuInput()
+
+    btns.refresh.onClickBtn = () => {
+      awaitLivePlayer().then((livePlayer) => {
+        livePlayer.refresh()
+      })
+    }
   }
 }
