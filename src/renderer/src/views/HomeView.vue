@@ -29,41 +29,39 @@
           <div class="more-btn" @click="connectCodeRef?.open()">
             <Unplug :stroke-width="2.5" :size="4" />连接
           </div>
-          <!-- <div class="more-btn" @click="connectCodeRef?.open()">
+          <div class="more-btn" @click="connectCodeRef?.open()">
             <FileUp :stroke-width="2.5" :size="4" />导入
-          </div> -->
+          </div>
         </div>
       </n-popover>
     </div>
 
-    <n-spin description="加载中" :show="newVersionInit" of-hidden>
-      <div of-hidden>
-        <n-scrollbar class="h-[calc(100vh-92px)] px-14px box-border">
-          <VueDraggable
-            v-model="rooms"
-            :animation="150"
-            :scroll-sensitivity="20"
-            :disabled="keyword.length > 0"
+    <div of-hidden>
+      <n-scrollbar class="h-[calc(100vh-92px)] px-14px box-border">
+        <VueDraggable
+          v-model="rooms"
+          :animation="150"
+          :scroll-sensitivity="20"
+          :disabled="keyword.length > 0"
+        >
+          <RoomListItem
+            v-for="item in searchList"
+            :key="item.uid"
+            class="[&]:m-b-10px"
+            :room="item"
+            @open="openLiveRoom"
+            @remove="remove"
           >
-            <RoomListItem
-              v-for="item in searchList"
-              :key="item.uid"
-              class="[&]:m-b-10px"
-              :room="item"
-              @open="openLiveRoom"
-              @remove="remove"
-            >
-            </RoomListItem>
-          </VueDraggable>
-        </n-scrollbar>
-      </div>
-    </n-spin>
+          </RoomListItem>
+        </VueDraggable>
+      </n-scrollbar>
+    </div>
   </div>
   <ConnectCode ref="connectCodeRef"></ConnectCode>
 </template>
 
 <script setup lang="ts">
-import { RotateCcw, Ellipsis } from 'lucide-vue-next'
+import { RotateCcw, Ellipsis, FileUp } from 'lucide-vue-next'
 import { useRoomsStore, ResultMesg } from '@renderer/stores/rooms'
 import { Room } from '@type/room'
 import { computed, onMounted, ref } from 'vue'
@@ -84,30 +82,8 @@ const message = useMessage()
 const roomsStore = useRoomsStore()
 const { rooms } = storeToRefs(roomsStore)
 const keyword = ref<string>('')
-const newVersionInit = ref(false)
 const refreshLoading = ref(false)
 const connectCodeRef = ref<InstanceType<typeof ConnectCode>>()
-
-/** 以前的数据格式转换为新的 */
-rooms.value = rooms.value.map((item: any) => {
-  if (item.live_status !== undefined) {
-    item.liveStatus = item.live_status
-    Reflect.deleteProperty(item, 'live_status')
-  }
-  if (item.medal_name) {
-    item.medalName = item.medal_name
-    Reflect.deleteProperty(item, 'medal_name')
-  }
-  if (item.room_id) {
-    item.roomId = item.room_id
-    Reflect.deleteProperty(item, 'room_id')
-  }
-  if (item.short_id) {
-    item.shortId = item.short_id
-    Reflect.deleteProperty(item, 'short_id')
-  }
-  return item
-})
 
 const add = debounce(async () => {
   if (!keyword.value.startsWith('live')) {
@@ -143,6 +119,7 @@ const refresh = debounce(
     }),
   300
 )
+
 const openLiveRoom = (room: Room) => window.mainInvoke.openLiveRoom({ ...room })
 
 function remove(room_id: string) {
@@ -175,31 +152,22 @@ const searchList = computed(() => {
       val = val.replace(livePreRegex, '')
     }
 
-    return searchRooms.filter((item) => {
-      // 修改了数据结构兼容
-      const room = Object.assign(
-        {
-          uid: '',
-          roomId: '',
-          shortId: '',
-          name: '',
-          face: '',
-          liveStatus: 0,
-          tags: '',
-          title: '',
-          medalName: ''
-        } as Room,
-        item
-      )
-      return (
-        room.name.toLowerCase().includes(val) ||
-        room.roomId.includes(val) ||
-        room.shortId.includes(val) ||
-        match(room.name, val, { continuous: true }) !== null ||
-        match(room.tags, val, { continuous: true }) !== null ||
-        match(room.medalName, val, { continuous: true }) !== null
-      )
-    })
+    return searchRooms
+      .filter((room) => {
+        return (
+          room.name.toLowerCase().includes(val) ||
+          room.roomId.includes(val) ||
+          room.shortId.includes(val) ||
+          match(room.name, val, { continuous: true }) !== null ||
+          match(room.tags, val, { continuous: true }) !== null ||
+          match(room.medalName, val, { continuous: true }) !== null
+        )
+      })
+      .sort((a, b) => {
+        if (a.liveStatus === 1 && b.liveStatus !== 1) return -1
+        else if (a.liveStatus !== 1 && b.liveStatus === 1) return 1
+        else return 0
+      })
   }
 })
 
@@ -214,8 +182,7 @@ onMounted(() => refresh())
 
 <style scoped>
 .btn {
-  @apply: bg-[#FB7299] border-0 flex-inline justify-center items-center px-2 rounded-1.5
-    cursor-pointer hover-bg-[#FB7299]/90 transition-all outline-none;
+  @apply: bg-[#FB7299] border-0 flex-inline justify-center items-center px-2 rounded-1.5 cursor-pointer hover-bg-[#FB7299]/90 transition-all outline-none;
 }
 
 .more-btn {
