@@ -6,6 +6,9 @@ function sleep(ms: number) {
   return new Promise<void>((res) => setTimeout(() => res(), ms))
 }
 
+/**
+ * @deprecated b站现在支持自动带牌子
+ */
 async function findFansMedal(roomId: string) {
   let total = 2
   for (let page = 1; page <= total; page++) {
@@ -33,6 +36,9 @@ async function findFansMedal(roomId: string) {
   return undefined
 }
 
+/**
+ * @deprecated b站现在支持自动带牌子
+ */
 export async function autoModifyFansMedal(roomId: string) {
   const {
     data: {

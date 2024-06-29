@@ -15,7 +15,6 @@ import { Emoticons } from '@type/emoji'
 import lodash from 'lodash'
 import { onSendText } from '@preload/utils/monitor'
 import { Room } from '@type/room'
-import { autoModifyFansMedal } from '@preload/utils/autoModifyFansMedal'
 
 /** 匹配可输入的最大弹幕 */
 function matchMaxDanmu() {
@@ -103,7 +102,6 @@ export class DanmuSend extends Component {
   }
 
   async send(msg: string) {
-    await autoModifyFansMedal(this.room!.roomId)
     msg = msg.trim()
     if (msg.length <= 0) {
       return

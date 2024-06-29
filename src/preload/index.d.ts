@@ -6,5 +6,8 @@ declare global {
   interface Window {
     livePlayer?: LivePlayer
     mainInvoke: InvokeTransform<MainHandleInterface>
+    Vue: {
+      nextTick(): Promise<void>
+    }
   }
 }

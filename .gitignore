@@ -8,3 +8,4 @@ db.json
 logs
 resources/icons
 .env
+.test.js

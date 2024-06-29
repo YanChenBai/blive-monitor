@@ -10,13 +10,13 @@ import { ControlBar } from '@preload/components/controlBar'
 import { DanmuSend } from '@preload/components/danmuSend'
 import { batchAdd, createComponent } from '@preload/utils/component'
 import { getEmoticons } from '@preload/utils/api'
-import { awaitLivePlayer } from './utils/livePlayer'
+import { awaitLivePlayer, awaitVideoEl } from './utils/livePlayer'
 import { randomMouseMove } from './utils/randomMouseMove'
 import { ChangeVolume } from '@preload/components/changeVolume'
 import { autoLottery } from './utils/autoLottery'
 import { UserInfo } from '@preload/components/userInfo'
 import { Emoticon } from '@type/emoji'
-// import { insertCSS } from '@main/windows/css'
+import { fullScreenStyle } from '@preload/components/css'
 
 const bliveInvoke = new BliveInvoke()
 const controlBarEl = createComponent(ControlBar)
@@ -37,29 +37,50 @@ function getKeyField(emoticons: Emoticon[]) {
   }))
 }
 
-// function insertCSSOnStyle() {
-//   const style = document.createElement('style')
-//   style.innerHTML = insertCSS
-//   document.head.appendChild(style)
-// }
+function insertCSSOnStyle() {
+  const style = document.createElement('style')
+  style.innerHTML = fullScreenStyle
+  document.head.appendChild(style)
+}
 
-window.addEventListener('DOMContentLoaded', async () => {
+function hiddenHtml() {
+  document.body.style['-webkit-app-region'] = 'drag'
+  const htmlElement = document.documentElement
+  htmlElement.style.overflow = 'hidden'
+  htmlElement.style.filter = 'brightness(0)'
+}
+
+function showHtml() {
+  document.body.style['-webkit-app-region'] = ''
+  const htmlElement = document.documentElement
+  htmlElement.style.overflow = ''
+  htmlElement.style.filter = ''
+}
+
+document.addEventListener('DOMContentLoaded', () => hiddenHtml())
+
+window.addEventListener('load', async () => {
   batchAdd(document.body, [controlBarEl, changeVolume])
 
   awaitLivePlayer().then(async (livePlayer) => {
-    // const { liveStatus } = livePlayer.getPlayerInfo()
-    // if (liveStatus === 0) {
-    //   insertCSSOnStyle()
-    // } else {
-    //   awaitVideoEl().then(() => insertCSSOnStyle())
-    // }
+    try {
+      const { liveStatus } = livePlayer.getPlayerInfo()
+      if (liveStatus === 0) {
+        insertCSSOnStyle()
+      } else {
+        await awaitVideoEl().then(() => {
+          livePlayer.refresh()
+          insertCSSOnStyle()
+        })
+      }
 
-    // 关闭弹幕侧边栏
-    document.body.classList.add('hide-aside-area')
-    // 启用网页全屏
-    livePlayer.setFullscreenStatus(1)
-
-    document.body.style.opacity = ''
+      // 关闭弹幕侧边栏
+      document.body.classList.add('hide-aside-area')
+      // 启用网页全屏
+      livePlayer.setFullscreenStatus(1)
+    } finally {
+      showHtml()
+    }
   })
 
   // 获取直播间信息

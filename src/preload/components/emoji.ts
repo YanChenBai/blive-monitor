@@ -5,7 +5,6 @@ import { awaitLivePlayer } from '@preload/utils/livePlayer'
 import { Status, watch } from '@preload/utils/status'
 import lodash from 'lodash'
 import { onSendEmoticon } from '@preload/utils/monitor'
-import { autoModifyFansMedal } from '@preload/utils/autoModifyFansMedal'
 import { Room } from '@type/room'
 
 function isClickEmojiItem(e: MouseEvent) {
@@ -331,7 +330,6 @@ export class EmojiTabs extends Component {
    */
   async send(data: Emoticon) {
     const livePlayer = await awaitLivePlayer()
-    await autoModifyFansMedal(this.room!.roomId)
     return await livePlayer.sendDanmaku({
       msg: data.emoticon_unique,
       mode: 1,

@@ -1,10 +1,9 @@
-import { shell, BrowserWindow, app } from 'electron'
+import { shell, BrowserWindow, app, session } from 'electron'
 import { join } from 'path'
 import icon from '../../../resources/icon.ico?asset'
 import { getMainWindowConfig, updateMainWindowConfig } from '@main/utils/lowdb'
 import { RENDER_PATH } from '@main/utils/paths'
 import { serverBootstrap } from '@main/utils/server'
-
 export async function mainWindow() {
   const config = getMainWindowConfig()
 

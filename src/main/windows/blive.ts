@@ -7,7 +7,7 @@ import { getFace } from '@main/utils/getFaceImage'
 import { ASPECT_RATIO_KEYS } from '@type/handle'
 import { ASPECT_RATIO } from '@main/handles/bliveHandle'
 import { getRoomPlayInfo } from '@main/utils/api'
-import { insertCSS } from '@main/windows/css'
+import { dragStyle } from '@main/windows/css'
 
 const DEF_ASPECT_RATIO = ASPECT_RATIO_KEYS.RATIO_16_9
 const getSize = (aspectRatio: ASPECT_RATIO_KEYS) => {
@@ -84,17 +84,14 @@ export async function bliveWindow(room: Room) {
     }
   })
 
-  window.webContents.insertCSS(insertCSS)
+  window.webContents.insertCSS(dragStyle)
 
   window.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
     return { action: 'deny' }
   })
 
-  window.loadURL(`https://live.bilibili.com/blanc/${room.roomId}?winId=${window.id}`, {
-    userAgent:
-      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0'
-  })
+  window.loadURL(`https://live.bilibili.com/blanc/${room.roomId}?winId=${window.id}`)
 
   window.on('close', () => {
     // 从win map中移除
