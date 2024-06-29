@@ -1,4 +1,4 @@
-import { shell, BrowserWindow, app, session } from 'electron'
+import { shell, BrowserWindow, app } from 'electron'
 import { join } from 'path'
 import icon from '../../../resources/icon.ico?asset'
 import { getMainWindowConfig, updateMainWindowConfig } from '@main/utils/lowdb'
