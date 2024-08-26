@@ -1,9 +1,10 @@
-import { shell, BrowserWindow, app } from 'electron'
-import { join } from 'path'
-import icon from '../../../resources/icon.ico?asset'
+import { join } from 'node:path'
+import { BrowserWindow, app, shell } from 'electron'
 import { getMainWindowConfig, updateMainWindowConfig } from '@main/utils/lowdb'
 import { RENDER_PATH } from '@main/utils/paths'
 import { serverBootstrap } from '@main/utils/server'
+import icon from '../../../resources/icon.ico?asset'
+
 export async function mainWindow() {
   const config = getMainWindowConfig()
 
@@ -19,8 +20,8 @@ export async function mainWindow() {
       preload: join(__dirname, '../preload/main.mjs'),
       contextIsolation: false,
       nodeIntegration: true,
-      spellcheck: false
-    }
+      spellcheck: false,
+    },
   })
 
   window.once('ready-to-show', () => {
@@ -45,7 +46,7 @@ export async function mainWindow() {
       x,
       y,
       width,
-      height
+      height,
     })
     app.quit()
   })

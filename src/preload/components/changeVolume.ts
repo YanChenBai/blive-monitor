@@ -1,8 +1,8 @@
 import { awaitLivePlayer, awaitVideoEl } from '@preload/utils/livePlayer'
-import { tag, Component, html, css } from '../utils/component'
 import { BliveInvoke } from '@preload/utils/invoke'
 import { Status, watch } from '@preload/utils/status'
 import { onChangeVolume } from '@preload/utils/monitor'
+import { Component, css, html, tag } from '../utils/component'
 
 @tag('change-volume')
 export class ChangeVolume extends Component {
@@ -40,6 +40,10 @@ export class ChangeVolume extends Component {
   timer: NodeJS.Timeout | null = null
   bliveInvoke = new BliveInvoke()
 
+  get setShow() {
+    return this.show
+  }
+
   set setShow(value: boolean) {
     this.show = value
     this.reRender()
@@ -51,7 +55,7 @@ export class ChangeVolume extends Component {
       (status
         ? Math.max(0, this.volume.value - this.volumeStep)
         : Math.min(100, this.volume.value + this.volumeStep)
-      ).toFixed(0)
+      ).toFixed(0),
     )
 
     this.volume.value = newVolume
@@ -62,11 +66,13 @@ export class ChangeVolume extends Component {
       // 在初始化时，不显示
       if (this.isShowOnce) {
         this.setShow = true
-      } else {
+      }
+      else {
         this.isShowOnce = true
       }
 
-      if (this.timer) clearTimeout(this.timer)
+      if (this.timer)
+        clearTimeout(this.timer)
       this.timer = setTimeout(() => (this.setShow = false), 500)
 
       this.bliveInvoke.setVolume(value)
@@ -75,15 +81,16 @@ export class ChangeVolume extends Component {
       Promise.all([awaitLivePlayer(), awaitVideoEl()]).then(([lp, el]) => {
         // 保证改变音量时不在静音状态
         const { volume: volumeInfo } = lp.getPlayerInfo()
-        if (el.muted) el.muted = false
-        if (volumeInfo && volumeInfo.disabled) volumeInfo.disabled = false
+        if (el.muted)
+          el.muted = false
+        if (volumeInfo && volumeInfo.disabled)
+          volumeInfo.disabled = false
 
         lp.volume(value)
       })
     })
 
     const volume = await this.bliveInvoke.getVolume()
-    console.log(volume)
 
     this.volume.value = volume
 

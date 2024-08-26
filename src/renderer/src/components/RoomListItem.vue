@@ -1,3 +1,20 @@
+<script setup lang="ts">
+import type { Room } from '@type/room'
+import { ExternalLink, Trash2 } from 'lucide-vue-next'
+
+defineOptions({ name: 'RoomListroom' })
+const props = defineProps<{
+  room: Room
+}>()
+defineEmits<{
+  (e: 'remove', roomId: string): void
+  (e: 'open', room: Room): void
+}>()
+
+const showRoomId
+  = props.room.shortId && props.room.shortId === '0' ? props.room.roomId : props.room.shortId
+</script>
+
 <template>
   <div bg="[#1e1e1e]" rounded-2 py-12px px-12px cursor-pointer>
     <div flex items-center justify-between>
@@ -7,9 +24,13 @@
         </div>
 
         <div text-16px flex flex-col p-l-10px p-r-10px box-border line-height-24px>
-          <div text-16px font-500 color="[rgba(255,255,255,0.87)]">{{ room.name }}</div>
+          <div text-16px font-500 color="[rgba(255,255,255,0.87)]">
+            {{ room.name }}
+          </div>
 
-          <div text-14px font-300 color="[rgba(255,255,255,0.6)]">{{ showRoomId }}</div>
+          <div text-14px font-300 color="[rgba(255,255,255,0.6)]">
+            {{ showRoomId }}
+          </div>
         </div>
       </div>
 
@@ -35,23 +56,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { Room } from '@type/room'
-import { ExternalLink, Trash2 } from 'lucide-vue-next'
-
-defineOptions({ name: 'RoomListroom' })
-const props = defineProps<{
-  room: Room
-}>()
-defineEmits<{
-  (e: 'remove', roomId: string): void
-  (e: 'open', room: Room): void
-}>()
-
-const showRoomId =
-  props.room.shortId && props.room.shortId === '0' ? props.room.roomId : props.room.shortId
-</script>
 
 <style scoped>
 .btn {

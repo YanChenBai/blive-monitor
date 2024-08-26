@@ -1,10 +1,10 @@
-import { IPCHandle, method, handle } from '@main/utils/ipcHandle'
+import { IPCHandle, handle, method } from '@main/utils/ipcHandle'
 import type { Room } from '@type/room'
-import { getRoomInfo, getManyRoomInfo } from '@main/utils/api'
+import { getManyRoomInfo, getRoomInfo } from '@main/utils/api'
 import { bliveWindow } from '@main/windows/blive'
 import { biliHomeWindew } from '@main/windows/biliHome'
 import { BrowserWindow as BW } from 'electron'
-import { MainHandleInterface } from '@type/handle'
+import type { MainHandleInterface } from '@type/handle'
 import { getConnectToken } from '@main/utils/lowdb'
 import { getLocalIP } from '@main/utils/getLocalIP'
 
@@ -42,14 +42,14 @@ export class MainHandle extends IPCHandle implements MainHandleInterface {
 
   @method
   winCount(win: BW) {
-    return BW.getAllWindows().filter((w) => w !== win).length
+    return BW.getAllWindows().filter(w => w !== win).length
   }
 
   @method
   getConnectInfo() {
     return {
       ip: getLocalIP(),
-      token: getConnectToken()
+      token: getConnectToken(),
     }
   }
 }

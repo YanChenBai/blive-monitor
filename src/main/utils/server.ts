@@ -1,20 +1,21 @@
 import { BrowserWindow } from 'electron'
-import { roomMap, emoticonsMap, userConfig } from './shared'
 import express, { type Request } from 'express'
-import { EventNames, SendEmoticonParams } from '@type/monitor'
+import type { SendEmoticonParams } from '@type/monitor'
+import { EventNames } from '@type/monitor'
+import { emoticonsMap, roomMap, userConfig } from './shared'
 import { getConnectToken } from './lowdb'
 
 function findWIn(winId: number) {
-  return BrowserWindow.getAllWindows().find((item) => item.id === winId)
+  return BrowserWindow.getAllWindows().find(item => item.id === winId)
 }
 
 function get() {
   const keys = [...emoticonsMap.keys()]
 
-  return keys.map((key) => ({
+  return keys.map(key => ({
     id: key,
     roomInfo: roomMap.get(key),
-    emoticons: emoticonsMap.get(key)
+    emoticons: emoticonsMap.get(key),
   }))
 }
 
@@ -34,7 +35,8 @@ function changeVolume(winId: number, direction: boolean) {
 }
 
 function postRequestGetWinId(res: Request) {
-  if (res.body.winId) return Number(res.body.winId)
+  if (res.body.winId)
+    return Number(res.body.winId)
   else throw new Error('not find winId')
 }
 
@@ -52,10 +54,11 @@ export function serverBootstrap() {
     next()
   })
 
-  app.use(function (req, res, next) {
+  app.use((req, res, next) => {
     if (req.headers.authorization === connectToken) {
       next()
-    } else {
+    }
+    else {
       res.sendStatus(403)
     }
   })
@@ -64,12 +67,10 @@ export function serverBootstrap() {
   app.get('/get', (_req, res) =>
     res.json({
       maxlen: userConfig.maxlen,
-      rooms: get()
-    })
-  )
+      rooms: get(),
+    }))
 
   app.post('/send/emoji', (req, res) => {
-    console.log(req.body)
     const winId = postRequestGetWinId(req)
     const { emoticonUnique, pkgId } = req.body
 

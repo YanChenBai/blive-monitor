@@ -1,4 +1,4 @@
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 import { defineConfig, externalizeDepsPlugin, swcPlugin } from 'electron-vite'
 import vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
@@ -12,17 +12,17 @@ export default defineConfig({
     build: {
       rollupOptions: {
         output: {
-          format: 'es'
-        }
-      }
+          format: 'es',
+        },
+      },
     },
     resolve: {
       alias: {
         '@main': resolve('src/main'),
         '@preload': resolve('src/preload'),
-        '@type': resolve('src/types')
-      }
-    }
+        '@type': resolve('src/types'),
+      },
+    },
   },
   preload: {
     plugins: [externalizeDepsPlugin(), swcPlugin()],
@@ -31,58 +31,58 @@ export default defineConfig({
         input: {
           blive: 'src/preload/blive.ts',
           main: 'src/preload/main.ts',
-          biliHome: 'src/preload/biliHome.ts'
+          biliHome: 'src/preload/biliHome.ts',
         },
         output: {
-          format: 'es'
-        }
-      }
+          format: 'es',
+        },
+      },
     },
     resolve: {
       alias: {
         '@main': resolve('src/main'),
         '@preload': resolve('src/preload'),
-        '@type': resolve('src/types')
-      }
-    }
+        '@type': resolve('src/types'),
+      },
+    },
   },
   renderer: {
     resolve: {
       alias: {
         '@renderer': resolve('src/renderer/src'),
-        '@type': resolve('src/types')
-      }
+        '@type': resolve('src/types'),
+      },
     },
     plugins: [
       vue(),
       UnoCSS({
-        configFile: './uno.config.{js,ts,mjs,mts}'
+        configFile: './uno.config.{js,ts,mjs,mts}',
       }),
       AutoImport({
         dts: true,
         imports: [
           'vue',
           {
-            'naive-ui': ['useDialog', 'useMessage', 'useNotification', 'useLoadingBar']
-          }
-        ]
+            'naive-ui': ['useDialog', 'useMessage', 'useNotification', 'useLoadingBar'],
+          },
+        ],
       }),
       Components({
-        resolvers: [NaiveUiResolver()]
-      })
+        resolvers: [NaiveUiResolver()],
+      }),
     ],
     esbuild: {
-      drop: ['console', 'debugger']
+      drop: ['console', 'debugger'],
     },
     build: {
       rollupOptions: {
         output: {
           manualChunks: {
             pinyin: ['pinyin-pro'],
-            ui: ['naive-ui']
-          }
-        }
-      }
-    }
-  }
+            ui: ['naive-ui'],
+          },
+        },
+      },
+    },
+  },
 })

@@ -1,6 +1,5 @@
 /**
  * 随机生成鼠标移动事件的坐标
- * @returns
  */
 function getRandomCoord() {
   const maxX = window.innerWidth
@@ -22,7 +21,7 @@ export function randomMouseMove() {
     bubbles: true,
     cancelable: true,
     clientX: x,
-    clientY: y
+    clientY: y,
   })
 
   moveEvent.ignore = true

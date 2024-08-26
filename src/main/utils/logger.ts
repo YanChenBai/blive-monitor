@@ -14,12 +14,12 @@ log4js.configure({
       compress: false,
       pattern: 'yyyy-MM-dd',
       alwaysIncludePattern: true,
-      keepFileExt: true
-    }
+      keepFileExt: true,
+    },
   },
   categories: {
-    default: { appenders: ['file', 'console'], level: 'info' }
-  }
+    default: { appenders: ['file', 'console'], level: 'info' },
+  },
 })
 
 /** 日志 */

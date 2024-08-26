@@ -1,25 +1,27 @@
-import {
-  html,
-  css,
-  Component,
-  tag,
-  createComponent,
+import type {
   Props,
-  batchAdd,
-  switchElement
 } from '@preload/utils/component'
-import { ControlBtn } from './controlBtn'
 import {
-  controlBarStatus,
-  watch,
-  openControlBar,
+  Component,
+  batchAdd,
+  createComponent,
+  css,
+  html,
+  switchElement,
+  tag,
+} from '@preload/utils/component'
+import {
   closeControlBar,
   closeDanmuInput,
-  switchDanmuInput
+  controlBarStatus,
+  openControlBar,
+  switchDanmuInput,
+  watch,
 } from '@preload/utils/status'
-import { Close, Minimize, Danmu, Pin, Pined, Refresh } from './icons'
 import { BliveInvoke } from '@preload/utils/invoke'
 import { awaitLivePlayer } from '@preload/utils/livePlayer'
+import { Close, Danmu, Minimize, Pin, Pined, Refresh } from './icons'
+import { ControlBtn } from './controlBtn'
 
 function createBrn(props: Props<ControlBtn>) {
   return createComponent(ControlBtn, props)
@@ -29,33 +31,33 @@ const btns = {
   closeWin: createBrn({
     color: 'rgb(243, 59, 99)',
     content: Close,
-    title: '关闭窗口'
+    title: '关闭窗口',
   }),
   minWin: createBrn({
     color: '#00aeec',
     content: Minimize,
-    title: '窗口最小化'
+    title: '窗口最小化',
   }),
   switchDanmuInput: createBrn({
     color: '#f288a6ff',
     content: Danmu,
-    title: '弹幕快捷发送,回车可打开'
+    title: '弹幕快捷发送,回车可打开',
   }),
   refresh: createBrn({
     color: '#feb44d',
     content: Refresh,
-    title: '刷新'
+    title: '刷新',
   }),
   alwaysOnTopLock: createBrn({
     color: '#64d496',
     content: Pin,
-    title: '窗口置顶'
+    title: '窗口置顶',
   }),
   alwaysOnTopUnlock: createBrn({
     color: '#64d496',
     content: Pined,
-    title: '窗口取消置顶'
-  })
+    title: '窗口取消置顶',
+  }),
 }
 
 @tag('control-bar')
@@ -93,6 +95,10 @@ export class ControlBar extends Component {
   hideDanmuBtn = false
   bliveInvoke = new BliveInvoke()
 
+  get setHideDanmuBtn() {
+    return this.hideDanmuBtn
+  }
+
   set setHideDanmuBtn(value: boolean) {
     this.hideDanmuBtn = value
     btns.switchDanmuInput.classList.toggle('hide-btn', value)
@@ -105,7 +111,7 @@ export class ControlBar extends Component {
 
     switchElement(
       [btns.alwaysOnTopLock, btns.alwaysOnTopUnlock],
-      await this.bliveInvoke.getAlwaysOnTop()
+      await this.bliveInvoke.getAlwaysOnTop(),
     )
 
     // 监听控制栏显示状态
@@ -114,7 +120,7 @@ export class ControlBar extends Component {
       (val) => {
         controlBarEl.classList.toggle('show', val)
       },
-      true
+      true,
     )
 
     document.onmousemove = (event: MouseEvent & { ignore?: boolean }) => {

@@ -1,17 +1,14 @@
-import { InvokeTransform } from '@type/invoke'
+import type { InvokeTransform } from '@type/invoke'
 import { ipcRenderer } from 'electron'
-import { IPCHandle } from '@main/utils/ipcHandle'
+import type { IPCHandle } from '@main/utils/ipcHandle'
 import type { Room } from '@type/room'
-import { BliveHandleInterface } from '@type/handle'
-import { MainHandleInterface } from '@type/handle'
-import { SimpleEmoticons } from '@type/emoji'
+import type { BliveHandleInterface, MainHandleInterface } from '@type/handle'
+import 'reflect-metadata'
+import type { SimpleEmoticons } from '@type/emoji'
 
 export function invoke(prefixName: string) {
   return (target: typeof IPCInvoke) => {
-    Reflect.defineProperty(target, 'prefixName', {
-      value: prefixName,
-      writable: false
-    })
+    Reflect.defineMetadata('prefixName', prefixName, target)
   }
 }
 
@@ -21,12 +18,14 @@ class IPCInvoke<T> {
   group = true
 
   invoke<M extends keyof InvokeTransform<T>>(name: M, ...args: Parameters<InvokeTransform<T>[M]>) {
-    if (!this.constructor['prefixName']) throw new Error('prefixName is not defined')
+    const prefixName = Reflect.getMetadata('prefixName', this.constructor)
+    if (!prefixName)
+      throw new Error('prefixName is not defined')
 
     return ipcRenderer.invoke(
-      ['IPCHandle', this.constructor['prefixName']].join(':'),
+      ['IPCHandle', prefixName].join(':'),
       name,
-      ...args
+      ...args,
     ) as ReturnType<InvokeTransform<T>[M]>
   }
 }
@@ -34,8 +33,7 @@ class IPCInvoke<T> {
 @invoke('blive')
 export class BliveInvoke
   extends IPCInvoke<BliveHandleInterface>
-  implements InvokeTransform<BliveHandleInterface>
-{
+  implements InvokeTransform<BliveHandleInterface> {
   minWin() {
     return this.invoke('minWin')
   }
@@ -88,8 +86,7 @@ export class BliveInvoke
 @invoke('main')
 export class MainInvoke
   extends IPCInvoke<MainHandleInterface>
-  implements InvokeTransform<MainHandleInterface>
-{
+  implements InvokeTransform<MainHandleInterface> {
   winCount() {
     return this.invoke('winCount')
   }

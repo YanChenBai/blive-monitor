@@ -16,18 +16,19 @@ export type Props<P> = Partial<Omit<P, 'css' | 'render' | 'connected' | 'connect
 /** 创建组件 */
 export function createComponent<T extends typeof Component>(
   component: T,
-  props?: Props<InstanceType<T>>
+  props?: Props<InstanceType<T>>,
 ) {
   const dom = document.createElement(component.regtagName) as InstanceType<T>
   for (const key in props) {
-    if (props[key]) dom[key] = props[key]
+    if (props[key])
+      dom[key] = props[key]
   }
   return dom
 }
 
 /** 批量添加 */
 export function batchAdd(el: HTMLElement, els: HTMLElement[]) {
-  return els.map((item) => el.appendChild(item))
+  return els.map(item => el.appendChild(item))
 }
 
 /** 切换元素 */
@@ -46,7 +47,7 @@ export function switchElement(els: [HTMLElement, HTMLElement], initValue: boolea
         const isHide = (index === 0) === val
         item.style.display = isHide ? 'none' : displayValue[index]
       }),
-    true
+    true,
   )
 
   return signal
@@ -60,6 +61,7 @@ export class Component extends HTMLElement {
     super()
     this.attachShadow({ mode: 'open' })
   }
+
   static regtagName: string = ''
 
   /** css样式 */

@@ -122,7 +122,7 @@ export interface RoomPlayInfo extends Response {
                 current_qn: number
                 accept_qn: number[]
                 base_url: string
-                url_info: { host: string; extra: string; stream_ttl: number }[]
+                url_info: { host: string, extra: string, stream_ttl: number }[]
                 hdr_qn: object
                 dolby_type: number
                 attr_name: string
@@ -168,9 +168,9 @@ export interface RoomPlayInfo extends Response {
                   attr_name: string
                 }[]
                 master_url: string
-              }
+              },
             ]
-          }
+          },
         ]
         p2p_data: {
           p2p: boolean
@@ -212,9 +212,9 @@ export interface FansMedal {
     honor_icon: string
     can_delete: boolean
   }
-  anchor_info: { nick_name: string; avatar: string; verify: number }
-  superscript: { type: number; content: string }
-  room_info: { room_id: number; living_status: number; url: string }
+  anchor_info: { nick_name: string, avatar: string, verify: number }
+  superscript: { type: number, content: string }
+  room_info: { room_id: number, living_status: number, url: string }
 }
 
 export interface FansMedals extends Response {
@@ -266,7 +266,7 @@ export interface InfoByUser extends Response {
         medal_color: number
         level: number
       }
-      lookup: { level: number; is_lighted: boolean }
+      lookup: { level: number, is_lighted: boolean }
     }
   }
 }

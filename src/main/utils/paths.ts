@@ -1,5 +1,5 @@
+import path from 'node:path'
 import { app } from 'electron'
-import path from 'path'
 import { isExists } from './isExists'
 
 const ROAMING_PATH = path.resolve(app.getPath('userData'))

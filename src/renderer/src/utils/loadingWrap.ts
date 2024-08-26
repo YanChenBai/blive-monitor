@@ -3,7 +3,7 @@ import type { Ref } from 'vue'
 export function loadingWrap<T = any>(
   state: Record<string, boolean>,
   key: string,
-  func: () => Promise<T>
+  func: () => Promise<T>,
 ): Promise<T> {
   state[key] = true
   return func()

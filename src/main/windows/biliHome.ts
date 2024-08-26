@@ -1,6 +1,7 @@
-import { join } from 'path'
-import icon from '../../../resources/icon.ico?asset'
+import { join } from 'node:path'
 import { BrowserWindow } from 'electron'
+import icon from '../../../resources/icon.ico?asset'
+
 export async function biliHomeWindew() {
   const window = new BrowserWindow({
     width: 900,
@@ -12,8 +13,8 @@ export async function biliHomeWindew() {
     webPreferences: {
       preload: join(__dirname, '../preload/biliHome.mjs'),
       contextIsolation: true,
-      nodeIntegration: false
-    }
+      nodeIntegration: false,
+    },
   })
 
   window.on('ready-to-show', () => window.show())

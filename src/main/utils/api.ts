@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { RoomInfo, UserInfo, ManyUserInfo, RoomPlayInfo } from '@type/bili'
+import type { ManyUserInfo, RoomInfo, RoomPlayInfo, UserInfo } from '@type/bili'
 import lodash from 'lodash'
 import type { ManyRoomItem, Room } from '@type/room'
 
@@ -19,15 +19,16 @@ export async function getRoomInfo(room_id: string): Promise<Room> {
           tags: data.tags,
           live_status: data.live_status,
           title: data.title,
-          keyframe: data.keyframe
+          keyframe: data.keyframe,
         }
-      } else {
+      }
+      else {
         return Promise.reject(res)
       }
     })
 
   return await fetch(`https://api.live.bilibili.com/live_user/v1/Master/info?uid=${uid}`)
-    .then((res) => res.json() as Promise<UserInfo>)
+    .then(res => res.json() as Promise<UserInfo>)
     .then((res) => {
       if (res.code === 0) {
         return {
@@ -37,12 +38,13 @@ export async function getRoomInfo(room_id: string): Promise<Room> {
           name: res.data.info.uname,
           face: res.data.info.face,
           liveStatus: live_status,
-          tags: tags,
+          tags,
           title,
           medalName: res.data.medal_name,
-          keyframe
+          keyframe,
         }
-      } else {
+      }
+      else {
         return Promise.reject(res)
       }
     })
@@ -51,12 +53,12 @@ export async function getRoomInfo(room_id: string): Promise<Room> {
 export async function getManyRoomInfo(uids: string[]): Promise<Record<string, ManyRoomItem>> {
   const chunks = lodash.chunk(uids, 20)
   return Promise.all(
-    chunks.map((item) =>
+    chunks.map(item =>
       axios
         .get<ManyUserInfo>('https://api.live.bilibili.com/room/v1/Room/get_status_info_by_uids', {
           params: {
-            uids: item
-          }
+            uids: item,
+          },
         })
         .then((res) => {
           if (res.data.code === 0) {
@@ -69,22 +71,23 @@ export async function getManyRoomInfo(uids: string[]): Promise<Record<string, Ma
                 liveStatus: room.live_status,
                 tags: room.tags,
                 title: room.title,
-                keyframe: room.keyframe
+                keyframe: room.keyframe,
               }
 
               return [key, data]
             })
 
             return Object.fromEntries(entries)
-          } else {
+          }
+          else {
             return Promise.reject(new Error(res.data.message))
           }
-        })
-    )
-  ).then((res) =>
+        }),
+    ),
+  ).then(res =>
     res.reduce((acc, cur) => {
       return { ...acc, ...cur }
-    }, {})
+    }, {}),
   )
 }
 
@@ -92,7 +95,7 @@ export async function getManyRoomInfo(uids: string[]): Promise<Record<string, Ma
 export async function getRoomPlayInfo(roomId: string) {
   return await axios
     .get<RoomPlayInfo>(
-      `https://api.live.bilibili.com/xlive/web-room/v2/index/getRoomPlayInfo?room_id=${roomId}&protocol=0,1&format=0,1,2&codec=0,1,2&qn=150&platform=web&ptype=8&dolby=5&panorama=1`
+      `https://api.live.bilibili.com/xlive/web-room/v2/index/getRoomPlayInfo?room_id=${roomId}&protocol=0,1&format=0,1,2&codec=0,1,2&qn=150&platform=web&ptype=8&dolby=5&panorama=1`,
     )
     .then(({ data }) => data)
 }

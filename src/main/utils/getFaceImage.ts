@@ -1,9 +1,9 @@
-import path from 'path'
+import path from 'node:path'
+import crypto from 'node:crypto'
+import fs from 'node:fs'
+import axios from 'axios'
 import { ICONS_PATH } from './paths'
 import { logger } from './logger'
-import axios from 'axios'
-import crypto from 'crypto'
-import fs from 'fs'
 
 const md5 = (str: string) => crypto.createHash('md5').update(str).digest('hex')
 
@@ -15,7 +15,8 @@ function isCached(url: string) {
   const imgPath = path.join(ICONS_PATH, `${md5(url)}.png`)
   if (fs.existsSync(imgPath)) {
     return true
-  } else {
+  }
+  else {
     return false
   }
 }
@@ -29,7 +30,8 @@ async function saveImg(url: string, savePath: string) {
     const response = await axios.get(url, { responseType: 'arraybuffer' })
     fs.writeFileSync(savePath, response.data)
     return true
-  } catch (error) {
+  }
+  catch (error) {
     logger.error(error)
     return false
   }
@@ -44,7 +46,8 @@ export async function getFace(url: string) {
   const status = isCached(url)
   if (status) {
     return imgPath
-  } else {
+  }
+  else {
     return (await saveImg(url, imgPath)) ? imgPath : ''
   }
 }

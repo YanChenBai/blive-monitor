@@ -1,5 +1,5 @@
-import { shell, BrowserWindow } from 'electron'
-import { join } from 'path'
+import { join } from 'node:path'
+import { BrowserWindow, shell } from 'electron'
 import type { Room } from '@type/room'
 import { emoticonsMap, roomMap } from '@main/utils/shared'
 import { getRoomConfig, updateRoomConfig } from '@main/utils/lowdb'
@@ -10,31 +10,32 @@ import { getRoomPlayInfo } from '@main/utils/api'
 import { dragStyle } from '@main/windows/css'
 
 const DEF_ASPECT_RATIO = ASPECT_RATIO_KEYS.RATIO_16_9
-const getSize = (aspectRatio: ASPECT_RATIO_KEYS) => {
+function getSize(aspectRatio: ASPECT_RATIO_KEYS) {
   switch (aspectRatio) {
     case ASPECT_RATIO_KEYS.RATIO_16_9:
       return {
         width: 640,
         height: 320,
         minWidth: 320,
-        minHeight: 180
+        minHeight: 180,
       }
     case ASPECT_RATIO_KEYS.RATIO_9_16:
       return {
         width: 320,
         height: 640,
         minWidth: 180,
-        minHeight: 320
+        minHeight: 320,
       }
   }
 }
 
 export async function bliveWindow(room: Room) {
   // 查看是否已经打开过
-  const winId = roomMap.findKey((item) => item.roomId === room.roomId)
+  const winId = roomMap.findKey(item => item.roomId === room.roomId)
   if (winId) {
-    const findWin = BrowserWindow.getAllWindows().find((item) => item.id === winId)
-    if (findWin) findWin.show()
+    const findWin = BrowserWindow.getAllWindows().find(item => item.id === winId)
+    if (findWin)
+      findWin.show()
     return
   }
 
@@ -58,11 +59,12 @@ export async function bliveWindow(room: Room) {
       devTools: true,
       preload: join(__dirname, '../preload/blive.mjs'),
       contextIsolation: false,
-      nodeIntegration: true
-    }
+      nodeIntegration: true,
+    },
   })
 
-  if (config.x !== undefined && config.y !== undefined) window.setPosition(config.x, config.y)
+  if (config.x !== undefined && config.y !== undefined)
+    window.setPosition(config.x, config.y)
 
   // 添加进win map
   roomMap.set(window.id, room)
@@ -79,7 +81,7 @@ export async function bliveWindow(room: Room) {
 
       window.setAspectRatio(ASPECT_RATIO.RATIO_9_16, {
         width: config?.width || verticalSize.width,
-        height: config?.height || verticalSize.height
+        height: config?.height || verticalSize.height,
       })
     }
   })
@@ -106,11 +108,12 @@ export async function bliveWindow(room: Room) {
       x,
       y,
       width,
-      height
+      height,
     })
   })
 
-  if (config?.alwaysOnTop) window.setAlwaysOnTop(true)
+  if (config?.alwaysOnTop)
+    window.setAlwaysOnTop(true)
 
   return window
 }

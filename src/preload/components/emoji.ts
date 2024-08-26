@@ -1,11 +1,11 @@
-import { BliveInvoke } from '../utils/invoke'
 import type { Emoticon, Emoticons } from '@type/emoji'
-import { html, css, Component, tag, createComponent, batchAdd } from '@preload/utils/component'
+import { Component, batchAdd, createComponent, css, html, tag } from '@preload/utils/component'
 import { awaitLivePlayer } from '@preload/utils/livePlayer'
 import { Status, watch } from '@preload/utils/status'
 import lodash from 'lodash'
 import { onSendEmoticon } from '@preload/utils/monitor'
-import { Room } from '@type/room'
+import type { Room } from '@type/room'
+import { BliveInvoke } from '../utils/invoke'
 
 function isClickEmojiItem(e: MouseEvent) {
   const target = e.target as EmojiItem
@@ -19,7 +19,8 @@ function wheel(el: HTMLElement, setp: number, direction = true) {
   el.addEventListener('wheel', (ev) => {
     if (direction) {
       el.scrollTop += ev.deltaY > 0 ? setp : -setp
-    } else {
+    }
+    else {
       el.scrollLeft += ev.deltaY > 0 ? setp : -setp
     }
     ev.preventDefault()
@@ -117,9 +118,9 @@ export class EmojiTabHeader extends Component {
         createComponent(EmojiItem, {
           index,
           src: item.current_cover,
-          title: item.pkg_name
-        })
-      )
+          title: item.pkg_name,
+        }),
+      ),
     )
 
     // 初始化
@@ -176,7 +177,8 @@ export class EmojiTab extends Component {
   `
 
   render() {
-    if (this.data === undefined) throw new Error('data is undefined')
+    if (this.data === undefined)
+      throw new Error('data is undefined')
     const hideStyle = this.data.recently_used_emoticons.length > 0 ? '' : 'hide'
 
     return html`
@@ -197,11 +199,13 @@ export class EmojiTab extends Component {
   rendered = false
 
   getSize(width: number, height: number) {
-    if (width === 0) return 12.5
+    if (width === 0)
+      return 12.5
     const diff = width - height
     if (diff > 10) {
       return 25
-    } else {
+    }
+    else {
       return 16.66
     }
   }
@@ -212,7 +216,7 @@ export class EmojiTab extends Component {
         data: item,
         index,
         src: item.url,
-        title: item.emoji
+        title: item.emoji,
       })
       dom.style.width = size
       return dom
@@ -236,15 +240,16 @@ export class EmojiTab extends Component {
       batchAdd(allEl, this.getItems(this.data.emoticons, size))
     }
 
-    //监听单击的表情
+    // 监听单击的表情
     ;(this.shadowRoot?.querySelector('.emoji-tab') as HTMLDivElement).addEventListener(
       'click',
       (e) => {
         if (isClickEmojiItem(e)) {
           const target = e.target as EmojiItem
-          if (target.data) this.onSelect(target.data)
+          if (target.data)
+            this.onSelect(target.data)
         }
-      }
+      },
     )
 
     // 切换选项卡
@@ -254,7 +259,7 @@ export class EmojiTab extends Component {
         const dom = this.shadowRoot?.querySelector('.emoji-tab') as HTMLDivElement
         dom.classList.toggle('now', val)
       },
-      true
+      true,
     )
   }
 }
@@ -320,13 +325,10 @@ export class EmojiTabs extends Component {
   }
 
   // 选择表情回调
-  onSelect(data: Emoticon) {
-    console.log(data)
-  }
+  onSelect(_data: Emoticon) {}
 
   /**
    * 发送表情
-   * @param emoji 表情
    */
   async send(data: Emoticon) {
     const livePlayer = await awaitLivePlayer()
@@ -343,8 +345,8 @@ export class EmojiTabs extends Component {
         width: data.width,
         url: data.url,
         inPlayerArea: data.in_player_area,
-        isDynamic: data.is_dynamic
-      }
+        isDynamic: data.is_dynamic,
+      },
     })
   }
 
@@ -358,11 +360,11 @@ export class EmojiTabs extends Component {
     tabsHeader.appendChild(
       createComponent(EmojiTabHeader, {
         data: this.data,
-        onChange: (index) => this.switchTab(index)
-      })
+        onChange: index => this.switchTab(index),
+      }),
     )
 
-    const send = lodash.throttle((data) => this.send(data), 5000)
+    const send = lodash.throttle(data => this.send(data), 5000)
 
     // 创建选项卡
     this.tabs = this.data.map((item, index) =>
@@ -373,26 +375,30 @@ export class EmojiTabs extends Component {
         onSelect: (data) => {
           if (item.pkg_type === 3) {
             this.onSelect(data)
-          } else {
-            if (data.perm === 1) send(data)
+          }
+          else {
+            if (data.perm === 1)
+              send(data)
             // this.bliveInvoke.log('发送表情', data)
           }
-        }
-      })
+        },
+      }),
     )
 
     // 初始化一下
-    this.tabs.length > 0 && this.switchTab(0)
+    if (this.tabs.length > 0)
+      this.switchTab(0)
 
     wheel(tabsBody, this.setp)
 
     onSendEmoticon(({ pkgId, emoticonUnique }) => {
       const pkg = this.data.find(({ pkg_id }) => pkg_id === pkgId)
       const emoticon = pkg?.emoticons.find(
-        ({ emoticon_unique }) => emoticon_unique === emoticonUnique
+        ({ emoticon_unique }) => emoticon_unique === emoticonUnique,
       )
 
-      if (emoticon && emoticon.perm === 1) send(emoticon)
+      if (emoticon && emoticon.perm === 1)
+        send(emoticon)
     })
   }
 }

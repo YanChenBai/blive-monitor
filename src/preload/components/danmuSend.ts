@@ -1,20 +1,20 @@
-import { Component, tag, css, html } from '@preload/utils/component'
-import { EmojiTabs } from './emoji'
+import { Component, css, html, tag } from '@preload/utils/component'
 import {
-  danmuInputStatus,
-  danmuInputIsFocus,
   Status,
-  watch,
-  openControlBar,
   closeControlBar,
   closeDanmuInput,
-  switchDanmuInput
+  danmuInputIsFocus,
+  danmuInputStatus,
+  openControlBar,
+  switchDanmuInput,
+  watch,
 } from '@preload/utils/status'
 import { BliveInvoke } from '@preload/utils/invoke'
-import { Emoticons } from '@type/emoji'
+import type { Emoticons } from '@type/emoji'
 import lodash from 'lodash'
 import { onSendText } from '@preload/utils/monitor'
-import { Room } from '@type/room'
+import type { Room } from '@type/room'
+import type { EmojiTabs } from './emoji'
 
 /** 匹配可输入的最大弹幕 */
 function matchMaxDanmu() {
@@ -22,8 +22,9 @@ function matchMaxDanmu() {
   return new Promise<number>((res) => {
     const timer = setInterval(() => {
       const dom = document.querySelector('.input-limit-hint') as HTMLDivElement
-      if (!dom) return
-      const match = dom.innerText.match(regex)
+      if (!dom)
+        return
+      const match = dom.textContent?.match(regex)
       clearInterval(timer)
       return res(match ? Number(match[1]) : 20)
     }, 200)
@@ -97,7 +98,7 @@ export class DanmuSend extends Component {
     const maxlenEl = this.shadowRoot?.querySelector('.maxlen') as HTMLDivElement
     const inputEl = this.shadowRoot?.querySelector('input') as HTMLInputElement
 
-    maxlenEl.innerText = `${Math.min(this.inputlen.value, this.maxlen.value)}/${this.maxlen.value}`
+    maxlenEl.textContent = `${Math.min(this.inputlen.value, this.maxlen.value)}/${this.maxlen.value}`
     inputEl.maxLength = this.maxlen.value
   }
 
@@ -106,17 +107,15 @@ export class DanmuSend extends Component {
     if (msg.length <= 0) {
       return
     }
-    const textarea = document.querySelector(
-      '#control-panel-ctnr-box > div.chat-input-ctnr.p-relative > div:nth-child(2) > textarea'
-    ) as HTMLTextAreaElement
-    const btn = document.querySelector(
-      '.control-panel-ctnr .chat-input-ctnr ~ .bottom-actions .bl-button--primary'
-    ) as HTMLButtonElement
+    const textarea = document.querySelector('#control-panel-ctnr-box textarea') as HTMLTextAreaElement
+    const btn
+    = document.querySelector<HTMLButtonElement>('.control-panel-ctnr .chat-input-ctnr ~ .bottom-actions .bl-button--primary')
+    ?? document.querySelector<HTMLButtonElement>('#control-panel-ctnr-box > .chat-input-ctnr-new button')
 
     /** 创建一个输入事件 */
     const inputEvent = new Event('input', {
       bubbles: true,
-      cancelable: true
+      cancelable: true,
     })
     textarea.value = msg
 
@@ -124,7 +123,7 @@ export class DanmuSend extends Component {
     textarea.dispatchEvent(inputEvent)
 
     /** 触发发送按钮 */
-    btn.click()
+    btn?.click()
   }
 
   connected() {
@@ -158,7 +157,12 @@ export class DanmuSend extends Component {
           this.inputlen.value = 0
         }
 
-        danmuInputStatus.value ? inputEl.blur() : inputEl.focus()
+        if (danmuInputStatus.value) {
+          inputEl.blur()
+        }
+        else {
+          inputEl.focus()
+        }
 
         // 输入框打开时同时打开控制栏
         switchDanmuInput()
@@ -179,7 +183,7 @@ export class DanmuSend extends Component {
         inputEl.value += emoji
         const inputEvent = new Event('input', {
           bubbles: true,
-          cancelable: true
+          cancelable: true,
         })
         inputEl.dispatchEvent(inputEvent)
       }
@@ -193,21 +197,21 @@ export class DanmuSend extends Component {
       danmuInputStatus,
       lodash.debounce((val) => {
         // 输入框打开时同时打开控制栏
-        if (val) openControlBar()
+        if (val)
+          openControlBar()
 
         wrapEl.classList.toggle('show', val)
-      }, 100)
+      }, 100),
     )
 
     // 获取可输入弹幕的长度
     matchMaxDanmu().then((maxlen) => {
-      console.log('get maxlen:', maxlen)
-
       this.maxlen.value = maxlen
     })
 
     onSendText((content) => {
-      if (typeof content === 'string') this.send(content)
+      if (typeof content === 'string')
+        this.send(content)
     })
   }
 }

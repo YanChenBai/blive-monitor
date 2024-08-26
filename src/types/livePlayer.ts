@@ -26,7 +26,7 @@ export interface LivePlayer {
     playurl: string
     guid: string
     quality: string
-    qualityCandidates: { qn: string; desc: string }[]
+    qualityCandidates: { qn: string, desc: string }[]
     timeShift: number
     volume: {
       disabled: boolean
@@ -68,7 +68,7 @@ export interface LivePlayer {
   }) => Promise<{
     code: number
     data: {
-      mode_info: { mode: number; show_player_type: number; extra: string }
+      mode_info: { mode: number, show_player_type: number, extra: string }
       dm_v2: object
     }
     message: string
@@ -83,7 +83,7 @@ export interface LivePlayer {
   /**
    * 切换全屏状态
    * @param status 0 - 全屏, 1 - 网页全屏
-   *  */
+   */
   setFullscreenStatus: (status: number) => void
   setToastCssText: () => void
   stopPlayback: () => void

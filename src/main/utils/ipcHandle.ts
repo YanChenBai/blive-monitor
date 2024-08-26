@@ -1,7 +1,8 @@
-import { BrowserWindow, IpcMainInvokeEvent, ipcMain } from 'electron'
+import type { IpcMainInvokeEvent } from 'electron'
+import { BrowserWindow, ipcMain } from 'electron'
 import { logger } from './logger'
 
-type Handler = (windwo: BrowserWindow, ...args: any[]) => void
+type Handler = (window: BrowserWindow, ...args: any[]) => void
 
 export class IPCHandle {
   static handlers: Map<string, Handler> = new Map()
@@ -12,15 +13,17 @@ export class IPCHandle {
   }
 
   getName() {
-    if (!this.constructor['prefixName']) throw new Error('prefixName is not defined')
-    return ['IPCHandle', this.constructor['prefixName']].join(':')
+    const prefixName = Reflect.getMetadata('prefixName', this.constructor)
+
+    if (!prefixName)
+      throw new Error('prefixName is not defined')
+    return ['IPCHandle', prefixName].join(':')
   }
 
   private init() {
     /** 监听通道 */
     ipcMain.handle(this.getName(), (event, name: string, ...args: any[]) =>
-      this.handleEvent(event, name, ...args)
-    )
+      this.handleEvent(event, name, ...args))
   }
 
   // 处理事件
@@ -28,20 +31,23 @@ export class IPCHandle {
     const handler = IPCHandle.handlers.get(name)
 
     if (handler) {
-      const window = BrowserWindow.getAllWindows().find((item) => item.id === event.sender.id)
+      const window = BrowserWindow.getAllWindows().find(item => item.id === event.sender.id)
       if (window) {
         try {
           return handler.call(this, window, ...args)
-        } catch (error) {
+        }
+        catch (error) {
           logger.error(error, event, name)
           throw error
         }
-      } else {
+      }
+      else {
         const msg = `No found window`
         logger.error(msg, event, name)
         throw new Error(msg)
       }
-    } else {
+    }
+    else {
       const msg = `No handler found for ${name}`
       logger.error(msg, event)
       throw new Error(msg)
@@ -56,10 +62,7 @@ export class IPCHandle {
 
 export function handle(name: string) {
   return (target: typeof IPCHandle) => {
-    Reflect.defineProperty(target, 'prefixName', {
-      value: name,
-      writable: false
-    })
+    Reflect.defineMetadata('prefixName', name, target)
   }
 }
 

@@ -9,11 +9,15 @@ export class Status<T> {
 
   set value(value: T) {
     this._rawValue = value
-    this._watchList.forEach((func) => func(value))
+    this._watchList.forEach(func => func(value))
   }
 
   get value() {
     return this._rawValue
+  }
+
+  get watch(): StatusWatch<T>[] {
+    return this._watchList
   }
 
   set watch(func: StatusWatch<T>) {
@@ -24,16 +28,19 @@ export class Status<T> {
 export function watch<T>(
   status: Status<T> | Status<T>[],
   func: (val: T) => void,
-  immediate?: boolean
+  immediate?: boolean,
 ) {
   if (Array.isArray(status)) {
     status.forEach((item) => {
-      if (immediate === true) func(item.value)
-      item.watch = (val) => func(val)
+      if (immediate === true)
+        func(item.value)
+      item.watch = val => func(val)
     })
-  } else {
-    if (immediate === true) func(status.value)
-    status.watch = (val) => func(val)
+  }
+  else {
+    if (immediate === true)
+      func(status.value)
+    status.watch = val => func(val)
   }
 }
 
@@ -43,7 +50,7 @@ export const controlBarStatus = new Status(false)
 /** 弹幕快捷发送显示状态 */
 export const danmuInputStatus = new Status(false)
 
-/** 弹幕快捷发送输入框是否获得焦点*/
+/** 弹幕快捷发送输入框是否获得焦点 */
 export const danmuInputIsFocus = new Status(false)
 
 let autoCloseTimer: NodeJS.Timeout | undefined
@@ -76,7 +83,12 @@ export function closeControlBar(forced = false) {
 }
 
 export function switchControlBar() {
-  controlBarStatus.value ? closeControlBar(true) : openControlBar()
+  if (controlBarStatus.value) {
+    closeControlBar(true)
+  }
+  else {
+    openControlBar()
+  }
 }
 
 export function openDanmuInput() {
@@ -96,5 +108,10 @@ export function closeDanmuInput(forced = false) {
 }
 
 export function switchDanmuInput() {
-  danmuInputStatus.value ? closeDanmuInput(true) : openDanmuInput()
+  if (danmuInputStatus.value) {
+    closeDanmuInput(true)
+  }
+  else {
+    openDanmuInput()
+  }
 }

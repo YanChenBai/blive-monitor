@@ -1,22 +1,20 @@
-import '@preload/components/controlBar'
+import { ControlBar } from '@preload/components/controlBar'
 import '@preload/components/controlBtn'
-import '@preload/components/danmuSend'
+import { DanmuSend } from '@preload/components/danmuSend'
 import '@preload/components/emoji'
-import '@preload/components/userInfo'
-import '@preload/components/changeVolume'
+import { UserInfo } from '@preload/components/userInfo'
+import { ChangeVolume } from '@preload/components/changeVolume'
 
 import { BliveInvoke } from '@preload/utils/invoke'
-import { ControlBar } from '@preload/components/controlBar'
-import { DanmuSend } from '@preload/components/danmuSend'
+
 import { batchAdd, createComponent } from '@preload/utils/component'
 import { getEmoticons } from '@preload/utils/api'
-import { awaitLivePlayer, awaitVideoEl } from './utils/livePlayer'
-import { randomMouseMove } from './utils/randomMouseMove'
-import { ChangeVolume } from '@preload/components/changeVolume'
-import { autoLottery } from './utils/autoLottery'
-import { UserInfo } from '@preload/components/userInfo'
-import { Emoticon } from '@type/emoji'
+
+import type { Emoticon } from '@type/emoji'
 import { fullScreenStyle } from '@preload/components/css'
+import { autoLottery } from './utils/autoLottery'
+import { randomMouseMove } from './utils/randomMouseMove'
+import { awaitLivePlayer, awaitVideoEl } from './utils/livePlayer'
 
 const bliveInvoke = new BliveInvoke()
 const controlBarEl = createComponent(ControlBar)
@@ -33,7 +31,7 @@ function getKeyField(emoticons: Emoticon[]) {
     perm,
     emoticon_unique,
     emoji,
-    url
+    url,
   }))
 }
 
@@ -67,7 +65,8 @@ window.addEventListener('load', async () => {
       const { liveStatus } = livePlayer.getPlayerInfo()
       if (liveStatus === 0) {
         insertCSSOnStyle()
-      } else {
+      }
+      else {
         await awaitVideoEl().then(() => {
           livePlayer.refresh()
           insertCSSOnStyle()
@@ -78,7 +77,8 @@ window.addEventListener('load', async () => {
       document.body.classList.add('hide-aside-area')
       // 启用网页全屏
       livePlayer.setFullscreenStatus(1)
-    } finally {
+    }
+    finally {
       showHtml()
     }
   })
@@ -108,14 +108,16 @@ window.addEventListener('load', async () => {
           current_cover,
           pkg_type,
           used: getKeyField(recently_used_emoticons),
-          emoticons: getKeyField(emoticons)
-        })
-      )
+          emoticons: getKeyField(emoticons),
+        }),
+      ),
     )
 
     // 自动抽奖
     autoLottery()
-  } catch (error) {
+  }
+  catch (error) {
+    console.error(error)
     // 没有登入的话隐藏弹幕输入框按钮
     controlBarEl.setHideDanmuBtn = true
   }

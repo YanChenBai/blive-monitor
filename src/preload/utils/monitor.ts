@@ -1,4 +1,5 @@
-import { EventNames, SendEmoticonParams } from '@type/monitor'
+import type { SendEmoticonParams } from '@type/monitor'
+import { EventNames } from '@type/monitor'
 import { ipcRenderer } from 'electron'
 
 export function onSendText(callback: (content: string) => void) {

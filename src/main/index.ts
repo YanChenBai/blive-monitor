@@ -1,26 +1,39 @@
 import 'dotenv/config'
-import { BrowserWindow, app } from 'electron'
+import 'reflect-metadata'
+import process from 'node:process'
+import type { BrowserWindow } from 'electron'
+import { app } from 'electron'
 import { optimizer } from '@electron-toolkit/utils'
-import { mainWindow } from './windows/main'
 import { MainHandle } from '@main/handles/mainHandle'
+import { mainWindow } from './windows/main'
 import { BliveHandle } from './handles/bliveHandle'
 import { initPath } from './utils/paths'
 import { getLocalIP } from './utils/getLocalIP'
+
 getLocalIP()
 initPath()
 let win: BrowserWindow | null
 async function startMainWindow() {
   if (win) {
     win.show()
-  } else {
+  }
+  else {
     win = await mainWindow()
   }
+}
+
+function initHandle() {
+  return [
+    new MainHandle(),
+    new BliveHandle(),
+  ]
 }
 async function bootstrap() {
   // 当运行第二个实例时，将焦点聚焦到主窗口
   app.on('second-instance', () => {
     if (win) {
-      if (win.isMinimized()) win.restore()
+      if (win.isMinimized())
+        win.restore()
       win.focus()
     }
   })
@@ -32,8 +45,7 @@ async function bootstrap() {
     }
   })
 
-  new MainHandle()
-  new BliveHandle()
+  initHandle()
 
   app.whenReady().then(() => {
     app.commandLine.appendSwitch('ignore-certificate-errors', 'true')
@@ -50,6 +62,7 @@ async function bootstrap() {
 
 if (app.requestSingleInstanceLock()) {
   bootstrap()
-} else {
+}
+else {
   app.quit()
 }

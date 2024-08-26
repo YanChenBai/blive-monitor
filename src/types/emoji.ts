@@ -5,8 +5,8 @@ interface Response {
 }
 
 interface TopShow {
-  top_left: { image: string; text: string }
-  top_right: { image: string; text: string }
+  top_left: { image: string, text: string }
+  top_right: { image: string, text: string }
 }
 
 export interface Emoticon {

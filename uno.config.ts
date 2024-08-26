@@ -1,14 +1,14 @@
 // uno.config.ts
 import {
   defineConfig,
-  presetMini,
   presetAttributify,
   presetIcons,
+  presetMini,
   presetTypography,
   presetUno,
   presetWebFonts,
   transformerDirectives,
-  transformerVariantGroup
+  transformerVariantGroup,
 } from 'unocss'
 
 export default defineConfig({
@@ -18,7 +18,7 @@ export default defineConfig({
   theme: {
     colors: {
       // ...
-    }
+    },
   },
   rules: [
     ['no-drag', { '-webkit-app-region': 'no-drag' }],
@@ -28,21 +28,21 @@ export default defineConfig({
     [
       'flex-full-cc',
       {
-        display: 'flex',
-        width: '100%',
+        'display': 'flex',
+        'width': '100%',
         'justify-content': 'center',
-        'align-items': 'center'
-      }
-    ]
+        'align-items': 'center',
+      },
+    ],
   ],
   presets: [
     presetUno(),
     presetAttributify(),
     presetIcons({
       extraProperties: {
-        display: 'flex',
-        'align-items': 'center'
-      }
+        'display': 'flex',
+        'align-items': 'center',
+      },
     }),
     presetTypography(),
     presetMini(),
@@ -50,8 +50,8 @@ export default defineConfig({
     presetWebFonts({
       fonts: {
         // ...
-      }
-    })
+      },
+    }),
   ],
-  transformers: [transformerDirectives(), transformerVariantGroup()]
+  transformers: [transformerDirectives(), transformerVariantGroup()],
 })

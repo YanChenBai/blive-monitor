@@ -1,36 +1,43 @@
-<template>
-  <n-modal v-model:show="show" transform-origin="center">
-    <div flex flex-col gap-2>
-      <n-qr-code :size="200" :value="code" />
-      <div class="item">
-        <div class="title">IP</div>
-        {{ connectInfo?.ip }}
-      </div>
-      <div class="item">
-        <div class="title">Token</div>
-        {{ connectInfo?.token }}
-      </div>
-
-      <button class="btn py-1.5" @click="close">关闭</button>
-    </div>
-  </n-modal>
-</template>
-
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
+
 defineOptions({ name: 'ConnectCode' })
 const show = ref(false)
-const connectInfo = ref<{ ip?: string; token: string }>()
+const connectInfo = ref<{ ip?: string, token: string }>()
 const code = computed(() => JSON.stringify(connectInfo.value))
-window.mainInvoke.getConnectInfo().then((data) => (connectInfo.value = data))
+window.mainInvoke.getConnectInfo().then(data => (connectInfo.value = data))
 
 const open = () => (show.value = true)
 const close = () => (show.value = false)
 defineExpose({
   open,
-  close
+  close,
 })
 </script>
+
+<template>
+  <n-modal v-model:show="show" transform-origin="center">
+    <div flex flex-col gap-2>
+      <n-qr-code :size="200" :value="code" />
+      <div class="item">
+        <div class="title">
+          IP
+        </div>
+        {{ connectInfo?.ip }}
+      </div>
+      <div class="item">
+        <div class="title">
+          Token
+        </div>
+        {{ connectInfo?.token }}
+      </div>
+
+      <button class="btn py-1.5" @click="close">
+        关闭
+      </button>
+    </div>
+  </n-modal>
+</template>
 
 <style scoped>
 .item {

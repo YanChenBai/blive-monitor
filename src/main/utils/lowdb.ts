@@ -1,6 +1,6 @@
+import { randomUUID } from 'node:crypto'
 import { JSONFileSyncPreset } from 'lowdb/node'
 import { DB_PATH } from './paths'
-import { randomUUID } from 'crypto'
 
 interface WindowConfig {
   alwaysOnTop: boolean
@@ -14,7 +14,7 @@ export interface RoomConfig extends WindowConfig {
   roomId: string
   volume?: number
 }
-type DBType = {
+interface DBType {
   connectToken?: string
   main: WindowConfig
   config: RoomConfig[]
@@ -22,19 +22,20 @@ type DBType = {
 
 const defaultData: DBType = {
   main: {
-    alwaysOnTop: false
+    alwaysOnTop: false,
   },
-  config: []
+  config: [],
 }
 
 export const db = JSONFileSyncPreset<DBType>(DB_PATH, defaultData)
 
 /** 获取直播间配置 */
 export function getRoomConfig(roomId: string) {
-  let room = db.data.config.find((item) => item.roomId === roomId)
+  let room = db.data.config.find(item => item.roomId === roomId)
   if (room) {
     return room
-  } else {
+  }
+  else {
     room = { roomId, alwaysOnTop: false }
     db.data.config.push(room)
     db.write()
@@ -47,7 +48,7 @@ type UpdateData = Partial<Omit<RoomConfig, 'roomId'>> & { roomId: string }
 
 /** 更新直播间配置 */
 export async function updateRoomConfig(newData: UpdateData) {
-  const index = db.data.config.findIndex((item) => item.roomId === newData.roomId)
+  const index = db.data.config.findIndex(item => item.roomId === newData.roomId)
   if (index !== -1) {
     db.data.config[index] = { ...db.data.config[index], ...newData }
     db.write()
@@ -69,7 +70,8 @@ export function updateMainWindowConfig(newData: Partial<WindowConfig>) {
 export function getConnectToken() {
   if (db.data.connectToken) {
     return db.data.connectToken
-  } else {
+  }
+  else {
     const connectToken = randomUUID().replaceAll('-', '').substring(0, 10)
     db.data.connectToken = connectToken
     db.write()

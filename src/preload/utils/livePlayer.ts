@@ -1,7 +1,8 @@
 function isNotEmpty<T>(data: T | undefined | null) {
   if (data !== null && data !== undefined) {
     return data
-  } else {
+  }
+  else {
     return null
   }
 }
@@ -12,7 +13,8 @@ export function awaitThing<T>(func: () => T | undefined | null) {
     const data = isNotEmpty(func())
     if (data) {
       res(data)
-    } else {
+    }
+    else {
       const timer = setInterval(() => {
         const data = isNotEmpty(func())
         if (data) {
@@ -33,5 +35,6 @@ export function awaitThing<T>(func: () => T | undefined | null) {
 export const awaitLivePlayer = () => awaitThing(() => window.livePlayer)
 
 /** 等待b站video element创建 */
-export const awaitVideoEl = () =>
-  awaitThing(() => (window.livePlayer ? window.livePlayer.getVideoEl() : null))
+export function awaitVideoEl() {
+  return awaitThing(() => (window.livePlayer ? window.livePlayer.getVideoEl() : null))
+}

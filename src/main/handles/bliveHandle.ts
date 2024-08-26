@@ -1,14 +1,15 @@
 import { emoticonsMap, roomMap, userConfig } from '@main/utils/shared'
-import { IPCHandle, method, handle } from '@main/utils/ipcHandle'
+import { IPCHandle, handle, method } from '@main/utils/ipcHandle'
 import { getRoomConfig, updateRoomConfig } from '@main/utils/lowdb'
-import { BrowserWindow as BW } from 'electron'
-import { ASPECT_RATIO_KEYS, BliveHandleInterface } from '@type/handle'
+import type { BrowserWindow as BW } from 'electron'
+import type { BliveHandleInterface } from '@type/handle'
+import { ASPECT_RATIO_KEYS } from '@type/handle'
 import { logger } from '@main/utils/logger'
-import { SimpleEmoticons } from '@type/emoji'
+import type { SimpleEmoticons } from '@type/emoji'
 
 export const ASPECT_RATIO = {
   [ASPECT_RATIO_KEYS.RATIO_16_9]: 16 / 9,
-  [ASPECT_RATIO_KEYS.RATIO_9_16]: 9 / 16
+  [ASPECT_RATIO_KEYS.RATIO_9_16]: 9 / 16,
 }
 
 @handle('blive')
@@ -65,7 +66,8 @@ export class BliveHandle extends IPCHandle implements BliveHandleInterface {
     const room = roomMap.get(win.id)
     if (room) {
       return room
-    } else {
+    }
+    else {
       throw new Error('未找到房间信息')
     }
   }
@@ -77,11 +79,13 @@ export class BliveHandle extends IPCHandle implements BliveHandleInterface {
 
   @method
   addEmoticons(win: BW, emoticons: SimpleEmoticons[]) {
-    if (!emoticonsMap.has(win.id)) emoticonsMap.set(win.id, emoticons)
+    if (!emoticonsMap.has(win.id))
+      emoticonsMap.set(win.id, emoticons)
   }
 
   @method
   setMaxlen(_win: BW, maxlen: number) {
-    if (userConfig.maxlen !== maxlen) userConfig.maxlen = maxlen
+    if (userConfig.maxlen !== maxlen)
+      userConfig.maxlen = maxlen
   }
 }

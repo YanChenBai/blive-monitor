@@ -1,4 +1,4 @@
-import { html, css, Component, tag } from '@preload/utils/component'
+import { Component, css, html, tag } from '@preload/utils/component'
 
 @tag('control-btn')
 export class ControlBtn extends Component {

@@ -15,7 +15,6 @@ window.onload = () => {
       const mouseEnterEvent = new Event('mouseenter')
       userPanel.dispatchEvent(mouseEnterEvent)
       clearInterval(timer)
-      return
     }
   }, 1000)
 }

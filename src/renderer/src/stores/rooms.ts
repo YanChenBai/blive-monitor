@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { Room } from '@type/room'
+import type { Room } from '@type/room'
 
 export enum ResultMesg {
   /** 成功 */
@@ -14,7 +14,7 @@ export enum ResultMesg {
   /** 未找到 */
   NotFound,
   /** 错误 */
-  Error
+  Error,
 }
 
 const regex = /^\d+$/
@@ -25,23 +25,25 @@ export const useRoomsStore = defineStore(
     const rooms = ref<Room[]>([])
 
     /**
-     *
+     * 添加房间
      * @param roomId 房间id
-     * @returns
      */
     async function add(roomId: string) {
       roomId = roomId.trim()
-      if (!regex.test(roomId)) return ResultMesg.Format
-      if (roomId.length <= 0) return ResultMesg.Empty
+      if (!regex.test(roomId))
+        return ResultMesg.Format
+      if (roomId.length <= 0)
+        return ResultMesg.Empty
 
       const room = await window.mainInvoke.getRoomInfo(roomId)
-      const index = rooms.value.findIndex((item) => item.roomId === room.roomId)
-      room.tags = room.tags.replace(new RegExp(',', 'g'), ' ')
+      const index = rooms.value.findIndex(item => item.roomId === room.roomId)
+      room.tags = room.tags.replace(/,/g, ' ')
 
       if (index === -1) {
         rooms.value.push(room)
         return ResultMesg.OK
-      } else {
+      }
+      else {
         rooms.value[index] = room
         return ResultMesg.Repeat
       }
@@ -50,26 +52,25 @@ export const useRoomsStore = defineStore(
     /**
      * 删除房间
      * @param roomId 房间id
-     * @returns
      */
     function remove(roomId: string) {
-      const findIndex = rooms.value.findIndex((item) => item.roomId === roomId)
-      if (findIndex === -1) return ResultMesg.NotFound
+      const findIndex = rooms.value.findIndex(item => item.roomId === roomId)
+      if (findIndex === -1)
+        return ResultMesg.NotFound
       rooms.value.splice(findIndex, 1)
       return ResultMesg.OK
     }
 
     /**
      * 刷新
-     * @returns
      */
     async function refresh() {
       try {
-        const uids = rooms.value.map((item) => item.uid)
+        const uids = rooms.value.map(item => item.uid)
         const res = await window.mainInvoke.getManyRoomInfo(uids)
 
         for (const key in res) {
-          const findIndex = rooms.value.findIndex((item) => item.uid === key)
+          const findIndex = rooms.value.findIndex(item => item.uid === key)
           if (findIndex !== -1) {
             const { title, face, name, liveStatus, keyframe, tags } = res[key]
             rooms.value[findIndex] = {
@@ -79,13 +80,15 @@ export const useRoomsStore = defineStore(
               name,
               liveStatus,
               keyframe,
-              tags
+              tags,
             }
           }
         }
 
         return ResultMesg.OK
-      } catch (error) {
+      }
+      catch (error) {
+        console.error(error)
         return ResultMesg.Error
       }
     }
@@ -93,6 +96,6 @@ export const useRoomsStore = defineStore(
     return { rooms, add, remove, refresh }
   },
   {
-    persist: true
-  }
+    persist: true,
+  },
 )
