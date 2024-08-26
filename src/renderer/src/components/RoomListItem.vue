@@ -36,7 +36,7 @@ const showRoomId
 
       <div flex items-center gap-8px justify-between>
         <button class="btn" @click="$emit('open', room)">
-          <ExternalLink :size="5" />
+          <ExternalLink :size="14" />
         </button>
 
         <n-popconfirm
@@ -47,7 +47,7 @@ const showRoomId
         >
           <template #trigger>
             <button class="btn">
-              <Trash2 :size="5" />
+              <Trash2 :size="14" />
             </button>
           </template>
           要删噜!

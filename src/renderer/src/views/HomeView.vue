@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Ellipsis, FileUp, LogIn, RotateCcw, Unplug } from 'lucide-vue-next'
+import { Ellipsis, LogIn, RotateCcw, Unplug } from 'lucide-vue-next'
 import { ResultMesg, useRoomsStore } from '@renderer/stores/rooms'
 import type { Room } from '@type/room'
 import { computed, onMounted, ref } from 'vue'
@@ -140,25 +140,25 @@ onMounted(() => refresh())
       </button>
 
       <button class="btn w-12" :loading="refreshLoading" @click="refresh()">
-        <RotateCcw :stroke-width="2" :size="4" />
+        <RotateCcw :stroke-width="2" :size="14" />
       </button>
 
       <n-popover trigger="click" :show-arrow="false" p-0>
         <template #trigger>
           <button class="btn w-12">
-            <Ellipsis :stroke-width="2" :size="5" />
+            <Ellipsis :stroke-width="2" :size="14" />
           </button>
         </template>
         <div flex flex-col gap-1>
           <div class="more-btn" @click="openBiliHome">
-            <LogIn :stroke-width="2.5" :size="4" />登入
+            <LogIn :stroke-width="2.5" :size="14" />登入
           </div>
           <div class="more-btn" @click="connectCodeRef?.open()">
-            <Unplug :stroke-width="2.5" :size="4" />连接
+            <Unplug :stroke-width="2.5" :size="14" />连接
           </div>
-          <div class="more-btn" @click="connectCodeRef?.open()">
-            <FileUp :stroke-width="2.5" :size="4" />导入
-          </div>
+          <!-- <div class="more-btn" @click="connectCodeRef?.open()">
+            <FileUp :stroke-width="2.5" :size="16" />导入
+          </div> -->
         </div>
       </n-popover>
     </div>
