@@ -118,4 +118,8 @@ export class MainInvoke
   getConnectInfo() {
     return this.invoke('getConnectInfo')
   }
+
+  resetBliveWinPosition(room: Room) {
+    return this.invoke('resetBliveWinPosition', room)
+  }
 }

@@ -27,6 +27,7 @@ declare module 'vue' {
     NPopover: typeof import('naive-ui')['NPopover']
     NQrCode: typeof import('naive-ui')['NQrCode']
     NScrollbar: typeof import('naive-ui')['NScrollbar']
+    RoomBtn: typeof import('./src/components/RoomBtn.vue')['default']
     RoomListItem: typeof import('./src/components/RoomListItem.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

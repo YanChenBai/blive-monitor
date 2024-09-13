@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import type { Room } from '@type/room'
-import { ExternalLink, Trash2 } from 'lucide-vue-next'
+import { Trash2 } from 'lucide-vue-next'
+import RoomBtn from './RoomBtn.vue'
 
 defineOptions({ name: 'RoomListroom' })
+
 const props = defineProps<{
   room: Room
 }>()
+
 defineEmits<{
   (e: 'remove', roomId: string): void
   (e: 'open', room: Room): void
@@ -35,9 +38,7 @@ const showRoomId
       </div>
 
       <div flex items-center gap-8px justify-between>
-        <button class="btn" @click="$emit('open', room)">
-          <ExternalLink :size="14" />
-        </button>
+        <RoomBtn class="btn" :room="room" @open="$emit('open', room)" />
 
         <n-popconfirm
           positive-text="尊嘟"

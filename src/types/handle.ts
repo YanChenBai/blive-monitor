@@ -72,4 +72,7 @@ export interface MainHandleInterface {
     ip?: string
     token: string
   }
+
+  /** 重新设置窗口位置 */
+  resetBliveWinPosition: (win: BW, room: Room) => void
 }
