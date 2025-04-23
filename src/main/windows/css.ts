@@ -17,11 +17,10 @@ export const dragStyle = css`
   /** 添加黑色底，让切换时不会突然闪白色 */
   body {
     overflow: hidden !important;
-    background: black !important;
   }
 
   html {
-    background: black !important;
+    zoom: 1 !important;
   }
 
   .live-player-ctnr .live-player-mounter {

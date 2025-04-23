@@ -38,3 +38,7 @@ export const awaitLivePlayer = () => awaitThing(() => window.livePlayer)
 export function awaitVideoEl() {
   return awaitThing(() => (window.livePlayer ? window.livePlayer.getVideoEl() : null))
 }
+
+export function awaitGeetestPanel() {
+  return awaitThing(() => document.querySelector('.geetest_panel'))
+}

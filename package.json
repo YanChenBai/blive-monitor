@@ -1,7 +1,7 @@
 {
   "name": "blive-monitor",
   "type": "module",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "An Electron application with Vue and TypeScript",
   "author": "example.com",
   "homepage": "https://electron-vite.org",

@@ -78,16 +78,17 @@ export class ChangeVolume extends Component {
       this.bliveInvoke.setVolume(value)
       this.reRender()
 
-      Promise.all([awaitLivePlayer(), awaitVideoEl()]).then(([lp, el]) => {
+      Promise.all([awaitLivePlayer(), awaitVideoEl()])
+        .then(([lp, el]) => {
         // 保证改变音量时不在静音状态
-        const { volume: volumeInfo } = lp.getPlayerInfo()
-        if (el.muted)
-          el.muted = false
-        if (volumeInfo && volumeInfo.disabled)
-          volumeInfo.disabled = false
+          const { volume: volumeInfo } = lp.getPlayerInfo()
+          if (el.muted)
+            el.muted = false
+          if (volumeInfo && volumeInfo.disabled)
+            volumeInfo.disabled = false
 
-        lp.volume(value)
-      })
+          lp.volume(value)
+        })
     })
 
     const volume = await this.bliveInvoke.getVolume()

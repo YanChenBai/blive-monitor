@@ -14,7 +14,7 @@ import type { Emoticon } from '@type/emoji'
 import { fullScreenStyle } from '@preload/components/css'
 import { autoLottery } from './utils/autoLottery'
 import { randomMouseMove } from './utils/randomMouseMove'
-import { awaitLivePlayer, awaitVideoEl } from './utils/livePlayer'
+import { awaitGeetestPanel, awaitLivePlayer, awaitVideoEl } from './utils/livePlayer'
 
 const bliveInvoke = new BliveInvoke()
 const controlBarEl = createComponent(ControlBar)
@@ -45,43 +45,50 @@ function hiddenHtml() {
   document.body.style['-webkit-app-region'] = 'drag'
   const htmlElement = document.documentElement
   htmlElement.style.overflow = 'hidden'
-  htmlElement.style.filter = 'brightness(0)'
 }
 
 function showHtml() {
   document.body.style['-webkit-app-region'] = ''
   const htmlElement = document.documentElement
   htmlElement.style.overflow = ''
-  htmlElement.style.filter = ''
 }
 
 document.addEventListener('DOMContentLoaded', () => hiddenHtml())
 
+async function initPlay() {
+  return await awaitLivePlayer()
+    .then(async (livePlayer) => {
+      try {
+        const { liveStatus } = livePlayer.getPlayerInfo()
+        if (liveStatus === 0) {
+          insertCSSOnStyle()
+        }
+        else {
+          await awaitVideoEl().then(() => {
+            livePlayer.refresh()
+            insertCSSOnStyle()
+          })
+        }
+
+        // 关闭弹幕侧边栏
+        document.body.classList.add('hide-aside-area')
+        // 启用网页全屏
+        livePlayer.setFullscreenStatus(1)
+      }
+      finally {
+        showHtml()
+      }
+    })
+}
+
 window.addEventListener('load', async () => {
   batchAdd(document.body, [controlBarEl, changeVolume])
 
-  awaitLivePlayer().then(async (livePlayer) => {
-    try {
-      const { liveStatus } = livePlayer.getPlayerInfo()
-      if (liveStatus === 0) {
-        insertCSSOnStyle()
-      }
-      else {
-        await awaitVideoEl().then(() => {
-          livePlayer.refresh()
-          insertCSSOnStyle()
-        })
-      }
+  initPlay()
 
-      // 关闭弹幕侧边栏
-      document.body.classList.add('hide-aside-area')
-      // 启用网页全屏
-      livePlayer.setFullscreenStatus(1)
-    }
-    finally {
-      showHtml()
-    }
-  })
+  // 防止验证码导致不加载video element
+  awaitGeetestPanel()
+    .then(() => initPlay())
 
   // 获取直播间信息
   const room = await bliveInvoke.getRoom()
