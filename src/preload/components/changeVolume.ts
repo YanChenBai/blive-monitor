@@ -1,7 +1,7 @@
-import { awaitLivePlayer, awaitVideoEl } from '@preload/utils/livePlayer'
 import { BliveInvoke } from '@preload/utils/invoke'
-import { Status, watch } from '@preload/utils/status'
+import { awaitLivePlayer, awaitVideoEl } from '@preload/utils/livePlayer'
 import { onChangeVolume } from '@preload/utils/monitor'
+import { Status, watch } from '@preload/utils/status'
 import { Component, css, html, tag } from '../utils/component'
 
 @tag('change-volume')

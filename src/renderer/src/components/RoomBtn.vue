@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { Room } from '@type/room'
 import { onLongPress } from '@vueuse/core'
-import { ref, toRaw } from 'vue'
 import { ExternalLink } from 'lucide-vue-next'
+import { ref, toRaw } from 'vue'
 
 defineOptions({ name: 'RoomBtn' })
 

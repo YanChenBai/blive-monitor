@@ -32,6 +32,12 @@ nsis:
 dmg:
   artifactName: ${name}-${version}.${ext}
 
+linux:
+  target:
+    - rpm
+  maintainer: byc
+  category: AudioVideo
+
 appImage:
   artifactName: ${name}-${version}.${ext}
 

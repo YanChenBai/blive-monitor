@@ -1,13 +1,13 @@
-import { join } from 'node:path'
-import { BrowserWindow, shell } from 'electron'
 import type { Room } from '@type/room'
-import { emoticonsMap, roomMap } from '@main/utils/shared'
-import { getRoomConfig, updateRoomConfig } from '@main/utils/lowdb'
-import { getFace } from '@main/utils/getFaceImage'
-import { ASPECT_RATIO_KEYS } from '@type/handle'
+import { join } from 'node:path'
 import { ASPECT_RATIO } from '@main/handles/bliveHandle'
 import { getRoomPlayInfo } from '@main/utils/api'
+import { getFace } from '@main/utils/getFaceImage'
+import { getRoomConfig, updateRoomConfig } from '@main/utils/lowdb'
+import { emoticonsMap, roomMap } from '@main/utils/shared'
 import { dragStyle } from '@main/windows/css'
+import { ASPECT_RATIO_KEYS } from '@type/handle'
+import { BrowserWindow, shell } from 'electron'
 
 const DEF_ASPECT_RATIO = ASPECT_RATIO_KEYS.RATIO_16_9
 function getSize(aspectRatio: ASPECT_RATIO_KEYS) {

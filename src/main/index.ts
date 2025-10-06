@@ -1,14 +1,14 @@
-import 'dotenv/config'
-import 'reflect-metadata'
-import process from 'node:process'
 import type { BrowserWindow } from 'electron'
-import { app } from 'electron'
+import process from 'node:process'
 import { optimizer } from '@electron-toolkit/utils'
 import { MainHandle } from '@main/handles/mainHandle'
-import { mainWindow } from './windows/main'
+import { app } from 'electron'
 import { BliveHandle } from './handles/bliveHandle'
-import { initPath } from './utils/paths'
 import { getLocalIP } from './utils/getLocalIP'
+import { initPath } from './utils/paths'
+import { mainWindow } from './windows/main'
+import 'dotenv/config'
+import 'reflect-metadata'
 
 getLocalIP()
 initPath()
@@ -48,10 +48,6 @@ async function bootstrap() {
   initHandle()
 
   app.whenReady().then(() => {
-    app.commandLine.appendSwitch('ignore-certificate-errors', 'true')
-    app.commandLine.appendArgument('--headless')
-    app.commandLine.appendSwitch('--log-level', '3')
-
     app.on('browser-window-created', (_, window) => {
       optimizer.watchWindowShortcuts(window)
     })

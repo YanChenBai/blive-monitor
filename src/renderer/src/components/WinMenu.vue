@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useDialog } from 'naive-ui'
-import MingcuteMinimizeFill from './Icons/MingcuteMinimizeFill.vue'
 import MingcuteCloseFill from './Icons/MingcuteCloseFill.vue'
+import MingcuteMinimizeFill from './Icons/MingcuteMinimizeFill.vue'
 
 defineOptions({ name: 'WinMenu' })
 const emit = defineEmits<{

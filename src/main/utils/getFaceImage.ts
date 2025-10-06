@@ -1,9 +1,9 @@
-import path from 'node:path'
 import crypto from 'node:crypto'
 import fs from 'node:fs'
+import path from 'node:path'
 import axios from 'axios'
-import { ICONS_PATH } from './paths'
 import { logger } from './logger'
+import { ICONS_PATH } from './paths'
 
 const md5 = (str: string) => crypto.createHash('md5').update(str).digest('hex')
 

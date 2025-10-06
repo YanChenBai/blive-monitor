@@ -1,13 +1,13 @@
-import { IPCHandle, handle, method } from '@main/utils/ipcHandle'
+import type { MainHandleInterface } from '@type/handle'
 import type { Room } from '@type/room'
 import { getManyRoomInfo, getRoomInfo } from '@main/utils/api'
-import { bliveWindow } from '@main/windows/blive'
-import { biliHomeWindew } from '@main/windows/biliHome'
-import { BrowserWindow as BW, BrowserWindow } from 'electron'
-import type { MainHandleInterface } from '@type/handle'
-import { getConnectToken } from '@main/utils/lowdb'
 import { getLocalIP } from '@main/utils/getLocalIP'
+import { handle, IPCHandle, method } from '@main/utils/ipcHandle'
+import { getConnectToken } from '@main/utils/lowdb'
 import { roomMap } from '@main/utils/shared'
+import { biliHomeWindew } from '@main/windows/biliHome'
+import { bliveWindow } from '@main/windows/blive'
+import { BrowserWindow, BrowserWindow as BW } from 'electron'
 
 @handle('main')
 export class MainHandle extends IPCHandle implements MainHandleInterface {

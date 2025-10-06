@@ -1,11 +1,11 @@
-import { emoticonsMap, roomMap, userConfig } from '@main/utils/shared'
-import { IPCHandle, handle, method } from '@main/utils/ipcHandle'
-import { getRoomConfig, updateRoomConfig } from '@main/utils/lowdb'
-import type { BrowserWindow as BW } from 'electron'
-import type { BliveHandleInterface } from '@type/handle'
-import { ASPECT_RATIO_KEYS } from '@type/handle'
-import { logger } from '@main/utils/logger'
 import type { SimpleEmoticons } from '@type/emoji'
+import type { BliveHandleInterface } from '@type/handle'
+import type { BrowserWindow as BW } from 'electron'
+import { handle, IPCHandle, method } from '@main/utils/ipcHandle'
+import { logger } from '@main/utils/logger'
+import { getRoomConfig, updateRoomConfig } from '@main/utils/lowdb'
+import { emoticonsMap, roomMap, userConfig } from '@main/utils/shared'
+import { ASPECT_RATIO_KEYS } from '@type/handle'
 
 export const ASPECT_RATIO = {
   [ASPECT_RATIO_KEYS.RATIO_16_9]: 16 / 9,

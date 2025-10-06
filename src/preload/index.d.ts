@@ -1,6 +1,6 @@
+import type { MainHandleInterface } from '@type/handle'
 import type { InvokeTransform } from '@type/invoke'
 import type { LivePlayer } from '@type/livePlayer'
-import type { MainHandleInterface } from '@type/handle'
 
 declare global {
   interface Window {

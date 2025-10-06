@@ -1,8 +1,7 @@
-import { join } from 'node:path'
-import { BrowserWindow, app, shell } from 'electron'
+import path, { join } from 'node:path'
 import { getMainWindowConfig, updateMainWindowConfig } from '@main/utils/lowdb'
-import { RENDER_PATH } from '@main/utils/paths'
 import { serverBootstrap } from '@main/utils/server'
+import { app, BrowserWindow, shell } from 'electron'
 import icon from '../../../resources/icon.ico?asset'
 
 export async function mainWindow() {
@@ -33,7 +32,12 @@ export async function mainWindow() {
     }
   })
 
-  window.loadURL(RENDER_PATH)
+  if (app.isPackaged) {
+    window.loadFile(path.join(__dirname, '../', 'renderer/index.html'))
+  }
+  else {
+    window.loadURL('http://localhost:5173')
+  }
 
   window.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)

@@ -1,5 +1,5 @@
-import type { GetEmoticons } from '@type/emoji'
 import type { FansMedals, InfoByUser } from '@type/bili'
+import type { GetEmoticons } from '@type/emoji'
 import axios from 'axios'
 
 function getCookieValue(cookieName) {

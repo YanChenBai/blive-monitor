@@ -1,6 +1,6 @@
 import type { BrowserWindow as BW } from 'electron'
-import type { ManyRoomItem, Room } from './room'
 import type { SimpleEmoticons } from './emoji'
+import type { ManyRoomItem, Room } from './room'
 
 export enum ASPECT_RATIO_KEYS {
   RATIO_16_9 = 'RATIO_16_9',

@@ -1,6 +1,6 @@
-import { ref } from 'vue'
-import { defineStore } from 'pinia'
 import type { Room } from '@type/room'
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
 
 export enum ResultMesg {
   /** 成功 */

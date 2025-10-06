@@ -2,14 +2,16 @@ import type {
   Props,
 } from '@preload/utils/component'
 import {
-  Component,
   batchAdd,
+  Component,
   createComponent,
   css,
   html,
   switchElement,
   tag,
 } from '@preload/utils/component'
+import { BliveInvoke } from '@preload/utils/invoke'
+import { awaitLivePlayer } from '@preload/utils/livePlayer'
 import {
   closeControlBar,
   closeDanmuInput,
@@ -18,10 +20,8 @@ import {
   switchDanmuInput,
   watch,
 } from '@preload/utils/status'
-import { BliveInvoke } from '@preload/utils/invoke'
-import { awaitLivePlayer } from '@preload/utils/livePlayer'
-import { Close, Danmu, Minimize, Pin, Pined, Refresh } from './icons'
 import { ControlBtn } from './controlBtn'
+import { Close, Danmu, Minimize, Pin, Pined, Refresh } from './icons'
 
 function createBrn(props: Props<ControlBtn>) {
   return createComponent(ControlBtn, props)

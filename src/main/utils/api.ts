@@ -1,7 +1,7 @@
-import axios from 'axios'
 import type { ManyUserInfo, RoomInfo, RoomPlayInfo, UserInfo } from '@type/bili'
-import lodash from 'lodash'
 import type { ManyRoomItem, Room } from '@type/room'
+import axios from 'axios'
+import lodash from 'lodash'
 
 /**
  * 获取直播间信息

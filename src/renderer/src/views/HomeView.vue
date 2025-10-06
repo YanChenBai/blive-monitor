@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { Ellipsis, LogIn, RotateCcw, Unplug } from 'lucide-vue-next'
-import { ResultMesg, useRoomsStore } from '@renderer/stores/rooms'
 import type { Room } from '@type/room'
-import { computed, onMounted, ref } from 'vue'
+import ConnectCode from '@renderer/components/ConnectCode.vue'
+import RoomListItem from '@renderer/components/RoomListItem.vue'
+import WinMenu from '@renderer/components/WinMenu.vue'
+import { ResultMesg, useRoomsStore } from '@renderer/stores/rooms'
+import { loadingWrapRef } from '@renderer/utils/loadingWrap'
+import { debounce } from 'lodash'
+import { Ellipsis, LogIn, RotateCcw, Unplug } from 'lucide-vue-next'
+import { useMessage } from 'naive-ui'
 import { storeToRefs } from 'pinia'
 import { match } from 'pinyin-pro'
-import { useMessage } from 'naive-ui'
-import { loadingWrapRef } from '@renderer/utils/loadingWrap'
-import WinMenu from '@renderer/components/WinMenu.vue'
-import { debounce } from 'lodash'
+import { computed, onMounted, ref } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
-import RoomListItem from '@renderer/components/RoomListItem.vue'
-import ConnectCode from '@renderer/components/ConnectCode.vue'
 
 defineOptions({ name: 'HomeView' })
 

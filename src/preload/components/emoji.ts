@@ -1,10 +1,10 @@
 import type { Emoticon, Emoticons } from '@type/emoji'
-import { Component, batchAdd, createComponent, css, html, tag } from '@preload/utils/component'
+import type { Room } from '@type/room'
+import { batchAdd, Component, createComponent, css, html, tag } from '@preload/utils/component'
 import { awaitLivePlayer } from '@preload/utils/livePlayer'
+import { onSendEmoticon } from '@preload/utils/monitor'
 import { Status, watch } from '@preload/utils/status'
 import lodash from 'lodash'
-import { onSendEmoticon } from '@preload/utils/monitor'
-import type { Room } from '@type/room'
 import { BliveInvoke } from '../utils/invoke'
 
 function isClickEmojiItem(e: MouseEvent) {

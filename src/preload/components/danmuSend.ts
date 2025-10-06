@@ -1,20 +1,20 @@
+import type { Emoticons } from '@type/emoji'
+import type { Room } from '@type/room'
+import type { EmojiTabs } from './emoji'
 import { Component, css, html, tag } from '@preload/utils/component'
+import { BliveInvoke } from '@preload/utils/invoke'
+import { onSendText } from '@preload/utils/monitor'
 import {
-  Status,
   closeControlBar,
   closeDanmuInput,
   danmuInputIsFocus,
   danmuInputStatus,
   openControlBar,
+  Status,
   switchDanmuInput,
   watch,
 } from '@preload/utils/status'
-import { BliveInvoke } from '@preload/utils/invoke'
-import type { Emoticons } from '@type/emoji'
 import lodash from 'lodash'
-import { onSendText } from '@preload/utils/monitor'
-import type { Room } from '@type/room'
-import type { EmojiTabs } from './emoji'
 
 /** 匹配可输入的最大弹幕 */
 function matchMaxDanmu() {
@@ -109,8 +109,8 @@ export class DanmuSend extends Component {
     }
     const textarea = document.querySelector('#control-panel-ctnr-box textarea') as HTMLTextAreaElement
     const btn
-    = document.querySelector<HTMLButtonElement>('.control-panel-ctnr .chat-input-ctnr ~ .bottom-actions .bl-button--primary')
-    ?? document.querySelector<HTMLButtonElement>('#control-panel-ctnr-box > .chat-input-ctnr-new button')
+      = document.querySelector<HTMLButtonElement>('.control-panel-ctnr .chat-input-ctnr ~ .bottom-actions .bl-button--primary')
+        ?? document.querySelector<HTMLButtonElement>('#control-panel-ctnr-box > .chat-input-ctnr-new button')
 
     /** 创建一个输入事件 */
     const inputEvent = new Event('input', {

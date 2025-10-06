@@ -1,10 +1,10 @@
-import type { InvokeTransform } from '@type/invoke'
-import { ipcRenderer } from 'electron'
 import type { IPCHandle } from '@main/utils/ipcHandle'
-import type { Room } from '@type/room'
-import type { BliveHandleInterface, MainHandleInterface } from '@type/handle'
-import 'reflect-metadata'
 import type { SimpleEmoticons } from '@type/emoji'
+import type { BliveHandleInterface, MainHandleInterface } from '@type/handle'
+import type { InvokeTransform } from '@type/invoke'
+import type { Room } from '@type/room'
+import { ipcRenderer } from 'electron'
+import 'reflect-metadata'
 
 export function invoke(prefixName: string) {
   return (target: typeof IPCInvoke) => {

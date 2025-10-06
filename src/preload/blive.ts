@@ -1,20 +1,20 @@
-import { ControlBar } from '@preload/components/controlBar'
-import '@preload/components/controlBtn'
-import { DanmuSend } from '@preload/components/danmuSend'
-import '@preload/components/emoji'
-import { UserInfo } from '@preload/components/userInfo'
+import type { Emoticon } from '@type/emoji'
 import { ChangeVolume } from '@preload/components/changeVolume'
+import { ControlBar } from '@preload/components/controlBar'
+import { fullScreenStyle } from '@preload/components/css'
+import { DanmuSend } from '@preload/components/danmuSend'
+import { UserInfo } from '@preload/components/userInfo'
 
-import { BliveInvoke } from '@preload/utils/invoke'
-
-import { batchAdd, createComponent } from '@preload/utils/component'
 import { getEmoticons } from '@preload/utils/api'
 
-import type { Emoticon } from '@type/emoji'
-import { fullScreenStyle } from '@preload/components/css'
+import { batchAdd, createComponent } from '@preload/utils/component'
+import { BliveInvoke } from '@preload/utils/invoke'
+
 import { autoLottery } from './utils/autoLottery'
-import { randomMouseMove } from './utils/randomMouseMove'
 import { awaitGeetestPanel, awaitLivePlayer, awaitVideoEl } from './utils/livePlayer'
+import { randomMouseMove } from './utils/randomMouseMove'
+import '@preload/components/controlBtn'
+import '@preload/components/emoji'
 
 const bliveInvoke = new BliveInvoke()
 const controlBarEl = createComponent(ControlBar)
@@ -42,13 +42,13 @@ function insertCSSOnStyle() {
 }
 
 function hiddenHtml() {
-  document.body.style['-webkit-app-region'] = 'drag'
+  // document.body.style['-webkit-app-region'] = 'drag'
   const htmlElement = document.documentElement
   htmlElement.style.overflow = 'hidden'
 }
 
 function showHtml() {
-  document.body.style['-webkit-app-region'] = ''
+  // document.body.style['-webkit-app-region'] = ''
   const htmlElement = document.documentElement
   htmlElement.style.overflow = ''
 }
