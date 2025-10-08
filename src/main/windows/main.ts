@@ -30,6 +30,10 @@ export async function mainWindow() {
     if (config.x !== undefined && config.y !== undefined) {
       window.setPosition(config.x, config.y)
     }
+
+    if (config.width !== undefined && config.height !== undefined) {
+      window.setSize(config.width, config.height)
+    }
   })
 
   if (app.isPackaged) {

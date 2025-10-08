@@ -8,7 +8,7 @@
   "main": "./out/main/index.js",
   "scripts": {
     "lint": "eslint .",
-    "lint:fix": "nr lint --fix",
+    "lint:fix": "pnpm lint --fix",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "vue-tsc --noEmit -p tsconfig.web.json --composite false",
     "typecheck": "pnpm run typecheck:node && pnpm run typecheck:web",
