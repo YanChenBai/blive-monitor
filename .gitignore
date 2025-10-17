@@ -9,3 +9,5 @@ logs
 resources/icons
 .env
 .test.js
+components.d.ts
+auto-imports.d.ts

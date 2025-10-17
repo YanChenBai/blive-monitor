@@ -70,5 +70,14 @@
     "vite": "^7.1.9",
     "vue": "^3.5.22",
     "vue-tsc": "^3.1.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "electron",
+      "esbuild",
+      "electron-winstaller",
+      "vue-demi",
+      "@swc/core"
+    ]
   }
 }
